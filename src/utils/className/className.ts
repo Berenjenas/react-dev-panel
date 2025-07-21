@@ -1,33 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-interface ClassName {
-    className: string;
-}
+type ClassValue = string | null | undefined | { [key: string]: boolean };
 
 /**
- * A helper function to handle class names conditions easily.
+ * A helper function to handle class name conditions easily.
  * Receives an object containing strings or an object with the CSS class as key
  * and a condition to add or remove it as value.
- *
- * @param classNames The classnames object
- * @returns  The classes separated by spaces
+ * @param classNames - The classnames object
+ * @returns The classes separated by a space
  */
-export function className(...classNames: any): ClassName {
-    const classes = [];
+export function className(...classNames: ClassValue[]): { className: string } {
+	const classes: string[] = [];
 
-    for (const className of classNames) {
-        if (typeof className === "object") {
-            for (const key in className) {
-                if (
-                    Object.prototype.hasOwnProperty.call(className, key) &&
-                    className[key]
-                ) {
-                    classes.push(key);
-                }
-            }
-        } else {
-            classes.push(className);
-        }
-    }
+	for (const entry of classNames) {
+		if (!entry) continue;
 
-    return { className: classes.join(" ") };
+		if (typeof entry === "string") {
+			classes.push(entry);
+		} else if (typeof entry === "object") {
+			for (const [key, value] of Object.entries(entry)) {
+				if (value) classes.push(key);
+			}
+		}
+	}
+
+	return { className: classes.join(" ") };
 }

@@ -1,5 +1,6 @@
-import type { HotkeyConfig, UseHotkeysOptions } from "@/types";
+import type { HotkeyConfig } from "@/types";
 
+import type { UseHotkeysOptions } from "./types";
 import { useHotkeys } from "./useHotkeys";
 
 /**
@@ -16,9 +17,6 @@ import { useHotkeys } from "./useHotkeys";
  *   description: 'Save document'
  * });
  */
-export function useHotkey(
-    config: HotkeyConfig,
-    options: UseHotkeysOptions = {}
-): void {
-    useHotkeys([config], options);
+export function useHotkey(config: HotkeyConfig, options: UseHotkeysOptions = {}): void {
+	useHotkeys([config], options);
 }

@@ -1,28 +1,24 @@
-import React from "react";
+import { useCallback } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotkeys";
-import type { DevPanelHoyKeyConfig, DevPanelProps } from "@/types";
+import type { Position } from "@/types";
 import { className } from "@/utils";
-import {
-    useDevPanelActions,
-    useDevPanelCollapsed,
-    useDevPanelPosition,
-    useDevPanelSections,
-    useDevPanelVisible,
-} from "@/utils/store/store";
+import { useDevPanelActions, useDevPanelCollapsed, useDevPanelPosition, useDevPanelSections, useDevPanelVisible } from "@/utils/store/store";
 
 import { EmptyContent } from "../EmptyContent";
 import { Section } from "../Section";
 
+import type { DevPanelHoyKeyConfig, DevPanelProps } from "./types";
+
 import styles from "./DevPanel.module.scss";
 
 const defaultHotKeyConfig: DevPanelHoyKeyConfig = {
-    key: "f",
-    shiftKey: true,
-    altKey: true,
-    ctrlKey: false,
-    metaKey: false,
+	key: "f",
+	shiftKey: true,
+	altKey: true,
+	ctrlKey: false,
+	metaKey: false,
 };
 
 /**
@@ -34,88 +30,76 @@ const defaultHotKeyConfig: DevPanelHoyKeyConfig = {
  * <DevPanel />
  * ```
  */
-export function DevPanel({
-    panelTitle = "Dev panel",
-    ...props
-}: DevPanelProps) {
-    const isVisible = useDevPanelVisible();
-    const isCollapsed = useDevPanelCollapsed();
-    const position = useDevPanelPosition();
-    const sections = useDevPanelSections();
+export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) {
+	const isVisible = useDevPanelVisible();
+	const isCollapsed = useDevPanelCollapsed();
+	const position = useDevPanelPosition();
+	const sections = useDevPanelSections();
+	const actions = useDevPanelActions();
 
-    const actions = useDevPanelActions();
+	const handlePositionChange = useCallback(
+		(newPosition: Position) => {
+			actions.setPosition(newPosition);
+		},
+		[actions],
+	);
 
-    const handlePositionChange = React.useCallback(
-        (newPosition: { x: number; y: number }) => {
-            actions.setPosition(newPosition);
-        },
-        [actions.setPosition]
-    );
+	const { isDragging, elementRef, handleMouseDown } = useDragAndDrop({
+		onPositionChange: handlePositionChange,
+	});
 
-    const { isDragging, elementRef, handleMouseDown } = useDragAndDrop({
-        onPositionChange: handlePositionChange,
-    });
+	useHotkey({
+		description: "Show Dev Panel",
+		preventDefault: true,
+		action: () => actions.setVisible(!isVisible),
+		...defaultHotKeyConfig,
+		...props.hotKeyConfig,
+	});
 
-    useHotkey({
-        description: "Show Dev Panel",
-        preventDefault: true,
-        action: () => actions.setVisible(!isVisible),
-        ...defaultHotKeyConfig,
-        ...props.hotKeyConfig,
-    });
+	// Only show in development mode
+	if (process.env.NODE_ENV !== "development" || !isVisible) {
+		return null;
+	}
 
-    // Only show in development mode
-    if (process.env.NODE_ENV !== "development" || !isVisible) {
-        return null;
-    }
+	const sectionEntries = Object.entries(sections);
 
-    const sectionEntries = Object.entries(sections);
+	return (
+		<div
+			ref={elementRef}
+			{...className(styles.devPanelContainer, {
+				[styles.dragging]: isDragging,
+			})}
+			style={{
+				left: position.x,
+				top: position.y,
+				height: isCollapsed ? "auto" : undefined,
+			}}
+		>
+			<div className={styles.header} onMouseDown={handleMouseDown}>
+				<button
+					className={styles.headerButton}
+					onClick={() => actions.setCollapsed(!isCollapsed)}
+					title={isCollapsed ? "Expand" : "Collapse"}
+				>
+					{isCollapsed ? "▼" : "▲"}
+				</button>
+				<div className={styles.title}>{panelTitle}</div>
+				<button className={styles.headerButton} onClick={() => actions.setVisible(false)} title="Close">
+					✕
+				</button>
+			</div>
 
-    return (
-        <div
-            ref={elementRef}
-            {...className(styles.devPanelContainer, {
-                [styles.dragging]: isDragging,
-            })}
-            style={{
-                left: position.x,
-                top: position.y,
-                height: isCollapsed ? "auto" : undefined,
-            }}
-        >
-            <div className={styles.header} onMouseDown={handleMouseDown}>
-                <button
-                    className={styles.headerButton}
-                    onClick={() => actions.setCollapsed(!isCollapsed)}
-                    title={isCollapsed ? "Expand" : "Collapse"}
-                >
-                    {isCollapsed ? "▼" : "▲"}
-                </button>
-                <div className={styles.title}>{panelTitle}</div>
-                <button
-                    className={styles.headerButton}
-                    onClick={() => actions.setVisible(false)}
-                    title="Close"
-                >
-                    ✕
-                </button>
-            </div>
-
-            {!isCollapsed && (
-                <div className={styles.content}>
-                    {sectionEntries.length === 0 ? (
-                        <EmptyContent />
-                    ) : (
-                        sectionEntries.map(([sectionName, section]) => (
-                            <Section
-                                key={`section-${sectionName}`}
-                                sectionName={sectionName}
-                                section={section}
-                            />
-                        ))
-                    )}
-                </div>
-            )}
-        </div>
-    );
+			{!isCollapsed && (
+				<div className={styles.content}>
+					{sectionEntries.length ? (
+						sectionEntries.map(([sectionName, section]) => (
+							<Section key={`section-${sectionName}`} sectionName={sectionName} section={section} />
+						))
+					) : (
+						<EmptyContent />
+					)}
+				</div>
+			)}
+		</div>
+	);
 }

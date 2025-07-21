@@ -1,10 +1,6 @@
-import type { ColorControl as ColorControlType } from "../../../types";
+import type { ColorControlProps } from "./types";
 
 import styles from "./ColorControl.module.scss";
-
-interface ColorControlProps {
-    control: ColorControlType;
-}
 
 /**
  * Component that renders a color control
@@ -21,13 +17,13 @@ interface ColorControlProps {
  * ```
  */
 export function ColorControl({ control }: ColorControlProps) {
-    return (
-        <input
-            type="color"
-            value={control.value}
-            disabled={control.disabled}
-            onChange={(e) => control.onChange(e.target.value)}
-            className={styles.colorInput}
-        />
-    );
+	return (
+		<input
+			type="color"
+			value={control.value}
+			disabled={control.disabled}
+			onChange={(e) => control.onChange(e.target.value)}
+			className={styles.colorInput}
+		/>
+	);
 }

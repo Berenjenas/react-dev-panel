@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DevPanel } from "./components";
-import { useDevPanel } from "./hooks";
+import { useDevPanel } from "./hooks/useDevPanel";
 import { useState } from "react";
 import { Logger } from "./components/logger";
 
