@@ -1,0 +1,66 @@
+{
+    "name": "@berenjena/react-dev-panel",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/index.umd.js",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.umd.js"
+        },
+        "./styles.css": "./dist/styles.css"
+    },
+    "sideEffects": [
+        "*.css"
+    ],
+    "license": "MIT",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "lint": "eslint .",
+        "preview": "vite preview",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build",
+        "test": "vitest"
+    },
+    "peerDependencies": {
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "zustand": "^5.0.6"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.30.1",
+        "@storybook/addon-docs": "^9.0.17",
+        "@storybook/react-vite": "^9.0.17",
+        "@types/node": "^24.0.15",
+        "@types/react": "^19.1.8",
+        "@types/react-dom": "^19.1.6",
+        "@vitejs/plugin-react-swc": "^3.10.2",
+        "@vitest/coverage-v8": "^3.2.4",
+        "@vitest/ui": "^3.2.4",
+        "eslint": "^9.30.1",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.20",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "eslint-plugin-storybook": "^9.0.17",
+        "glob": "^11.0.3",
+        "globals": "^16.3.0",
+        "happy-dom": "^18.0.1",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "sass-embedded": "^1.89.2",
+        "storybook": "^9.0.17",
+        "typescript": "~5.8.3",
+        "typescript-eslint": "^8.35.1",
+        "vite": "^7.0.4",
+        "vite-plugin-dts": "^4.5.4",
+        "vite-plugin-lib-inject-css": "^2.2.2",
+        "vitest": "^3.2.4",
+        "zustand": "^5.0.6"
+    }
+}

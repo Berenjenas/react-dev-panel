@@ -1,0 +1,24 @@
+:root {
+    // Typography
+    --dev-panel-font-family: Helvetica, Arial, Sans-Serif;
+
+    // Colors
+    --dev-panel-primary-color: #0070f3;
+    --dev-panel-secondary-color: #1c1c1c;
+
+    --dev-panel-background-color: #f8f9fa;
+    --dev-panel-border-color: #e9ecef;
+    --dev-panel-text-color: #333;
+    --dev-panel-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --dev-panel-max-width: 320px;
+    --dev-panel-max-height: 80vh;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dev-panel-background-color: #2a2a2a;
+        --dev-panel-border-color: #555;
+        --dev-panel-text-color: #e0e0e0;
+        --dev-panel-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+}

@@ -1,0 +1,44 @@
+.controlContainer {
+  grid-template-columns: auto 160px;
+  column-gap: 7px;
+  display: grid;
+
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 12px;
+  color: #333;
+
+  /*
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; */
+
+  //color: #e0e0e0;
+  //font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description {
+  font-size: 10px;
+  font-weight: 400;
+  color: #666;
+  opacity: 0.8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .label {
+    color: #e0e0e0;
+  }
+
+  .description {
+    color: #b0b0b0;
+  }
+}
