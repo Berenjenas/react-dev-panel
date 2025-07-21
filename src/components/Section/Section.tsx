@@ -1,6 +1,7 @@
-import { ControlRenderer } from "@/components/controls/ControlRenderer";
-import type { AvailableControls, DevPanelSection } from "@/types";
+import { ControlRenderer } from "@/components/ControlRenderer";
 import { useDevPanelActions } from "@/utils/store";
+
+import type { DevPanelSection } from "../DevPanel/types";
 
 import styles from "./Section.module.scss";
 
@@ -22,7 +23,7 @@ export function Section({ sectionName, section }: SectionProps) {
 			{!section.isCollapsed && (
 				<div className={styles.content}>
 					{Object.entries(section.controls).map(([controlName, control]) => (
-						<ControlRenderer key={controlName} name={controlName as AvailableControls} control={control} />
+						<ControlRenderer key={controlName} name={controlName} control={control} />
 					))}
 				</div>
 			)}

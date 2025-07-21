@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 
-import type { HotkeyConfig, UseHotkeysOptions } from "@/types";
+import type { HotkeyConfig } from "@/types";
+
+import type { UseHotkeysOptions } from "./types";
 
 /**
  * Hook for handling keyboard shortcuts (hotkeys) with support for modifier keys
@@ -37,82 +39,68 @@ import type { HotkeyConfig, UseHotkeysOptions } from "@/types";
  *   }
  * ]);
  */
-export function useHotkeys(
-    hotkeys: HotkeyConfig[],
-    options: UseHotkeysOptions = {}
-): void {
-    const {
-        enabled = true,
-        target = window,
-        preventDefault = false,
-        stopPropagation = false,
-    } = options;
+export function useHotkeys(hotkeys: HotkeyConfig[], options: UseHotkeysOptions = {}): void {
+	const { enabled = true, target = window, preventDefault = false, stopPropagation = false } = options;
 
-    const hotkeysRef = useRef<HotkeyConfig[]>([]);
+	const hotkeysRef = useRef<HotkeyConfig[]>([]);
 
-    hotkeysRef.current = hotkeys;
+	hotkeysRef.current = hotkeys;
 
-    /**
-     * Checks if the pressed key combination matches a hotkey configuration
-     */
-    const isHotkeyMatch = useCallback(
-        (event: KeyboardEvent, config: HotkeyConfig): boolean => {
-            const keyMatch =
-                event.key.toLowerCase() === config.key.toLowerCase();
-            const ctrlMatch = !!config.ctrlKey === event.ctrlKey;
-            const shiftMatch = !!config.shiftKey === event.shiftKey;
-            const altMatch = !!config.altKey === event.altKey;
-            const metaMatch = !!config.metaKey === event.metaKey;
+	/**
+	 * Checks if the pressed key combination matches a hotkey configuration
+	 */
+	const isHotkeyMatch = useCallback((event: KeyboardEvent, config: HotkeyConfig): boolean => {
+		const keyMatch = event.key.toLowerCase() === config.key.toLowerCase();
+		const ctrlMatch = !!config.ctrlKey === event.ctrlKey;
+		const shiftMatch = !!config.shiftKey === event.shiftKey;
+		const altMatch = !!config.altKey === event.altKey;
+		const metaMatch = !!config.metaKey === event.metaKey;
 
-            return keyMatch && ctrlMatch && shiftMatch && altMatch && metaMatch;
-        },
-        []
-    );
+		return keyMatch && ctrlMatch && shiftMatch && altMatch && metaMatch;
+	}, []);
 
-    /**
-     * Handles the keydown event and executes matching hotkey actions
-     */
-    const handleKeyDown = useCallback(
-        (event: Event) => {
-            if (!enabled) return;
+	/**
+	 * Handles the keydown event and executes matching hotkey actions
+	 */
+	const handleKeyDown = useCallback(
+		(event: Event) => {
+			if (!enabled) return;
 
-            const keyboardEvent = event as KeyboardEvent;
+			const keyboardEvent = event as KeyboardEvent;
 
-            for (const config of hotkeysRef.current) {
-                if (config.enabled === false) continue;
+			for (const config of hotkeysRef.current) {
+				if (config.enabled === false) continue;
 
-                if (isHotkeyMatch(keyboardEvent, config)) {
-                    const shouldPreventDefault =
-                        config.preventDefault ?? preventDefault;
-                    const shouldStopPropagation =
-                        config.stopPropagation ?? stopPropagation;
+				if (isHotkeyMatch(keyboardEvent, config)) {
+					const shouldPreventDefault = config.preventDefault ?? preventDefault;
+					const shouldStopPropagation = config.stopPropagation ?? stopPropagation;
 
-                    if (shouldPreventDefault) {
-                        event.preventDefault();
-                    }
+					if (shouldPreventDefault) {
+						event.preventDefault();
+					}
 
-                    if (shouldStopPropagation) {
-                        event.stopPropagation();
-                    }
+					if (shouldStopPropagation) {
+						event.stopPropagation();
+					}
 
-                    config.action(keyboardEvent);
+					config.action(keyboardEvent);
 
-                    break;
-                }
-            }
-        },
-        [enabled, preventDefault, stopPropagation, isHotkeyMatch]
-    );
+					break;
+				}
+			}
+		},
+		[enabled, preventDefault, stopPropagation, isHotkeyMatch],
+	);
 
-    useEffect(() => {
-        const currentTarget = target;
+	useEffect(() => {
+		const currentTarget = target;
 
-        if (!currentTarget || !enabled) return;
+		if (!currentTarget || !enabled) return;
 
-        currentTarget.addEventListener("keydown", handleKeyDown);
+		currentTarget.addEventListener("keydown", handleKeyDown);
 
-        return () => {
-            currentTarget.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [target, enabled, handleKeyDown]);
+		return () => {
+			currentTarget.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [target, enabled, handleKeyDown]);
 }

@@ -1,16 +1,17 @@
 import { Suspense } from "react";
 
-import type { ControlRendererProps } from "@/types";
 import { className } from "@/utils";
 
-import { controls } from "..";
+import type { Control, ControlsNames } from "./controls/types";
+import { controls } from "./controls";
+import type { ControlRendererProps } from "./types";
 
 import styles from "./ControlRenderer.module.scss";
 
 /**
  * Component that renders different types of controls based on the control type
  */
-export function ControlRenderer({ name, control }: ControlRendererProps) {
+export function ControlRenderer<Name extends ControlsNames>({ name, control }: ControlRendererProps<Name>) {
 	const label = control?.label || name;
 
 	/**
@@ -21,7 +22,7 @@ export function ControlRenderer({ name, control }: ControlRendererProps) {
 			return <div className={styles.error}>Control type is not defined</div>;
 		}
 
-		const ControlComponent = controls[control.type] as React.ComponentType<{ control: ControlRendererProps["control"] }>;
+		const ControlComponent = controls[control.type] as React.ComponentType<{ control: Control<Name> }>;
 
 		if (ControlComponent) {
 			return (

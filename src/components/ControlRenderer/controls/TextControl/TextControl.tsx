@@ -1,10 +1,6 @@
-import type { TextControl as TextControlType } from "../../../types";
+import type { TextControlProps } from "./types";
 
 import styles from "./TextControl.module.scss";
-
-interface TextControlProps {
-    control: TextControlType;
-}
 
 /**
  * Component that renders a text control
@@ -22,14 +18,14 @@ interface TextControlProps {
  * ```
  */
 export function TextControl({ control }: TextControlProps) {
-    return (
-        <input
-            type="text"
-            value={control.value}
-            placeholder={control.placeholder}
-            disabled={control.disabled}
-            onChange={(e) => control.onChange(e.target.value)}
-            className={styles.textInput}
-        />
-    );
+	return (
+		<input
+			type="text"
+			value={control.value}
+			placeholder={control.placeholder}
+			disabled={control.disabled}
+			onChange={(e) => control.onChange(e.target.value)}
+			className={styles.textInput}
+		/>
+	);
 }

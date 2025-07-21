@@ -1,10 +1,6 @@
-import type { ButtonControl as ButtonControlType } from "../../../types";
+import type { ButtonControlProps } from "./types";
 
 import styles from "./ButtonControl.module.scss";
-
-interface ButtonControlProps {
-    control: ButtonControlType;
-}
 
 /**
  * Component that renders a button control
@@ -21,13 +17,9 @@ interface ButtonControlProps {
  * ```
  */
 export function ButtonControl({ control }: ButtonControlProps) {
-    return (
-        <button
-            onClick={control.onClick}
-            disabled={control.disabled}
-            className={styles.button}
-        >
-            {control.label}
-        </button>
-    );
+	return (
+		<button onClick={control.onClick} disabled={control.disabled} className={styles.button}>
+			{control.label}
+		</button>
+	);
 }
