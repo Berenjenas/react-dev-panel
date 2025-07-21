@@ -16,6 +16,7 @@ export default defineConfig({
 			tsconfigPath: "./tsconfig.app.json",
 			rollupTypes: false,
 			insertTypesEntry: true,
+			copyDtsFiles: true,
 			include: ["src/**/*"],
 			exclude: ["src/**/*.stories.tsx", "src/**/*.test.tsx", "src/**/*.spec.ts"],
 		}),
