@@ -1,19 +1,26 @@
-.colorInput {
-  width: 100%;
-  height: 40px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 0;
+.container {
+	display: grid;
+	grid-template-columns: var(--dev-panel-inputs-height) 1fr;
+	gap: 8px;
 
-  &:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-  }
+	label {
+		overflow: hidden;
+		width: auto;
+		height: var(--dev-panel-inputs-height);
+		cursor: pointer;
+		border-radius: var(--dev-panel-border-radius);
+	}
 
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
+	input[type="color"] {
+		background: none;
+		border: 0;
+		width: 150%;
+		height: 150%;
+		margin: -25%;
+
+		&:focus {
+			border-radius: 0;
+			outline: none;
+		}
+	}
 }

@@ -5,79 +5,134 @@ import { useState } from "react";
 import { Logger } from "./components/logger";
 
 type MainProps = {
-    devPanelTitle?: string;
+	devPanelTitle?: string;
 };
 
 function Main(props: MainProps) {
-    const [theme, setTheme] = useState("light");
-    const [debugMode, setDebugMode] = useState(false);
-    const [color, setColor] = useState("#ff0000");
+	const [theme, setTheme] = useState("light");
+	const [debugMode, setDebugMode] = useState(false);
+	const [color, setColor] = useState("#ff6200");
+	const [textMessage, setTextMessage] = useState("Hello World");
+	const [amount, setAmount] = useState(10);
+	const [coolness, setCoolness] = useState(true);
 
-    useDevPanel("Default", {
-        theme: {
-            type: "select",
-            value: theme,
-            options: ["light", "dark"],
-            onChange: (value) => setTheme(value),
-        },
-        debugMode: {
-            type: "boolean",
-            value: debugMode,
-            onChange: (value) => setDebugMode(value),
-        },
-        data: {
-            type: "button",
-            label: "Fetch Data",
-            onClick: () => {
-                console.log("Fetching data...");
-                // Simulate data fetching
-                setTimeout(() => {
-                    console.log("Data fetched successfully!");
-                }, 1000);
-            },
-        },
-        color: {
-            type: "color",
-            value: color,
-            onChange: (value) => setColor(value),
-        },
-    });
+	useDevPanel("Folder 1", {
+		theme: {
+			type: "select",
+			value: theme,
+			label: "Theme",
+			options: ["light", "dark"],
+			onChange: (value) => setTheme(value),
+			description: "Select the theme for the application",
+		},
+		debugMode: {
+			type: "boolean",
+			value: debugMode,
+			label: "Debug Mode",
+			onChange: (value) => setDebugMode(value),
+		},
+		beingCool: {
+			type: "boolean",
+			value: coolness,
+			label: "Coolness",
+			description: `Are you being cool? ${coolness ? "😎" : "😢"}`,
+			onChange: (value) => setCoolness(value),
+		},
+		data: {
+			type: "button",
+			label: "Fetch Data",
+			description: "Click to simulate data fetching",
+			onClick: () => {
+				console.log("Fetching data...");
+				// Simulate data fetching
+				setTimeout(() => {
+					console.log("Data fetched successfully!");
+				}, 1000);
+			},
+		},
+		color: {
+			type: "color",
+			value: color,
+			label: "Color Picker",
+			onChange: (value) => setColor(value),
+		},
+	});
 
-    return (
-        <>
-            <Logger items={{ theme, debugMode, color }} />
-            <DevPanel panelTitle={props.devPanelTitle} />
-        </>
-    );
+	useDevPanel("Folder 2", {
+		anotherControl: {
+			type: "text",
+			value: textMessage,
+			label: "Text Input",
+			onChange: (value) => setTextMessage(value),
+		},
+		buttonGroup: {
+			type: "buttonGroup",
+			label: "Button Group",
+			buttons: [
+				{
+					label: "Button 1",
+					onClick: () => console.log("Button 1 clicked"),
+				},
+				{
+					label: "Button 2",
+					onClick: () => console.log("Button 2 clicked"),
+				},
+				{
+					label: "Button 3",
+					onClick: () => console.log("Button 3 clicked"),
+				},
+			],
+		},
+	});
+
+	useDevPanel("Folder 3", {
+		amount: {
+			type: "number",
+			value: amount,
+			label: "Amount",
+			min: 0,
+			max: 100,
+			step: 1,
+			description: "Set the amount",
+			onChange: (value) => setAmount(value),
+		},
+	});
+
+	return (
+		<>
+			<Logger items={{ theme, debugMode, color, textMessage }} />
+			<DevPanel panelTitle={props.devPanelTitle} />
+		</>
+	);
 }
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-    title: "Main",
-    component: Main,
-    parameters: {
-        // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-        //layout: "centered",
-    },
-    // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-    tags: ["autodocs"],
-    // More on argTypes: https://storybook.js.org/docs/api/argtypes
-    argTypes: {
-        devPanelTitle: {
-            name: "Dev Panel Title",
-            control: "text",
-            description: "Title of the DevPanel",
-            defaultValue: "Dev Panel",
-        },
-    },
-    // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-    //args: { onClick: fn() },
+	title: "Main",
+	component: Main,
+	parameters: {
+		// Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
+		//layout: "centered",
+	},
+	// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
+	tags: ["autodocs"],
+	// More on argTypes: https://storybook.js.org/docs/api/argtypes
+	argTypes: {
+		devPanelTitle: {
+			name: "Dev Panel Title",
+			control: "text",
+			description: "Title of the DevPanel",
+			defaultValue: "Dev Panel",
+		},
+	},
+	// Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
+	//args: { onClick: fn() },
 } satisfies Meta<typeof Main>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
-    args: {
-        devPanelTitle: "Dev Panel",
-    },
+	args: {
+		devPanelTitle: "Dev Panel",
+	},
 };

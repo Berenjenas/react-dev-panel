@@ -11,6 +11,7 @@ export const controls = Object.freeze({
 	number: lazy(() => import("./NumberControl").then((m) => ({ default: m.NumberControl }))),
 	select: lazy(() => import("./SelectControl").then((m) => ({ default: m.SelectControl }))),
 	text: lazy(() => import("./TextControl").then((m) => ({ default: m.TextControl }))),
+	buttonGroup: lazy(() => import("./ButtonGroupControl").then((m) => ({ default: m.ButtonGroupControl }))),
 });
 
 export { ControlRenderer } from "..";

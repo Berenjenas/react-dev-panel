@@ -1,44 +1,36 @@
 .controlContainer {
-  grid-template-columns: auto 160px;
-  column-gap: 7px;
-  display: grid;
+	gap: var(--dev-panel-spacing-sm);
+	display: grid;
+	height: 100%;
+	align-items: center;
+	overflow: hidden;
+	color: var(--dev-panel-text-color);
 
-  align-items: center;
-  height: 100%;
-  overflow: hidden;
+	&:not(.fullWidth) {
+		grid-template-columns: 100px 1fr;
+	}
+
+	.controlWrapper {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.label {
+		text-align: start;
+		font-weight: 500;
+		font-size: var(--dev-panel-font-size-xs);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
 
-.label {
-  font-weight: 500;
-  font-size: 12px;
-  color: #333;
-
-  /*
-  margin-bottom: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px; */
-
-  //color: #e0e0e0;
-  //font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.description,
+.loading {
+	font-size: var(--dev-panel-font-size-xs);
+	color: var(--dev-panel-text-color-muted);
 }
 
 .description {
-  font-size: 10px;
-  font-weight: 400;
-  color: #666;
-  opacity: 0.8;
-}
-
-@media (prefers-color-scheme: dark) {
-  .label {
-    color: #e0e0e0;
-  }
-
-  .description {
-    color: #b0b0b0;
-  }
+	text-align: right;
 }

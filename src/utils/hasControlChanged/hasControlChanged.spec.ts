@@ -344,7 +344,7 @@ describe("hasControlsChanged", () => {
 			const current: ControlsGroup = {
 				control: {
 					type: "color",
-					value: "#ff0000",
+					value: "#ff6200",
 					onChange: vi.fn(),
 				},
 			};

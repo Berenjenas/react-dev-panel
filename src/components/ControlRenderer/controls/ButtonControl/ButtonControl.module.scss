@@ -1,25 +1,22 @@
 .button {
-  width: 100%;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+	width: 100%;
+	padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-sm);
+	height: var(--dev-panel-inputs-height);
+	border: none;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 500;
+	background-color: var(--dev-panel-accent-color);
+	color: var(--dev-panel-text-color-highlight);
+	cursor: pointer;
+	transition: var(--dev-panel-transition);
 
-  &:hover:not(:disabled) {
-    background-color: #45a049;
-  }
+	&:hover:not(:disabled) {
+		background-color: color-mix(in srgb, var(--dev-panel-accent-color) 80%, transparent);
+	}
 
-  &:active:not(:disabled) {
-    background-color: #3e8e41;
-  }
-
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
+	&:disabled {
+		background-color: color-mix(in srgb, var(--dev-panel-accent-color) 20%, var(--dev-panel-background-color));
+		cursor: not-allowed;
+	}
 }

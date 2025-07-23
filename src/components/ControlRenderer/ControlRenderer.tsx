@@ -8,6 +8,8 @@ import type { ControlRendererProps } from "./types";
 
 import styles from "./ControlRenderer.module.scss";
 
+const oneLineControls = ["button", "buttonGroup"];
+
 /**
  * Component that renders different types of controls based on the control type
  */
@@ -26,7 +28,7 @@ export function ControlRenderer<Name extends ControlsNames>({ name, control }: C
 
 		if (ControlComponent) {
 			return (
-				<Suspense fallback={<div>Loading control...</div>}>
+				<Suspense fallback={<div className={styles.loading}>Loading control...</div>}>
 					<ControlComponent control={control} />
 				</Suspense>
 			);
@@ -36,16 +38,14 @@ export function ControlRenderer<Name extends ControlsNames>({ name, control }: C
 	}
 
 	return (
-		<div {...className(styles.controlContainer)}>
-			{control?.type !== "button" && (
-				<label className={styles.label}>
-					{label}
+		<>
+			<div {...className(styles.controlContainer, { [styles.fullWidth]: oneLineControls.includes(control.type) })}>
+				{control?.type !== "button" && <label className={styles.label}>{label}</label>}
 
-					{control?.description && <span className={styles.description}>{control.description}</span>}
-				</label>
-			)}
+				<div className={styles.controlWrapper}>{renderControl()}</div>
+			</div>
 
-			{renderControl()}
-		</div>
+			{control?.description && <span className={styles.description}>{control.description}</span>}
+		</>
 	);
 }

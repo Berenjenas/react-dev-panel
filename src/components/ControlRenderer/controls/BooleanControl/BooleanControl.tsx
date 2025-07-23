@@ -1,3 +1,5 @@
+import { className } from "@/utils";
+
 import type { BooleanControlProps } from "./types";
 
 import styles from "./BooleanControl.module.scss";
@@ -18,7 +20,7 @@ import styles from "./BooleanControl.module.scss";
  */
 export function BooleanControl({ control }: BooleanControlProps) {
 	return (
-		<label className={styles.checkboxLabel}>
+		<label className={styles.switch}>
 			<input
 				type="checkbox"
 				checked={control.value}
@@ -26,7 +28,7 @@ export function BooleanControl({ control }: BooleanControlProps) {
 				onChange={(e) => control.onChange(e.target.checked)}
 				className={styles.checkbox}
 			/>
-			<span className={styles.checkboxCustom} />
+			<span {...className(styles.slider, styles.round)} />
 		</label>
 	);
 }

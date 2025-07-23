@@ -1,5 +1,6 @@
 import type { BooleanControl } from "./BooleanControl/types";
 import type { ButtonControl } from "./ButtonControl/types";
+import type { ButtonGroupControl } from "./ButtonGroupControl/types";
 import type { ColorControl } from "./ColorControl/types";
 import type { NumberControl } from "./NumberControl/types";
 import type { SelectControl } from "./SelectControl/types";
@@ -11,6 +12,11 @@ export interface BaseControl {
 	disabled?: boolean;
 }
 
+export interface BaseInputControl extends BaseControl {
+	event?: "onBlur" | "onChange";
+	onChange: (value: string) => void;
+}
+
 export type Controls = {
 	color: ColorControl;
 	boolean: BooleanControl;
@@ -18,6 +24,7 @@ export type Controls = {
 	text: TextControl;
 	button: ButtonControl;
 	number: NumberControl;
+	buttonGroup: ButtonGroupControl;
 };
 
 export type ControlsNames = keyof Controls;

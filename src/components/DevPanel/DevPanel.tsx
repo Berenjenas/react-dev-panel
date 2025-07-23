@@ -76,15 +76,11 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 			}}
 		>
 			<div className={styles.header} onMouseDown={handleMouseDown}>
-				<button
-					className={styles.headerButton}
-					onClick={() => actions.setCollapsed(!isCollapsed)}
-					title={isCollapsed ? "Expand" : "Collapse"}
-				>
+				<button className={styles.button} onClick={() => actions.setCollapsed(!isCollapsed)} title={isCollapsed ? "Expand" : "Collapse"}>
 					{isCollapsed ? "▼" : "▲"}
 				</button>
 				<div className={styles.title}>{panelTitle}</div>
-				<button className={styles.headerButton} onClick={() => actions.setVisible(false)} title="Close">
+				<button className={styles.button} onClick={() => actions.setVisible(false)} title="Close">
 					✕
 				</button>
 			</div>

@@ -1,10 +1,9 @@
-import type { BaseControl } from "../types";
+import type { BaseInputControl } from "../types";
 
-export interface TextControl extends BaseControl {
+export interface TextControl extends BaseInputControl {
 	type: "text";
 	value: string;
 	placeholder?: string;
-	onChange: (value: string) => void;
 }
 
 export interface TextControlProps {

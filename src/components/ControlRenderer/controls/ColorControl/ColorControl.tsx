@@ -1,3 +1,5 @@
+import { Input } from "@/components/Input";
+
 import type { ColorControlProps } from "./types";
 
 import styles from "./ColorControl.module.scss";
@@ -18,12 +20,18 @@ import styles from "./ColorControl.module.scss";
  */
 export function ColorControl({ control }: ColorControlProps) {
 	return (
-		<input
-			type="color"
-			value={control.value}
-			disabled={control.disabled}
-			onChange={(e) => control.onChange(e.target.value)}
-			className={styles.colorInput}
-		/>
+		<div className={styles.container}>
+			<label>
+				<Input type="color" value={control.value} disabled={control.disabled} onChange={(e) => control.onChange(e.target.value)} />
+			</label>
+
+			<Input
+				type="text"
+				value={control.value}
+				disabled={control.disabled}
+				onChange={(e) => control.onChange(e.target.value)}
+				placeholder="Enter color value"
+			/>
+		</div>
 	);
 }

@@ -1,3 +1,5 @@
+import { Select } from "@/components/Select";
+
 import type { SelectControlProps } from "./types";
 
 import styles from "./SelectControl.module.scss";
@@ -17,7 +19,7 @@ import styles from "./SelectControl.module.scss";
  */
 export function SelectControl({ control }: SelectControlProps) {
 	return (
-		<select value={control.value} disabled={control.disabled} onChange={(e) => control.onChange(e.target.value)} className={styles.select}>
+		<Select value={control.value} disabled={control.disabled} onChange={(e) => control.onChange(e.target.value)} className={styles.select}>
 			{control.options.map((option) => {
 				const optionValue = typeof option === "string" ? option : option.value;
 				const optionLabel = typeof option === "string" ? option : option.label;
@@ -28,6 +30,6 @@ export function SelectControl({ control }: SelectControlProps) {
 					</option>
 				);
 			})}
-		</select>
+		</Select>
 	);
 }

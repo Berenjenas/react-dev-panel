@@ -1,173 +1,90 @@
 @use "../../styles.module.scss" as styles;
 
 .devPanelContainer {
-    position: fixed;
-    z-index: 9998;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    width: var(--dev-panel-max-width);
-    max-height: var(--dev-panel-max-height);
-    overflow: hidden;
-    user-select: none;
-    font-family: var(--dev-panel-font-family);
-}
+	position: fixed;
+	z-index: 9998;
+	border-radius: var(--dev-panel-border-radius);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+	width: var(--dev-panel-max-width);
+	max-height: var(--dev-panel-max-height);
+	overflow: hidden;
+	user-select: none;
+	font-family: var(--dev-panel-font-family);
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4px;
-    background: #1e2233;
-    border-bottom: 1px solid #e9ecef;
-    cursor: move;
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: var(--dev-panel-spacing-xs);
+		background: var(--dev-panel-foreground-color);
+		cursor: move;
+		color: var(--dev-panel-text-color);
+	}
 
-    &:hover {
-        background: #e9ecef;
-    }
-}
+	.title {
+		font-size: var(--dev-panel-font-size-xs);
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+		gap: var(--dev-panel-spacing-sm);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
-.title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+	.button {
+		background: none;
+		border: none;
+		color: inherit;
+		font-size: var(--dev-panel-font-size-sm);
+		cursor: pointer;
+		padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-sm);
+		border-radius: 4px;
+		transition: all 0.2s ease;
 
-.headerButton {
-    background: none;
-    border: none;
-    color: #666;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+		&:hover {
+			background: #dee2e6;
+			color: #333;
+		}
 
-    &:hover {
-        background: #dee2e6;
-        color: #333;
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
+		&:active {
+			transform: scale(0.95);
+		}
+	}
 }
 
 .content {
-    max-height: calc(80vh - 48px);
-    overflow-y: auto;
-    //padding: 12px;
+	max-height: calc(var(--dev-panel-max-height) - 48px);
+	overflow-y: auto;
+	background-color: var(--dev-panel-background-color);
+
+	/* Scrollbar personalizada */
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #c1c1c1;
+		border-radius: 3px;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: #a8a8a8;
+	}
 }
 
-.actions {
-    display: flex;
-    justify-content: center;
-    padding-top: 12px;
-    margin-top: 12px;
-    border-top: 1px solid #e9ecef;
+// .actions {
+// 	display: flex;
+// 	justify-content: center;
+// 	padding-top: var(--dev-panel-spacing-md);
+// 	margin-top: var(--dev-panel-spacing-md);
+// 	border-top: 1px solid #e9ecef;
 
-    &:last-child {
-        border: none;
-    }
-}
-
-.resetButton {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-
-    &:hover {
-        background: #c82333;
-    }
-
-    &:active {
-        background: #bd2130;
-    }
-}
-
-/* Scrollbar personalizada */
-.content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.content::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 3px;
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    .devPanelContainer {
-        background: #2a2a2a;
-        border-color: #555;
-    }
-
-    .header {
-        background: #1e2233;
-        border-color: #555;
-
-        &:hover {
-            background: #444;
-        }
-    }
-
-    .title {
-        color: #e0e0e0;
-    }
-
-    .headerButton {
-        color: #b0b0b0;
-
-        &:hover {
-            background: #555;
-            color: #e0e0e0;
-        }
-    }
-
-    .actions {
-        border-color: #555;
-    }
-
-    .resetButton {
-        background: #dc3545;
-
-        &:hover {
-            background: #c82333;
-        }
-    }
-
-    .content::-webkit-scrollbar-track {
-        background: #333;
-    }
-
-    .content::-webkit-scrollbar-thumb {
-        background: #666;
-
-        &:hover {
-            background: #777;
-        }
-    }
-}
-
-/* Dragging state */
-.dragging {
-    opacity: 0.9;
-    cursor: grabbing !important;
-    transition: opacity 0.2s ease;
-}
+// 	&:last-child {
+// 		border: none;
+// 	}
+// }

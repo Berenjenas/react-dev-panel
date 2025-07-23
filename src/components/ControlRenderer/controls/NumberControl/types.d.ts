@@ -1,6 +1,6 @@
-import type { BaseControl } from "../types";
+import type { BaseInputControl } from "../types";
 
-export interface NumberControl extends BaseControl {
+export interface NumberControl extends BaseInputControl {
 	type: "number";
 	value: number;
 	min?: number;
