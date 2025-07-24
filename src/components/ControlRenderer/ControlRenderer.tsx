@@ -38,7 +38,7 @@ export function ControlRenderer<Name extends ControlsNames>({ name, control }: C
 	}
 
 	return (
-		<>
+		<div className={styles.controlRendererContainer}>
 			<div {...className(styles.controlContainer, { [styles.fullWidth]: oneLineControls.includes(control.type) })}>
 				{control?.type !== "button" && <label className={styles.label}>{label}</label>}
 
@@ -46,6 +46,6 @@ export function ControlRenderer<Name extends ControlsNames>({ name, control }: C
 			</div>
 
 			{control?.description && <span className={styles.description}>{control.description}</span>}
-		</>
+		</div>
 	);
 }

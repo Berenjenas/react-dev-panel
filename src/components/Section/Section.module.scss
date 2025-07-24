@@ -31,7 +31,7 @@
 		padding: var(--dev-panel-spacing-sm) 0 0 var(--dev-panel-spacing-sm);
 		display: grid;
 		grid-template-columns: 100%;
-		row-gap: var(--dev-panel-spacing-sm);
+		gap: var(--dev-panel-spacing-sm);
 		transition: opacity 250ms;
 
 		&:after {

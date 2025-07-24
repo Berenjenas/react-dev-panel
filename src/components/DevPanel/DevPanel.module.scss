@@ -43,7 +43,7 @@
 		transition: all 0.2s ease;
 
 		&:hover {
-			background: #dee2e6;
+			background: var(--dev-panel-highlight-color);
 			color: #333;
 		}
 
@@ -76,15 +76,3 @@
 		background: #a8a8a8;
 	}
 }
-
-// .actions {
-// 	display: flex;
-// 	justify-content: center;
-// 	padding-top: var(--dev-panel-spacing-md);
-// 	margin-top: var(--dev-panel-spacing-md);
-// 	border-top: 1px solid #e9ecef;
-
-// 	&:last-child {
-// 		border: none;
-// 	}
-// }

@@ -14,10 +14,10 @@ import type { DevPanelHoyKeyConfig, DevPanelProps } from "./types";
 import styles from "./DevPanel.module.scss";
 
 const defaultHotKeyConfig: DevPanelHoyKeyConfig = {
-	key: "f",
+	ctrlKey: true,
 	shiftKey: true,
-	altKey: true,
-	ctrlKey: false,
+	key: "a",
+	altKey: false,
 	metaKey: false,
 };
 
@@ -54,6 +54,7 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 		action: () => actions.setVisible(!isVisible),
 		...defaultHotKeyConfig,
 		...props.hotKeyConfig,
+		target: window,
 	});
 
 	// Only show in development mode

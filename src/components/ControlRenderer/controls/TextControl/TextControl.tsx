@@ -32,7 +32,7 @@ import type { TextControlProps } from "./types";
  * ```
  */
 export function TextControl({ control }: TextControlProps) {
-	const eventType = control.event || "onBlur";
+	const eventType = control.event || "onChange"; // Default to "onChange" if not specified
 	const [localValue, setLocalValue] = useState(control.value);
 
 	useEffect(() => {

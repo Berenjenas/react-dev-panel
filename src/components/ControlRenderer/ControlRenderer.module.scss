@@ -1,36 +1,41 @@
-.controlContainer {
-	gap: var(--dev-panel-spacing-sm);
+.controlRendererContainer {
+	gap: var(--dev-panel-spacing-xs);
 	display: grid;
-	height: 100%;
-	align-items: center;
-	overflow: hidden;
-	color: var(--dev-panel-text-color);
 
-	&:not(.fullWidth) {
-		grid-template-columns: 100px 1fr;
-	}
-
-	.controlWrapper {
-		display: flex;
-		justify-content: flex-end;
-	}
-
-	.label {
-		text-align: start;
-		font-weight: 500;
-		font-size: var(--dev-panel-font-size-xs);
+	.controlContainer {
+		gap: var(--dev-panel-spacing-sm);
+		display: grid;
+		height: 100%;
+		align-items: center;
 		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		color: var(--dev-panel-text-color);
+
+		&:not(.fullWidth) {
+			grid-template-columns: 100px 1fr;
+		}
+
+		.controlWrapper {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.label {
+			text-align: start;
+			font-weight: 500;
+			font-size: var(--dev-panel-font-size-xs);
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
-}
 
-.description,
-.loading {
-	font-size: var(--dev-panel-font-size-xs);
-	color: var(--dev-panel-text-color-muted);
-}
+	.description,
+	.loading {
+		font-size: var(--dev-panel-font-size-xs);
+		color: var(--dev-panel-text-color-muted);
+	}
 
-.description {
-	text-align: right;
+	.description {
+		text-align: right;
+	}
 }

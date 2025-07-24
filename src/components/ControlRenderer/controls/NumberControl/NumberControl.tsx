@@ -33,7 +33,7 @@ import type { NumberControlProps } from "./types";
  * ```
  */
 export function NumberControl({ control }: NumberControlProps) {
-	const eventType = control.event || "onBlur";
+	const eventType = control.event || "onChange"; // Default to "onChange" if not specified
 	const [localValue, setLocalValue] = useState(control.value);
 
 	useEffect(() => {

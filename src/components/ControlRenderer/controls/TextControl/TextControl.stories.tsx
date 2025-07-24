@@ -13,6 +13,7 @@ function Main() {
 			value: description,
 			placeholder: "Enter a description",
 			label: "Description",
+			event: "onChange",
 			onChange: (value) => setDescription(value),
 		},
 	});
