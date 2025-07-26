@@ -6,6 +6,7 @@ import type { DateControl } from "./DateControl/types";
 import type { NumberControl } from "./NumberControl/types";
 import type { RangeControl } from "./RangeControl/types";
 import type { SelectControl } from "./SelectControl/types";
+import type { SeparatorControl } from "./SeparatorControl/types";
 import type { TextControl } from "./TextControl/types";
 
 export interface BaseControl {
@@ -28,6 +29,7 @@ export type Controls = {
 	number: NumberControl;
 	range: RangeControl;
 	date: DateControl;
+	separator: SeparatorControl;
 	buttonGroup: ButtonGroupControl;
 };
 
