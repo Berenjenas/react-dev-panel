@@ -2,32 +2,49 @@
 
 [![npm version](https://badge.fury.io/js/@berenjena%2Freact-dev-panel.svg)](https://badge.fury.io/js/@berenjena%2Freact-dev-panel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Weekly Downloads](https://img.shields.io/npm/dw/@berenjena/react-dev-panel)](https://www.npmjs.com/package/@berenjena/react-dev-panel)
 
 A powerful, type-safe React development panel that provides an intuitive interface for controlling component props, debugging state, and rapid prototyping during development.
 
 ## ✨ Features
 
--   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, and Separator controls
--   🎨 **Themeable** - Consistent design system with CSS custom properties
--   📱 **Responsive** - Adapts to different screen sizes and can be positioned anywhere
--   ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
--   🔄 **State Management** - Built-in state persistence with Zustand
--   📖 **TypeScript First** - Full type safety and IntelliSense support
--   🎭 **Storybook Ready** - Perfect for component development and documentation
--   🚀 **Zero Dependencies** - Only requires React and Zustand (peer dependencies)
+- 🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, and Separator controls
+- 🎨 **Themeable** - Consistent design system with CSS custom properties
+- 📱 **Responsive** - Adapts to different screen sizes and can be positioned anywhere
+- ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
+- 🔄 **State Management** - Built-in state persistence
+- 📖 **TypeScript First** - Full type safety and IntelliSense support
+- 🚀 **Zero Dependencies** - Only requires React (peer dependency)
+
+## 📊 Package Stats
+
+- **Bundle Size**: ~35KB (minified)
+- **Total Files**: 142
+- **License**: MIT
+
+
+## 🆕 What's New
+
+### Recent Updates (v1.0.1+)
+
+- **🔄 Zero External Dependencies**: Replaced Zustand with React's built-in `useSyncExternalStore` for state management
+- **📊 Logger Component**: New floating, collapsible logger component for debugging object data in JSON format
+- **⚡ Performance Optimizations**: Selective subscriptions for better re-render performance
+- **🔧 Development Mode Improvements**: Removed development mode checks - panel now works in all environments
+- **📝 Enhanced Documentation**: Comprehensive code documentation and better TypeScript support
 
 ## 📦 Installation
 
 ```bash
-npm install @berenjena/react-dev-panel
+npm install -D @berenjena/react-dev-panel
 ```
 
 ```bash
-yarn add @berenjena/react-dev-panel
+yarn add -D @berenjena/react-dev-panel
 ```
 
 ```bash
-pnpm add @berenjena/react-dev-panel
+pnpm add -D @berenjena/react-dev-panel
 ```
 
 ## 🚀 Quick Start
@@ -37,7 +54,6 @@ pnpm add @berenjena/react-dev-panel
 ```tsx
 import { useState } from "react";
 import { useDevPanel, DevPanel } from "@berenjena/react-dev-panel";
-import "@berenjena/react-dev-panel/styles.css";
 
 function App() {
 	const [name, setName] = useState("John Doe");
@@ -415,12 +431,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👥 Contributors
-
--   **David Gallegos** - [@dallegos](https://github.com/dallegos)
--   **Emilio Dominguez** - [@emiliodominguez](https://github.com/emiliodominguez)
--   **Maximiliano Kucan** - [@maxikucan](https://github.com/maxikucan)
 
 ## 🔗 Links
 
