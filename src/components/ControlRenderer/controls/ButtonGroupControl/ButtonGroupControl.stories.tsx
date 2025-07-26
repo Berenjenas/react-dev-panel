@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useDevPanel } from "@/hooks/useDevPanel";
-import { DevPanel } from "@/components/DevPanel";
 import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { DevPanel } from "@/components/DevPanel";
+import { useDevPanel } from "@/hooks/useDevPanel";
 
 const users = [
 	{

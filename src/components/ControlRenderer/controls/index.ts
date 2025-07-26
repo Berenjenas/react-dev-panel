@@ -14,4 +14,4 @@ export const controls = Object.freeze({
 	buttonGroup: lazy(() => import("./ButtonGroupControl").then((m) => ({ default: m.ButtonGroupControl }))),
 });
 
-export { ControlRenderer } from "..";
+//export { ControlRenderer } from "..";
