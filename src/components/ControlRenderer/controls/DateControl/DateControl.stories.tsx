@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useDevPanel } from "@/hooks/useDevPanel";
+
 import { DevPanel } from "@/components/DevPanel";
-import { Logger } from "@/components/logger";
+import { Logger } from "@/components/Logger";
+import { useDevPanel } from "@/hooks/useDevPanel";
 
 function Main() {
 	const [birthDate, setBirthDate] = useState("1990-01-01");
