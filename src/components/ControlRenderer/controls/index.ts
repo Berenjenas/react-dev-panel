@@ -9,6 +9,7 @@ export const controls = Object.freeze({
 	button: lazy(() => import("./ButtonControl").then((m) => ({ default: m.ButtonControl }))),
 	color: lazy(() => import("./ColorControl").then((m) => ({ default: m.ColorControl }))),
 	number: lazy(() => import("./NumberControl").then((m) => ({ default: m.NumberControl }))),
+	range: lazy(() => import("./RangeControl").then((m) => ({ default: m.RangeControl }))),
 	select: lazy(() => import("./SelectControl").then((m) => ({ default: m.SelectControl }))),
 	text: lazy(() => import("./TextControl").then((m) => ({ default: m.TextControl }))),
 	buttonGroup: lazy(() => import("./ButtonGroupControl").then((m) => ({ default: m.ButtonGroupControl }))),

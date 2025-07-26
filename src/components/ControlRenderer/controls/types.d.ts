@@ -3,6 +3,7 @@ import type { ButtonControl } from "./ButtonControl/types";
 import type { ButtonGroupControl } from "./ButtonGroupControl/types";
 import type { ColorControl } from "./ColorControl/types";
 import type { NumberControl } from "./NumberControl/types";
+import type { RangeControl } from "./RangeControl/types";
 import type { SelectControl } from "./SelectControl/types";
 import type { TextControl } from "./TextControl/types";
 
@@ -24,6 +25,7 @@ export type Controls = {
 	text: TextControl;
 	button: ButtonControl;
 	number: NumberControl;
+	range: RangeControl;
 	buttonGroup: ButtonGroupControl;
 };
 
