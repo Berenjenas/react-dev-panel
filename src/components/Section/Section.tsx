@@ -1,5 +1,5 @@
 import { ControlRenderer } from "@/components/ControlRenderer";
-import { useDevPanelActions } from "@/utils/store";
+import { useDevPanelActions } from "@/store";
 
 import type { DevPanelSection } from "../DevPanel/types";
 

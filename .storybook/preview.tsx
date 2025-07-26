@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
 
-import { useDevPanelStore } from "../src/utils/store";
+import { useDevPanelStore } from "../src/store";
 
 import "../src/styles.scss";
 
@@ -16,13 +16,15 @@ const preview: Preview = {
 	},
 	decorators: [
 		(Story) => {
+			const store = useDevPanelStore();
+
 			useEffect(() => {
-				// Initialize the store state after Zustand hydration
-				const store = useDevPanelStore.getState();
+				if (!store.isVisible) {
+					store.setVisible(true);
 
-				store.setVisible(true);
-
-				console.log("[DevPanel] Setting visibility to true via decorator");
+					console.log("[DevPanel] Setting visibility to true via decorator");
+				}
+				// eslint-disable-next-line react-hooks/exhaustive-deps
 			}, []);
 
 			return <Story />;

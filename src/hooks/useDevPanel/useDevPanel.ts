@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
+import { useDevPanelStore } from "@/store";
 import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged";
-import { useDevPanelActions, useDevPanelSections } from "@/utils/store/store";
 
 /**
  * Hook to register controls in the dev panel
@@ -32,8 +32,7 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup) {
 	//     return;
 	// }
 
-	const actions = useDevPanelActions();
-	const sections = useDevPanelSections();
+	const { sections, registerSection, unregisterSection } = useDevPanelStore();
 	const previousControlsRef = useRef<ControlsGroup | undefined>(undefined);
 
 	useEffect(() => {
@@ -42,15 +41,15 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup) {
 
 		// Register if the controls have changed or the section does not exist
 		if (hasControlsChanged(controls, previousControlsRef.current) || !sectionExists) {
-			actions.registerSection(sectionName, controls);
+			registerSection(sectionName, controls);
 			previousControlsRef.current = controls;
 		}
-	}, [actions, sectionName, controls, sections]);
+	}, [sectionName, controls, sections, registerSection]);
 
 	useEffect(() => {
 		// Cleanup when the component is unmounted
 		return () => {
-			actions.unregisterSection(sectionName);
+			unregisterSection(sectionName);
 		};
-	}, [actions, sectionName]);
+	}, [sectionName, unregisterSection]);
 }
