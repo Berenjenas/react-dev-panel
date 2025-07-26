@@ -44,6 +44,22 @@ export function hasControlsChanged(current: ControlsGroup, previous?: ControlsGr
 			}
 		}
 
+		if (currentControl.type === "range" && previousControl.type === "range") {
+			if (
+				currentControl.min !== previousControl.min ||
+				currentControl.max !== previousControl.max ||
+				currentControl.step !== previousControl.step
+			) {
+				return true;
+			}
+		}
+
+		if (currentControl.type === "date" && previousControl.type === "date") {
+			if (currentControl.min !== previousControl.min || currentControl.max !== previousControl.max) {
+				return true;
+			}
+		}
+
 		if (currentControl.type === "select" && previousControl.type === "select") {
 			if (JSON.stringify(currentControl.options) !== JSON.stringify(previousControl.options)) {
 				return true;

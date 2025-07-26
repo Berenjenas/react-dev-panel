@@ -2,6 +2,7 @@ import type { BooleanControl } from "./BooleanControl/types";
 import type { ButtonControl } from "./ButtonControl/types";
 import type { ButtonGroupControl } from "./ButtonGroupControl/types";
 import type { ColorControl } from "./ColorControl/types";
+import type { DateControl } from "./DateControl/types";
 import type { NumberControl } from "./NumberControl/types";
 import type { RangeControl } from "./RangeControl/types";
 import type { SelectControl } from "./SelectControl/types";
@@ -26,6 +27,7 @@ export type Controls = {
 	button: ButtonControl;
 	number: NumberControl;
 	range: RangeControl;
+	date: DateControl;
 	buttonGroup: ButtonGroupControl;
 };
 

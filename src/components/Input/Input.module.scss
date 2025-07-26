@@ -25,4 +25,18 @@
 	&::placeholder {
 		color: var(--dev-panel-text-color-muted);
 	}
+
+	// Date input calendar icon styling
+	&[type="date"] {
+		&::-webkit-calendar-picker-indicator {
+			color: currentColor;
+			opacity: 1;
+			filter: invert(1);
+		}
+
+		&::-moz-calendar-picker-indicator {
+			color: currentColor;
+			opacity: 1;
+		}
+	}
 }

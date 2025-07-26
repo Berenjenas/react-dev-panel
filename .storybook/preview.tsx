@@ -23,7 +23,7 @@ const preview: Preview = {
 				console.log("[DevPanel] Setting visibility to true via decorator");
 			}, []);
 
-			return Story();
+			return <Story />;
 		},
 	],
 };
