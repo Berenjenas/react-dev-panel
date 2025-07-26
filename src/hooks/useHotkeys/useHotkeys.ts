@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 
-import type { HotkeyConfig } from "@/types";
-
-import type { UseHotkeysOptions } from "./types";
+import type { HotkeyConfig, UseHotkeysOptions } from "./types";
 
 /**
  * Hook for handling keyboard shortcuts (hotkeys) with support for modifier keys

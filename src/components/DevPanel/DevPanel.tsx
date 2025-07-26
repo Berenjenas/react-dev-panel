@@ -2,18 +2,17 @@ import { useCallback } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotkeys";
-import type { Position } from "@/types";
 import { className } from "@/utils";
 import { useDevPanelActions, useDevPanelCollapsed, useDevPanelPosition, useDevPanelSections, useDevPanelVisible } from "@/utils/store/store";
 
 import { EmptyContent } from "../EmptyContent";
 import { Section } from "../Section";
 
-import type { DevPanelHoyKeyConfig, DevPanelProps } from "./types";
+import type { DevPanelHotkeyConfig, DevPanelProps, Position } from "./types";
 
 import styles from "./DevPanel.module.scss";
 
-const defaultHotKeyConfig: DevPanelHoyKeyConfig = {
+const defaultHotKeyConfig: DevPanelHotkeyConfig = {
 	ctrlKey: true,
 	shiftKey: true,
 	key: "a",

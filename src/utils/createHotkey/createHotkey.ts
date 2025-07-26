@@ -1,4 +1,4 @@
-import type { HotkeyConfig } from "@/types";
+import type { HotkeyConfig } from "@/hooks/useHotkeys/types";
 
 /**
  * Utility function to create a hotkey configuration object
@@ -13,23 +13,23 @@ import type { HotkeyConfig } from "@/types";
  * const searchHotkey = createHotkey('k', handleSearch, { meta: true });
  */
 export function createHotkey(
-    key: string,
-    action: (event: KeyboardEvent) => void,
-    modifiers: {
-        ctrl?: boolean;
-        shift?: boolean;
-        alt?: boolean;
-        meta?: boolean;
-    } = {},
-    options: Partial<Omit<HotkeyConfig, "key" | "action">> = {}
+	key: string,
+	action: (event: KeyboardEvent) => void,
+	modifiers: {
+		ctrl?: boolean;
+		shift?: boolean;
+		alt?: boolean;
+		meta?: boolean;
+	} = {},
+	options: Partial<Omit<HotkeyConfig, "key" | "action">> = {},
 ): HotkeyConfig {
-    return {
-        key,
-        action,
-        ctrlKey: modifiers.ctrl,
-        shiftKey: modifiers.shift,
-        altKey: modifiers.alt,
-        metaKey: modifiers.meta,
-        ...options,
-    };
+	return {
+		key,
+		action,
+		ctrlKey: modifiers.ctrl,
+		shiftKey: modifiers.shift,
+		altKey: modifiers.alt,
+		metaKey: modifiers.meta,
+		...options,
+	};
 }

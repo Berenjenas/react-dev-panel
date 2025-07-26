@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { Position } from "@/types";
+import type { Position } from "@/components/DevPanel/types";
 import { debounce } from "@/utils/debounce/debounce";
 import { getConstrainedPosition } from "@/utils/getConstrainedPosition/getConstrainedPosition";
 import { getPositionAdjustment } from "@/utils/getPositionAdjustment/getPositionAdjustment";

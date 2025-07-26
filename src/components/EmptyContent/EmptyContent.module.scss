@@ -1,25 +1,24 @@
 .empty {
-    text-align: center;
-    color: #888;
-    font-size: 12px;
-    padding: 30px 0;
+	text-align: center;
+	color: #888;
+	font-size: 12px;
+	padding: 30px 0;
 
-    code {
-        background: #f8f9fa;
-        padding: 2px 4px;
-        border-radius: 3px;
-        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
-    }
+	code {
+		background: #f8f9fa;
+		padding: 2px 4px;
+		border-radius: 3px;
+	}
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-    .empty {
-        color: #b0b0b0;
+	.empty {
+		color: #b0b0b0;
 
-        code {
-            background: #333;
-            color: #e0e0e0;
-        }
-    }
+		code {
+			background: #333;
+			color: #e0e0e0;
+		}
+	}
 }

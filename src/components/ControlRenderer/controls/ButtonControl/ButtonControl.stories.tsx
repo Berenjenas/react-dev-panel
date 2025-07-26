@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useDevPanel } from "@/hooks/useDevPanel";
+
 import { DevPanel } from "@/components/DevPanel";
+import { useDevPanel } from "@/hooks/useDevPanel";
 
 function Main() {
 	useDevPanel("Button Control", {

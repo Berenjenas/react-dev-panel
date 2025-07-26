@@ -1,10 +1,8 @@
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
-import type { HotkeyConfig, Position } from "@/types";
 
-export type DevPanelHoyKeyConfig = Pick<HotkeyConfig, "key" | "shiftKey" | "altKey" | "ctrlKey" | "metaKey">;
+export type DevPanelHotkeyConfig = Pick<HotkeyConfig, "key" | "shiftKey" | "altKey" | "ctrlKey" | "metaKey">;
 
 export interface DevPanelProps {
-	theme?: "light" | "dark";
 	panelTitle?: string;
 	/**
 	 * Hotkey configuration for toggling the DevPanel visibility.
@@ -19,7 +17,7 @@ export interface DevPanelProps {
 	 * }
 	 * ```
 	 */
-	hotKeyConfig?: DevPanelHoyKeyConfig;
+	hotKeyConfig?: DevPanelHotkeyConfig;
 }
 
 export interface DevPanelSection {
@@ -46,3 +44,8 @@ export interface DevPanelActions {
 }
 
 export type DevPanelStore = DevPanelState & DevPanelActions;
+
+export interface Position {
+	x: number;
+	y: number;
+}
