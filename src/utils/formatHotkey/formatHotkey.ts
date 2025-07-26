@@ -1,4 +1,4 @@
-import type { HotkeyConfig } from "@/types";
+import type { HotkeyConfig } from "@/hooks/useHotkeys/types";
 
 import { isMacOS } from "../isMacOS/isMacOS";
 
@@ -13,28 +13,28 @@ import { isMacOS } from "../isMacOS/isMacOS";
  * formatHotkey({ key: 'k', metaKey: true }) // "⌘+K" (on Mac) or "Meta+K"
  */
 export function formatHotkey(config: HotkeyConfig): string {
-    const parts: string[] = [];
+	const parts: string[] = [];
 
-    // Check if we're on Mac for proper symbol display
-    const isMac = isMacOS();
+	// Check if we're on Mac for proper symbol display
+	const isMac = isMacOS();
 
-    if (config.ctrlKey) {
-        parts.push(isMac ? "⌃" : "Ctrl");
-    }
+	if (config.ctrlKey) {
+		parts.push(isMac ? "⌃" : "Ctrl");
+	}
 
-    if (config.altKey) {
-        parts.push(isMac ? "⌥" : "Alt");
-    }
+	if (config.altKey) {
+		parts.push(isMac ? "⌥" : "Alt");
+	}
 
-    if (config.shiftKey) {
-        parts.push(isMac ? "⇧" : "Shift");
-    }
+	if (config.shiftKey) {
+		parts.push(isMac ? "⇧" : "Shift");
+	}
 
-    if (config.metaKey) {
-        parts.push(isMac ? "⌘" : "Meta");
-    }
+	if (config.metaKey) {
+		parts.push(isMac ? "⌘" : "Meta");
+	}
 
-    parts.push(config.key.toUpperCase());
+	parts.push(config.key.toUpperCase());
 
-    return parts.join("+");
+	return parts.join("+");
 }

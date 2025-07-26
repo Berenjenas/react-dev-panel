@@ -3,6 +3,8 @@ import type { Preview } from "@storybook/react-vite";
 
 import { useDevPanelStore } from "../src/utils/store";
 
+import "../src/styles.scss";
+
 const preview: Preview = {
 	parameters: {
 		controls: {

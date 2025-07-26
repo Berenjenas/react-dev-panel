@@ -1,6 +1,4 @@
-import type { HotkeyConfig } from "@/types";
-
-import type { UseHotkeysOptions } from "./types";
+import type { HotkeyConfig, UseHotkeysOptions } from "./types";
 import { useHotkeys } from "./useHotkeys";
 
 /**

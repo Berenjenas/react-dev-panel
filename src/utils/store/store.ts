@@ -64,7 +64,7 @@ export const useDevPanelStore = create<DevPanelStore>()(
 
 			unregisterSection: (name: string) => {
 				set((state) => {
-					const { [name]: removed, ...rest } = state.sections;
+					const { [name]: _removed, ...rest } = state.sections;
 
 					return { sections: rest };
 				});
