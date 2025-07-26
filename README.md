@@ -3,35 +3,35 @@
 [![npm version](https://badge.fury.io/js/@berenjena%2Freact-dev-panel.svg)](https://badge.fury.io/js/@berenjena%2Freact-dev-panel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Weekly Downloads](https://img.shields.io/npm/dw/@berenjena/react-dev-panel)](https://www.npmjs.com/package/@berenjena/react-dev-panel)
+![npm package minimized gzipped size](https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=gzipped)
 
 A powerful, type-safe React development panel that provides an intuitive interface for controlling component props, debugging state, and rapid prototyping during development.
 
 ## ✨ Features
 
-- 🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, and Separator controls
-- 🎨 **Themeable** - Consistent design system with CSS custom properties
-- 📱 **Responsive** - Adapts to different screen sizes and can be positioned anywhere
-- ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
-- 🔄 **State Management** - Built-in state persistence
-- 📖 **TypeScript First** - Full type safety and IntelliSense support
-- 🚀 **Zero Dependencies** - Only requires React (peer dependency)
+-   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, and Separator controls
+-   🎨 **Themeable** - Consistent design system with CSS custom properties
+-   📱 **Responsive** - Adapts to different screen sizes and can be positioned anywhere
+-   ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
+-   🔄 **State Management** - Built-in state persistence
+-   📖 **TypeScript First** - Full type safety and IntelliSense support
+-   🚀 **Zero Dependencies** - Only requires React (peer dependency)
 
 ## 📊 Package Stats
 
-- **Bundle Size**: ~35KB (minified)
-- **Total Files**: 142
-- **License**: MIT
-
+-   **Bundle Size**: ~35KB (minified)
+-   **Total Files**: 142
+-   **License**: MIT
 
 ## 🆕 What's New
 
 ### Recent Updates (v1.0.1+)
 
-- **🔄 Zero External Dependencies**: Replaced Zustand with React's built-in `useSyncExternalStore` for state management
-- **📊 Logger Component**: New floating, collapsible logger component for debugging object data in JSON format
-- **⚡ Performance Optimizations**: Selective subscriptions for better re-render performance
-- **🔧 Development Mode Improvements**: Removed development mode checks - panel now works in all environments
-- **📝 Enhanced Documentation**: Comprehensive code documentation and better TypeScript support
+-   **🔄 Zero External Dependencies**: Replaced Zustand with React's built-in `useSyncExternalStore` for state management
+-   **📊 Logger Component**: New floating, collapsible logger component for debugging object data in JSON format
+-   **⚡ Performance Optimizations**: Selective subscriptions for better re-render performance
+-   **🔧 Development Mode Improvements**: Removed development mode checks - panel now works in all environments
+-   **📝 Enhanced Documentation**: Comprehensive code documentation and better TypeScript support
 
 ## 📦 Installation
 
