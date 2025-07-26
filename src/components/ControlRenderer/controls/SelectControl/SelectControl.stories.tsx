@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { DevPanel } from "@/components/DevPanel";
-import { Logger } from "@/components/logger";
+import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
 const names = ["", "Alice", "Bob", "Charlie", "David", "Eve"];

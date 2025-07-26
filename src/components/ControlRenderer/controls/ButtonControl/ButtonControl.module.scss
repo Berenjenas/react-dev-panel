@@ -1,7 +1,7 @@
 .button {
 	width: 100%;
+	min-height: var(--dev-panel-inputs-height);
 	padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-sm);
-	height: var(--dev-panel-inputs-height);
 	border: none;
 	border-radius: 4px;
 	font-size: 11px;

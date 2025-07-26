@@ -2,8 +2,8 @@ import { useCallback } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotkeys";
+import { useDevPanelStore } from "@/store";
 import { className } from "@/utils";
-import { useDevPanelActions, useDevPanelCollapsed, useDevPanelPosition, useDevPanelSections, useDevPanelVisible } from "@/utils/store/store";
 
 import { EmptyContent } from "../EmptyContent";
 import { Section } from "../Section";
@@ -30,11 +30,7 @@ const defaultHotKeyConfig: DevPanelHotkeyConfig = {
  * ```
  */
 export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) {
-	const isVisible = useDevPanelVisible();
-	const isCollapsed = useDevPanelCollapsed();
-	const position = useDevPanelPosition();
-	const sections = useDevPanelSections();
-	const actions = useDevPanelActions();
+	const { isVisible, isCollapsed, position, sections, ...actions } = useDevPanelStore();
 
 	const handlePositionChange = useCallback(
 		(newPosition: Position) => {
@@ -56,8 +52,7 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 		target: window,
 	});
 
-	// Only show in development mode
-	if (process.env.NODE_ENV !== "development" || !isVisible) {
+	if (!isVisible) {
 		return null;
 	}
 
@@ -77,11 +72,17 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 		>
 			<div className={styles.header} onMouseDown={handleMouseDown}>
 				<button className={styles.button} onClick={() => actions.setCollapsed(!isCollapsed)} title={isCollapsed ? "Expand" : "Collapse"}>
-					{isCollapsed ? "▼" : "▲"}
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={isCollapsed ? styles.collapsed : undefined}>
+						<path d="M16.843 10.211A.75.75 0 0 0 16.251 9H7.75a.75.75 0 0 0-.591 1.212l4.258 5.498a.746.746 0 0 0 1.183-.001l4.243-5.498z" />
+					</svg>
 				</button>
+
 				<div className={styles.title}>{panelTitle}</div>
+
 				<button className={styles.button} onClick={() => actions.setVisible(false)} title="Close">
-					✕
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+						<path d="m12 10.93 5.719-5.72a.749.749 0 1 1 1.062 1.062l-5.72 5.719 5.719 5.719a.75.75 0 1 1-1.061 1.062L12 13.053l-5.719 5.719A.75.75 0 0 1 5.22 17.71l5.719-5.719-5.72-5.719A.752.752 0 0 1 6.281 5.21z" />
+					</svg>
 				</button>
 			</div>
 

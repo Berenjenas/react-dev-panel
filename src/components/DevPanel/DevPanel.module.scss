@@ -48,6 +48,20 @@
 		&:active {
 			transform: scale(0.95);
 		}
+
+		> svg {
+			display: block;
+			height: 1rem;
+			transition: transform ease 200ms;
+
+			&.collapsed {
+				transform: rotate(180deg);
+			}
+
+			path {
+				fill: currentColor;
+			}
+		}
 	}
 }
 
