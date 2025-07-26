@@ -3,8 +3,8 @@ import { useSyncExternalStore } from "react";
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
 import type { DevPanelState, Position } from "@/components/DevPanel/types";
 
-const defaultPosition = { x: 20, y: 20 };
 const storageKey = "dev-panel-storage";
+const defaultPosition = { x: 20, y: 20 };
 
 interface PersistedState {
 	isVisible: boolean;
