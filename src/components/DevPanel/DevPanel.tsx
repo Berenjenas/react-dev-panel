@@ -2,8 +2,8 @@ import { useCallback } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotkeys";
+import { useDevPanelStore } from "@/store";
 import { className } from "@/utils";
-import { useDevPanelActions, useDevPanelCollapsed, useDevPanelPosition, useDevPanelSections, useDevPanelVisible } from "@/utils/store/store";
 
 import { EmptyContent } from "../EmptyContent";
 import { Section } from "../Section";
@@ -30,11 +30,7 @@ const defaultHotKeyConfig: DevPanelHotkeyConfig = {
  * ```
  */
 export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) {
-	const isVisible = useDevPanelVisible();
-	const isCollapsed = useDevPanelCollapsed();
-	const position = useDevPanelPosition();
-	const sections = useDevPanelSections();
-	const actions = useDevPanelActions();
+	const { isVisible, isCollapsed, position, sections, ...actions } = useDevPanelStore();
 
 	const handlePositionChange = useCallback(
 		(newPosition: Position) => {
