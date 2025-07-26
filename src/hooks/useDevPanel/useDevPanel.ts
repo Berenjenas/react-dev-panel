@@ -27,11 +27,6 @@ import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged"
  * ```
  */
 export function useDevPanel(sectionName: string, controls: ControlsGroup) {
-	// Only register controls in development mode
-	// if (process.env.NODE_ENV !== "development") {
-	//     return;
-	// }
-
 	const { sections, registerSection, unregisterSection } = useDevPanelStore();
 	const previousControlsRef = useRef<ControlsGroup | undefined>(undefined);
 

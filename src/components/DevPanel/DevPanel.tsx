@@ -52,8 +52,7 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 		target: window,
 	});
 
-	// Only show in development mode
-	if (process.env.NODE_ENV !== "development" || !isVisible) {
+	if (!isVisible) {
 		return null;
 	}
 
