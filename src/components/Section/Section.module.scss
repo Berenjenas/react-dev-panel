@@ -22,7 +22,20 @@
 		.toggle {
 			font-size: 10px;
 			color: var(--dev-panel-border-color);
-			transition: transform 0.2s ease;
+
+			> svg {
+				display: block;
+				height: 1rem;
+				transition: transform 0.2s ease;
+
+				&.collapsed {
+					transform: rotate(90deg);
+				}
+
+				path {
+					fill: currentColor;
+				}
+			}
 		}
 	}
 

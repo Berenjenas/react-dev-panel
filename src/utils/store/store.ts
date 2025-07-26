@@ -37,6 +37,7 @@ export const useDevPanelStore = create<DevPanelStore>()(
 					let persistedCollapseState = false;
 					try {
 						const stored = localStorage.getItem("berenjena-dev-panel-storage");
+
 						if (stored) {
 							const parsed = JSON.parse(stored);
 
