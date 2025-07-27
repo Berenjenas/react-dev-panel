@@ -115,7 +115,13 @@ class DevPanelService {
 	 * @private
 	 */
 	private setState(updater: (state: DevPanelState) => DevPanelState): void {
-		this.state = updater(this.state);
+		const updatedState = updater(this.state);
+
+		if (JSON.stringify(updatedState) === JSON.stringify(this.state)) {
+			return;
+		}
+
+		this.state = updatedState;
 		this.saveState();
 		this.notifySubscribers();
 	}
