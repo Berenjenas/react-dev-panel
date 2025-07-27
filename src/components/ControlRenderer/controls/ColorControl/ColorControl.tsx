@@ -1,4 +1,5 @@
 import { Input } from "@/components/Input";
+import { useDebouncedCallback } from "@/hooks/useDebounceCallback";
 
 import type { ColorControlProps } from "./types";
 
@@ -19,10 +20,16 @@ import styles from "./ColorControl.module.scss";
  * ```
  */
 export function ColorControl({ control }: ColorControlProps) {
+	const debouncedChange = useDebouncedCallback(control.onChange, 100);
+
+	const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		debouncedChange(e.target.value);
+	};
+
 	return (
 		<div className={styles.container}>
 			<label>
-				<Input type="color" value={control.value} disabled={control.disabled} onChange={(e) => control.onChange(e.target.value)} />
+				<Input type="color" value={control.value} disabled={control.disabled} onChange={handleColorChange} />
 			</label>
 
 			<Input
