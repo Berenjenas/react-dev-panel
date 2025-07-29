@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
 
-import { useDevPanelStore } from "../src/store";
+import { useDevPanelUI } from "../src/store";
 
 import "../src/styles.scss";
 
@@ -16,11 +16,11 @@ const preview: Preview = {
 	},
 	decorators: [
 		(Story) => {
-			const store = useDevPanelStore();
+			const { isVisible, setVisible } = useDevPanelUI();
 
 			useEffect(() => {
-				if (!store.isVisible) {
-					store.setVisible(true);
+				if (!isVisible) {
+					setVisible(true);
 
 					console.log("[DevPanel] Setting visibility to true via decorator");
 				}
