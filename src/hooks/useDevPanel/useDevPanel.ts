@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
-import { useDevPanelStore } from "@/store";
+import { useDevPanelSectionActions, useDevPanelSections } from "@/store";
 import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged";
 
 /**
@@ -27,7 +27,8 @@ import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged"
  * ```
  */
 export function useDevPanel(sectionName: string, controls: ControlsGroup) {
-	const { sections, registerSection, unregisterSection } = useDevPanelStore();
+	const sections = useDevPanelSections();
+	const { registerSection, unregisterSection } = useDevPanelSectionActions();
 	const previousControlsRef = useRef<ControlsGroup | undefined>(undefined);
 
 	useEffect(() => {
