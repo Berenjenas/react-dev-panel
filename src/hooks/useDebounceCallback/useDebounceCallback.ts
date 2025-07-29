@@ -7,8 +7,7 @@ import { useCallback, useEffect, useRef } from "react";
  * @param delay - Delay in ms before calling the callback
  * @returns A debounced version of the callback
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useDebouncedCallback<T extends (...args: any) => void>(callback: T, delay: number): T {
+export function useDebouncedCallback<T extends (...args: Parameters<T>) => void>(callback: T, delay: number): (...args: Parameters<T>) => void {
 	const timeoutRef = useRef<number | null>(null);
 
 	useEffect(() => {
@@ -30,5 +29,5 @@ export function useDebouncedCallback<T extends (...args: any) => void>(callback:
 			}, delay);
 		},
 		[callback, delay],
-	) as T;
+	);
 }
