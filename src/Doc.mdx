@@ -1,1 +1,212 @@
 # React Dev Panel Documentation
+
+A powerful, type-safe development panel for React that allows developers to inspect and control component props, manage state, and accelerate prototyping directly within the application UI.
+
+---
+
+## Getting Started
+
+### Installation
+
+Install the package as a dev dependency:
+
+```bash
+npm install -D @berenjena/react-dev-panel
+# or
+yarn add -D @berenjena/react-dev-panel
+# or
+pnpm add -D @berenjena/react-dev-panel
+```
+
+> ⚠️ Requires React 18+ as a peer dependency.
+
+---
+
+## Basic Usage
+
+Wrap your application logic with `useDevPanel` hook and render the `<DevPanel />` component:
+
+```tsx
+import { useState } from "react";
+import { useDevPanel, DevPanel } from "@berenjena/react-dev-panel";
+
+function App() {
+	const [name, setName] = useState("John");
+	const [age, setAge] = useState(30);
+	const [theme, setTheme] = useState("dark");
+
+	useDevPanel("User Settings", {
+		name: { type: "text", value: name, label: "Name", onChange: setName },
+		age: { type: "number", value: age, label: "Age", onChange: setAge },
+		theme: {
+			type: "select",
+			value: theme,
+			label: "Theme",
+			options: ["light", "dark", "auto"],
+			onChange: setTheme,
+		},
+	});
+
+	return (
+		<>
+			<YourApp />
+			<DevPanel />
+		</>
+	);
+}
+```
+
+---
+
+## API Reference
+
+### `useDevPanel(groupName, controls)`
+
+Registers a group of interactive controls.
+
+#### Parameters
+
+```txt
+| Name      | Type                      | Description                         |
+| --------- | ------------------------- | ----------------------------------- |
+| groupName | `string`                  | Unique label for the control group  |
+| controls  | `Record<string, Control>` | Set of defined controls (see below) |
+```
+
+### `<DevPanel />`
+
+The floating UI component that renders all control groups.
+
+#### Props
+
+```txt
+| Prop              | Type                       | Description                   |
+| ----------------- | -------------------------- | ----------------------------- |
+| `panelTitle`      | `string`                   | Optional panel title          |
+| `position`        | `{ x: number, y: number }` | Initial screen position       |
+| `defaultExpanded` | `boolean`                  | Whether the panel starts open |
+```
+
+### `useHotkeys(hotkeys)`
+
+Define global hotkeys to trigger custom actions.
+
+#### Example
+
+```tsx
+useHotkeys([
+  {
+    keys: ["ctrl", "d"],
+    action: () => toggleDevPanel(),
+    description: "Toggle Dev Panel",
+  },
+]);
+```
+
+---
+
+## Control Types
+
+```txt
+| Type          | Description                             |
+| ------------- | --------------------------------------- |
+| `text`        | Free text input                         |
+| `number`      | Numeric input with range/step support   |
+| `boolean`     | Toggle switch                           |
+| `select`      | Dropdown or labeled options             |
+| `color`       | Color picker                            |
+| `range`       | Slider input                            |
+| `date`        | Date picker                             |
+| `button`      | Single action button                    |
+| `buttonGroup` | Group of labeled buttons                |
+| `separator`   | Section divider (line, space, or label) |
+```
+
+---
+
+## Styling & Theming
+
+Customize the look of the panel using CSS variables:
+
+```css
+:root {
+  --dev-panel-background-color: #1a1a1a;
+  --dev-panel-accent-color: #ff6200;
+  --dev-panel-font-size-sm: 12px;
+  --dev-panel-spacing-md: 16px;
+}
+```
+
+To reposition the panel:
+
+```tsx
+<DevPanel position={{ x: 100, y: 100 }} />
+```
+
+---
+
+## Advanced Usage
+
+### Multiple Control Groups
+
+```tsx
+useDevPanel("User", { ... });
+useDevPanel("App", { ... });
+```
+
+### Conditional Controls
+
+```tsx
+useDevPanel("Settings", {
+  mode: { type: "select", value: mode, onChange: setMode },
+  ...(mode === "advanced" && {
+    separator: { type: "separator", style: "label", label: "Advanced" },
+    debug: { type: "boolean", value: debug, onChange: setDebug },
+}),
+});
+```
+
+---
+
+## Logger Component
+
+The `Logger` is a floating console-like panel to inspect structured data visually:
+
+```tsx
+import { Logger } from "@berenjena/react-dev-panel";
+
+<Logger data={{ user, state }} />;
+```
+
+---
+
+## Development
+
+### Local Setup
+
+```bash
+git clone https://github.com/Berenjenas/react-dev-panel
+cd react-dev-panel
+npm install
+npm run dev
+```
+
+### Scripts
+
+-   `dev`: Start development server
+-   `build`: Build package
+-   `storybook`: Launch Storybook UI
+-   `test`: Run test suite
+-   `lint`: Lint code
+
+---
+
+## Storybook
+
+Start Storybook with:
+
+```bash
+npm run storybook
+```
+
+Then visit [localhost:6006](http://localhost:6006) to explore all controls interactively.
