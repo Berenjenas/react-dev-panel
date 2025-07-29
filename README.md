@@ -1,9 +1,9 @@
 # React Dev Panel
 
-[![npm version](https://badge.fury.io/js/@berenjena%2Freact-dev-panel.svg)](https://badge.fury.io/js/@berenjena%2Freact-dev-panel)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Weekly Downloads](https://img.shields.io/npm/dw/@berenjena/react-dev-panel)](https://www.npmjs.com/package/@berenjena/react-dev-panel)
-![npm package minimized gzipped size](https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=gzipped)
+![NPM Version](https://badgen.net/npm/v/@berenjena/react-dev-panel)
+![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
+[![License: MIT](https://badgen.net/npm/license/@berenjena/react-dev-panel)](https://opensource.org/licenses/MIT)
+[![Weekly Downloads](https://badgen.net/npm/dw/@berenjena/react-dev-panel)](https://www.npmjs.com/package/@berenjena/react-dev-panel)
 
 A powerful, type-safe React development panel that provides an intuitive interface for controlling component props, debugging state, and rapid prototyping during development.
 
@@ -11,27 +11,10 @@ A powerful, type-safe React development panel that provides an intuitive interfa
 
 -   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, and Separator controls
 -   🎨 **Themeable** - Consistent design system with CSS custom properties
--   📱 **Responsive** - Adapts to different screen sizes and can be positioned anywhere
 -   ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
--   🔄 **State Management** - Built-in state persistence
 -   📖 **TypeScript First** - Full type safety and IntelliSense support
 -   🚀 **Zero Dependencies** - Only requires React (peer dependency)
-
-## 📊 Package Stats
-
--   **Bundle Size**: ~35KB (minified)
--   **Total Files**: 142
--   **License**: MIT
-
-## 🆕 What's New
-
-### Recent Updates (v1.0.1+)
-
--   **🔄 Zero External Dependencies**: Replaced Zustand with React's built-in `useSyncExternalStore` for state management
--   **📊 Logger Component**: New floating, collapsible logger component for debugging object data in JSON format
--   **⚡ Performance Optimizations**: Selective subscriptions for better re-render performance
--   **🔧 Development Mode Improvements**: Removed development mode checks - panel now works in all environments
--   **📝 Enhanced Documentation**: Comprehensive code documentation and better TypeScript support
+-   📦 **Bundle Size**: ![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
 
 ## 📦 Installation
 
@@ -106,6 +89,8 @@ function App() {
 
 ## 🎛️ Control Types
 
+React Dev Panel provides rich control types for different data types. Here are some quick examples:
+
 ### Text Control
 
 ```tsx
@@ -114,7 +99,6 @@ function App() {
   value: 'Hello World',
   label: 'Message',
   placeholder: 'Enter message...',
-  event: 'onBlur', // or 'onChange'
   onChange: (value: string) => setValue(value),
 }
 ```
@@ -128,7 +112,6 @@ function App() {
   label: 'Count',
   min: 0,
   max: 100,
-  step: 1,
   onChange: (value: number) => setValue(value),
 }
 ```
@@ -144,61 +127,6 @@ function App() {
 }
 ```
 
-### Select Control
-
-```tsx
-{
-  type: 'select',
-  value: 'option1',
-  label: 'Choose Option',
-  options: ['option1', 'option2', 'option3'],
-  // or with labels:
-  options: [
-    { label: 'Option 1', value: 'opt1' },
-    { label: 'Option 2', value: 'opt2' },
-  ],
-  onChange: (value: string) => setValue(value),
-}
-```
-
-### Color Control
-
-```tsx
-{
-  type: 'color',
-  value: '#ff6200',
-  label: 'Brand Color',
-  onChange: (value: string) => setValue(value),
-}
-```
-
-### Range Control
-
-```tsx
-{
-  type: 'range',
-  value: 50,
-  label: 'Volume',
-  min: 0,
-  max: 100,
-  step: 1,
-  onChange: (value: number) => setValue(value),
-}
-```
-
-### Date Control
-
-```tsx
-{
-  type: 'date',
-  value: '2025-07-26',
-  label: 'Start Date',
-  min: '2025-01-01',
-  max: '2025-12-31',
-  onChange: (value: string) => setValue(value),
-}
-```
-
 ### Button Control
 
 ```tsx
@@ -209,63 +137,22 @@ function App() {
 }
 ```
 
-### Button Group Control
-
-```tsx
-{
-  type: 'buttonGroup',
-  label: 'Actions',
-  buttons: [
-    { label: 'Save', onClick: handleSave },
-    { label: 'Load', onClick: handleLoad },
-    { label: 'Reset', onClick: handleReset, disabled: true },
-  ],
-}
-```
-
-### Separator Control
-
-```tsx
-// Line separator
-{ type: 'separator' }
-
-// Space separator
-{ type: 'separator', style: 'space' }
-
-// Label separator
-{ type: 'separator', style: 'label', label: 'Advanced Settings' }
-```
+**📖 [View all control types and detailed documentation →](./guides/CONTROLS.md)**
 
 ## 🎨 Styling and Theming
 
-The dev panel uses CSS custom properties for easy theming:
+The dev panel uses CSS custom properties for easy theming. Here's a quick example:
 
 ```css
 :root {
 	--dev-panel-background-color: #1a1a1a;
 	--dev-panel-text-color: #ffffff;
-	--dev-panel-text-color-highlight: #ffffff;
-	--dev-panel-text-color-muted: #888888;
 	--dev-panel-accent-color: #ff6200;
 	--dev-panel-border-color: #333333;
-	--dev-panel-input-background-color: #2a2a2a;
-	--dev-panel-highlight-color: #ff620020;
-	--dev-panel-font-size-xs: 11px;
-	--dev-panel-font-size-sm: 12px;
-	--dev-panel-spacing-xs: 4px;
-	--dev-panel-spacing-sm: 8px;
-	--dev-panel-spacing-md: 16px;
-	--dev-panel-border-radius: 4px;
-	--dev-panel-inputs-height: 24px;
-	--dev-panel-transition: all 0.2s ease;
 }
 ```
 
-### Custom Panel Positioning
-
-```tsx
-<DevPanel panelTitle="Custom Panel" position={{ x: 100, y: 100 }} defaultExpanded={true} />
-```
+**📖 [Complete theming guide and customization options →](./guides/STYLING.md)**
 
 ## ⌨️ Keyboard Shortcuts
 
@@ -312,31 +199,15 @@ function App() {
 }
 ```
 
-### Conditional Controls
-
-```tsx
-useDevPanel("Settings", {
-	mode: {
-		type: "select",
-		value: mode,
-		options: ["simple", "advanced"],
-		onChange: setMode,
-	},
-	// Only show advanced settings when mode is 'advanced'
-	...(mode === "advanced" && {
-		separator1: { type: "separator", style: "label", label: "Advanced" },
-		complexValue: {
-			type: "range",
-			value: complexValue,
-			min: 0,
-			max: 1000,
-			onChange: setComplexValue,
-		},
-	}),
-});
-```
+**📖 [Advanced patterns, state management, and optimization →](./guides/ADVANCED_USAGE.md)**
 
 ### Event Handling Options
+
+React Dev Panel supports two different event handling strategies for input controls:
+
+**onChange Event**: Provides real-time updates as the user types or interacts with the control. This is ideal for immediate feedback and live previews, but may trigger more frequent re-renders.
+
+**onBlur Event**: Updates the value only when the user finishes interacting with the control (loses focus). This approach is more performance-friendly for expensive operations and provides a better user experience when dealing with API calls or heavy computations.
 
 ```tsx
 {
@@ -353,6 +224,19 @@ useDevPanel("Settings", {
   onChange: setPrice,
 }
 ```
+
+## 📚 Documentation
+
+### Core Guides
+
+-   **[Control Types](./guides/CONTROLS.md)** - Complete guide to all available controls
+-   **[Event Handling](./guides/EVENT_HANDLING.md)** - onChange vs onBlur strategies and best practices
+-   **[Styling & Theming](./guides/STYLING.md)** - Customization, themes, and responsive design
+-   **[Advanced Usage](./guides/ADVANCED_USAGE.md)** - Complex patterns, state management, and optimization
+
+### Development
+
+-   **[Development Guide](./guides/DEVELOPMENT.md)** - Setup, contributing, and project structure
 
 ## 📚 API Reference
 
@@ -385,28 +269,9 @@ Registers keyboard shortcuts.
 
 ## 🛠️ Development
 
-### Prerequisites
+Want to contribute or set up the project locally?
 
--   Node.js 18+
--   React 18+
-
-### Setup
-
-```bash
-git clone https://github.com/Berenjenas/react-dev-panel.git
-cd react-dev-panel
-npm install
-```
-
-### Available Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run storybook    # Start Storybook
-npm run test         # Run tests
-npm run lint         # Lint code
-```
+**📖 [Development setup, contributing guidelines, and project structure →](./guides/DEVELOPMENT.md)**
 
 ## 📖 Storybook
 
@@ -427,10 +292,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Links
 

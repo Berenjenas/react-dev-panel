@@ -33,6 +33,8 @@ export interface DevPanelState {
 	position: Position;
 }
 
+export type DevPanelUIState = Omit<DevPanelState, "sections">;
+
 export interface DevPanelActions {
 	setVisible: (visible: boolean) => void;
 	setCollapsed: (collapsed: boolean) => void;
