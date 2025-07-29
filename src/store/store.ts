@@ -1,120 +1,126 @@
-import { useSyncExternalStore } from "react";
-
-import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
-import type { DevPanelState, Position } from "@/components/DevPanel/types";
-
-const storageKey = "dev-panel-storage";
-const defaultPosition = { x: 20, y: 20 };
-
-interface PersistedState {
-	isVisible: boolean;
-	isCollapsed: boolean;
-	position: Position;
-	sectionCollapseState: Record<string, boolean>;
-}
-
 /**
- * Service class that manages the dev panel state using the useSyncExternalStore pattern.
- * Provides a zero-dependency alternative to Zustand for state management.
+ * Abstract base class for state management services using the useSyncExternalStore pattern.
+ * Provides common functionality for subscription management, state updates, and persistence.
  *
- * Features:
- * - Persistent state storage in localStorage
- * - Section management with collapse states
- * - Position tracking for draggable panel
- * - Optimized re-renders through selective subscriptions
- *
- * @example
- * ```typescript
- * // Use the service through the provided hooks
- * const { isVisible, setVisible } = useDevPanelStore();
- * const actions = useDevPanelActions();
- * ```
+ * @template TState - The type of the state object
+ * @template TPersistedState - The type of the persisted state object (usually a subset of TState)
  */
-class DevPanelService {
-	/** The current state of the dev panel */
-	private state: DevPanelState = {
-		isVisible: false,
-		isCollapsed: false,
-		sections: {},
-		position: defaultPosition,
-	};
-
+export abstract class BaseStoreService<TState, TPersistedState = TState> {
 	/** Set of listeners subscribed to state changes */
-	private readonly listeners = new Set<() => void>();
+	protected readonly listeners = new Set<() => void>();
+
+	/** The localStorage key for persisting state */
+	protected readonly storageKey: string;
+
+	/** Whether this store should persist state to localStorage */
+	protected readonly shouldPersist: boolean;
+
+	/** The current state */
+	protected state: TState;
 
 	/**
-	 * Creates a new DevPanelService instance and loads persisted state from localStorage.
+	 * Creates a new BaseStoreService instance.
+	 *
+	 * @param storageKey - The localStorage key for persisting state (used only if shouldPersist is true)
+	 * @param defaultState - The default state value
+	 * @param shouldLoadOnInit - Whether to load persisted state on initialization (only works if shouldPersist is true)
+	 * @param shouldPersist - Whether to persist state to localStorage (default: true)
 	 */
-	constructor() {
-		this.loadState();
+	constructor(storageKey: string, defaultState: TState, shouldLoadOnInit: boolean = true, shouldPersist: boolean = true) {
+		this.storageKey = storageKey;
+		this.shouldPersist = shouldPersist;
+		this.state = defaultState;
+
+		if (shouldLoadOnInit && shouldPersist) {
+			this.loadState();
+		}
 	}
 
 	/**
-	 * Saves the current state to localStorage.
-	 * Only persists visibility, collapse state, position, and section collapse states.
-	 * Sections themselves are not persisted as they are dynamic and recreated on mount.
+	 * Abstract method to transform current state to persistable format.
+	 * Must be implemented by subclasses.
 	 *
-	 * @private
+	 * @param state - The current state
+	 * @returns The state in persistable format
 	 */
-	private saveState(): void {
-		try {
-			const persistedState: PersistedState = {
-				isVisible: this.state.isVisible,
-				isCollapsed: this.state.isCollapsed,
-				position: this.state.position,
-				sectionCollapseState: Object.fromEntries(
-					Object.entries(this.state.sections).map(([key, section]) => [key, section.isCollapsed ?? false]),
-				),
-			};
+	protected abstract toPersistableState(state: TState): TPersistedState;
 
-			localStorage.setItem(storageKey, JSON.stringify(persistedState));
+	/**
+	 * Abstract method to transform persisted state back to current state format.
+	 * Must be implemented by subclasses.
+	 *
+	 * @param persistedState - The persisted state
+	 * @param defaultState - The default state to fall back to
+	 * @returns The state in current format
+	 */
+	protected abstract fromPersistedState(persistedState: TPersistedState, defaultState: TState): TState;
+
+	/**
+	 * Abstract method to get the service name for error messages.
+	 * Must be implemented by subclasses.
+	 *
+	 * @returns The service name
+	 */
+	protected abstract getServiceName(): string;
+
+	/**
+	 * Saves the current state to localStorage.
+	 *
+	 * @protected
+	 */
+	protected saveState(): void {
+		if (!this.shouldPersist) {
+			return;
+		}
+
+		try {
+			const persistedState = this.toPersistableState(this.state);
+			localStorage.setItem(this.storageKey, JSON.stringify(persistedState));
 		} catch {
-			console.warn("Failed to save state to localStorage");
+			console.warn(`Failed to save ${this.getServiceName()} state to localStorage`);
 		}
 	}
 
 	/**
 	 * Loads previously persisted state from localStorage.
-	 * If no state exists or loading fails, uses default values.
+	 * If no state exists or loading fails, keeps the current state.
 	 *
-	 * @private
+	 * @protected
 	 */
-	private loadState(): void {
+	protected loadState(): void {
+		if (!this.shouldPersist) {
+			return;
+		}
+
 		try {
-			const stored = localStorage.getItem(storageKey);
+			const stored = localStorage.getItem(this.storageKey);
 
 			if (stored) {
-				const parsed: PersistedState = JSON.parse(stored);
-
-				this.state = {
-					...this.state,
-					isVisible: parsed.isVisible ?? false,
-					isCollapsed: parsed.isCollapsed ?? false,
-					position: parsed.position ?? defaultPosition,
-				};
+				const parsed: TPersistedState = JSON.parse(stored);
+				this.state = this.fromPersistedState(parsed, this.state);
 			}
 		} catch {
-			console.warn("Failed to load persisted state from localStorage");
+			console.warn(`Failed to load persisted ${this.getServiceName()} state from localStorage`);
 		}
 	}
 
 	/**
 	 * Notifies all subscribed listeners about state changes.
 	 *
-	 * @private
+	 * @protected
 	 */
-	private notifySubscribers(): void {
+	protected notifySubscribers(): void {
 		this.listeners.forEach((listener) => listener());
 	}
 
 	/**
 	 * Updates the state using an updater function, persists the new state,
-	 * and notifies all subscribers.
+	 * and notifies all subscribers if the state changed.
 	 *
 	 * @param updater - Function that receives current state and returns new state
-	 * @private
+	 * @protected
 	 */
-	private setState(updater: (state: DevPanelState) => DevPanelState): void {
+	protected setState(updater: (state: TState) => TState): void {
 		const updatedState = updater(this.state);
 
 		if (JSON.stringify(updatedState) === JSON.stringify(this.state)) {
@@ -129,9 +135,9 @@ class DevPanelService {
 	/**
 	 * Returns the current state snapshot for useSyncExternalStore.
 	 *
-	 * @returns The current dev panel state
+	 * @returns The current state
 	 */
-	getSnapshot = (): DevPanelState => this.state;
+	getSnapshot = (): TState => this.state;
 
 	/**
 	 * Subscribes a listener to state changes for useSyncExternalStore.
@@ -145,258 +151,5 @@ class DevPanelService {
 		return () => {
 			this.listeners.delete(listener);
 		};
-	};
-
-	/**
-	 * Sets the visibility state of the dev panel.
-	 *
-	 * @param visible - Whether the panel should be visible
-	 */
-	setVisible = (visible: boolean): void => {
-		this.setState((state) => ({ ...state, isVisible: visible }));
-	};
-
-	/**
-	 * Sets the collapsed state of the dev panel.
-	 *
-	 * @param collapsed - Whether the panel should be collapsed
-	 */
-	setCollapsed = (collapsed: boolean): void => {
-		this.setState((state) => ({ ...state, isCollapsed: collapsed }));
-	};
-
-	/**
-	 * Updates the position of the dev panel.
-	 *
-	 * @param position - New position coordinates {x, y}
-	 */
-	setPosition = (position: Position): void => {
-		this.setState((state) => ({ ...state, position }));
-	};
-
-	/**
-	 * Registers a new section with the dev panel.
-	 * If a section with the same name already exists, it preserves the existing collapse state.
-	 * Otherwise, it attempts to restore the collapse state from localStorage.
-	 *
-	 * @param name - Unique name for the section
-	 * @param controls - Array of control configurations for the section
-	 */
-	registerSection = (name: string, controls: ControlsGroup): void => {
-		this.setState((state) => {
-			const existingSection = state.sections[name];
-			let persistedCollapseState = false;
-
-			try {
-				const stored = localStorage.getItem(storageKey);
-
-				if (stored) {
-					const parsed: PersistedState = JSON.parse(stored);
-
-					persistedCollapseState = parsed.sectionCollapseState?.[name] ?? false;
-				}
-			} catch {
-				console.warn("Failed to read section collapse state from localStorage");
-			}
-
-			const isCollapsed = existingSection?.isCollapsed ?? persistedCollapseState;
-
-			return {
-				...state,
-				sections: {
-					...state.sections,
-					[name]: {
-						name,
-						controls,
-						isCollapsed,
-					},
-				},
-			};
-		});
-	};
-
-	/**
-	 * Removes a section from the dev panel.
-	 *
-	 * @param name - Name of the section to remove
-	 */
-	unregisterSection = (name: string): void => {
-		this.setState((state) => {
-			const { [name]: _removed, ...rest } = state.sections;
-
-			return { ...state, sections: rest };
-		});
-	};
-
-	/**
-	 * Toggles the collapsed state of a specific section.
-	 *
-	 * @param name - Name of the section to toggle
-	 */
-	toggleSectionCollapse = (name: string): void => {
-		this.setState((state) => {
-			const section = state.sections[name];
-
-			if (!section) return state;
-
-			return {
-				...state,
-				sections: {
-					...state.sections,
-					[name]: {
-						...section,
-						isCollapsed: !section.isCollapsed,
-					},
-				},
-			};
-		});
-	};
-
-	/**
-	 * Resets the dev panel to its default state.
-	 * Clears all sections, resets position, and sets visibility and collapse to false.
-	 */
-	reset = (): void => {
-		this.setState(() => ({
-			isVisible: false,
-			isCollapsed: false,
-			sections: {},
-			position: defaultPosition,
-		}));
-	};
-}
-
-const devPanelService = new DevPanelService();
-
-/**
- * React hook that provides access to the complete dev panel state and actions.
- * Uses useSyncExternalStore for optimal performance and React 18 compatibility.
- *
- * @returns Object containing the current state and all available actions
- *
- * @example
- * ```typescript
- * const {
- *   isVisible,
- *   sections,
- *   setVisible,
- *   registerSection
- * } = useDevPanelStore();
- * ```
- */
-export function useDevPanelStore(): DevPanelState & {
-	setVisible: (visible: boolean) => void;
-	setCollapsed: (collapsed: boolean) => void;
-	setPosition: (position: Position) => void;
-	registerSection: (name: string, controls: ControlsGroup) => void;
-	unregisterSection: (name: string) => void;
-	toggleSectionCollapse: (name: string) => void;
-	reset: () => void;
-} {
-	const state = useSyncExternalStore(devPanelService.subscribe, devPanelService.getSnapshot);
-
-	return {
-		...state,
-		setVisible: devPanelService.setVisible,
-		setCollapsed: devPanelService.setCollapsed,
-		setPosition: devPanelService.setPosition,
-		registerSection: devPanelService.registerSection,
-		unregisterSection: devPanelService.unregisterSection,
-		toggleSectionCollapse: devPanelService.toggleSectionCollapse,
-		reset: devPanelService.reset,
-	};
-}
-
-/**
- * React hook that subscribes only to the visibility state of the dev panel.
- * Optimized for components that only need to know if the panel is visible.
- *
- * @returns Boolean indicating whether the dev panel is visible
- *
- * @example
- * ```typescript
- * const isVisible = useDevPanelVisible();
- * ```
- */
-export function useDevPanelVisible() {
-	return useSyncExternalStore(devPanelService.subscribe, () => devPanelService.getSnapshot().isVisible);
-}
-
-/**
- * React hook that subscribes only to the collapsed state of the dev panel.
- * Optimized for components that only need to know if the panel is collapsed.
- *
- * @returns Boolean indicating whether the dev panel is collapsed
- *
- * @example
- * ```typescript
- * const isCollapsed = useDevPanelCollapsed();
- * ```
- */
-export function useDevPanelCollapsed() {
-	return useSyncExternalStore(devPanelService.subscribe, () => devPanelService.getSnapshot().isCollapsed);
-}
-
-/**
- * React hook that subscribes only to the position state of the dev panel.
- * Optimized for components that only need to track panel position.
- *
- * @returns Position object with x and y coordinates
- *
- * @example
- * ```typescript
- * const position = useDevPanelPosition();
- * console.log(`Panel is at ${position.x}, ${position.y}`);
- * ```
- */
-export function useDevPanelPosition() {
-	return useSyncExternalStore(devPanelService.subscribe, () => devPanelService.getSnapshot().position);
-}
-
-/**
- * React hook that subscribes only to the sections state of the dev panel.
- * Optimized for components that only need to access panel sections.
- *
- * @returns Record of section names to section objects
- *
- * @example
- * ```typescript
- * const sections = useDevPanelSections();
- * const sectionNames = Object.keys(sections);
- * ```
- */
-export function useDevPanelSections() {
-	return useSyncExternalStore(devPanelService.subscribe, () => devPanelService.getSnapshot().sections);
-}
-
-/**
- * React hook that provides access to all dev panel actions without subscribing to state.
- * Ideal for components that only need to trigger actions without rendering on state changes.
- *
- * @returns Object containing all available actions
- *
- * @example
- * ```typescript
- * const { setVisible, registerSection, reset } = useDevPanelActions();
- *
- * // Toggle panel visibility
- * setVisible(true);
- *
- * // Add a new section
- * registerSection('mySection', myControls);
- *
- * // Reset everything
- * reset();
- * ```
- */
-export function useDevPanelActions() {
-	return {
-		setVisible: devPanelService.setVisible,
-		setCollapsed: devPanelService.setCollapsed,
-		setPosition: devPanelService.setPosition,
-		registerSection: devPanelService.registerSection,
-		unregisterSection: devPanelService.unregisterSection,
-		toggleSectionCollapse: devPanelService.toggleSectionCollapse,
-		reset: devPanelService.reset,
 	};
 }

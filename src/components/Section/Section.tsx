@@ -1,5 +1,5 @@
 import { ControlRenderer } from "@/components/ControlRenderer";
-import { useDevPanelActions } from "@/store";
+import { useDevPanelSectionActions } from "@/store";
 
 import type { DevPanelSection } from "../DevPanel/types";
 
@@ -11,11 +11,11 @@ type SectionProps = {
 };
 
 export function Section({ sectionName, section }: SectionProps) {
-	const actions = useDevPanelActions();
+	const { toggleSectionCollapse } = useDevPanelSectionActions();
 
 	return (
 		<div className={styles.section}>
-			<div className={styles.header} onClick={() => actions.toggleSectionCollapse(sectionName)}>
+			<div className={styles.header} onClick={() => toggleSectionCollapse(sectionName)}>
 				<span className={styles.title}>{section.name}</span>
 
 				<span className={styles.toggle}>
