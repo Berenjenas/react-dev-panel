@@ -3,7 +3,7 @@ import { useSyncExternalStore } from "react";
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
 import type { DevPanelSection } from "@/components/DevPanel/types";
 
-import { BaseStoreService } from "./Store";
+import { BaseStoreService } from "./";
 
 const sectionsStorageKey = "dev-panel-sections-storage";
 

@@ -58,7 +58,6 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 	}
 
 	const sectionEntries = Object.entries(sections);
-	//console.log("[DevPanel] Rendering with sections:", sectionEntries);
 
 	return (
 		<div

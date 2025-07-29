@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 
 import type { DevPanelUIState, Position } from "@/components/DevPanel/types";
 
-import { BaseStoreService } from "./Store";
+import { BaseStoreService } from "./";
 
 const storageKey = "dev-panel-ui-storage";
 const defaultPosition = { x: 20, y: 20 };
