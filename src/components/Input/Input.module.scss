@@ -1,42 +1,40 @@
+@use "../../styles/abstracts" as *;
+
 .input {
-	width: 100%;
-	height: var(--dev-panel-inputs-height);
-	border: 0;
-	border-radius: var(--dev-panel-border-radius);
-	cursor: pointer;
-	padding: 0;
-	background-color: transparent;
-	color: var(--dev-panel-text-color-highlight);
-
-	&:last-of-type {
-		background-color: var(--dev-panel-input-background-color);
-		padding-left: var(--dev-panel-spacing-xs);
-	}
-
-	&:focus {
-		outline: none;
-	}
-
-	&:disabled {
-		cursor: not-allowed;
-		opacity: 0.6;
-	}
+	@include input-base;
+	cursor: text;
 
 	&::placeholder {
-		color: var(--dev-panel-text-color-muted);
+		color: var(--dev-panel-input-placeholder-color);
+		opacity: 1;
 	}
 
 	// Date input calendar icon styling
 	&[type="date"] {
+		cursor: pointer;
+
 		&::-webkit-calendar-picker-indicator {
 			color: currentColor;
-			opacity: 1;
 			filter: invert(1);
+			cursor: pointer;
 		}
 
 		&::-moz-calendar-picker-indicator {
 			color: currentColor;
-			opacity: 1;
+			filter: invert(1);
+			cursor: pointer;
 		}
+	}
+
+	// Number input styling
+	&[type="number"] {
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		-moz-appearance: textfield;
+		appearance: textfield;
 	}
 }

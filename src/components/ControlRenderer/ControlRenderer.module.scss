@@ -1,40 +1,95 @@
 .controlRendererContainer {
-	gap: var(--dev-panel-spacing-xs);
 	display: grid;
 
 	.controlContainer {
-		gap: var(--dev-panel-spacing-sm);
+		gap: var(--dev-panel-spacing-md);
 		display: grid;
-		height: 100%;
 		align-items: center;
 		color: var(--dev-panel-text-color);
+		padding: var(--dev-panel-spacing-xs);
+		border-radius: var(--dev-panel-border-radius);
+		transition: var(--dev-panel-transition);
+
+		&:hover {
+			background: var(--dev-panel-surface-color-hover);
+		}
 
 		&:not(.fullWidth) {
-			grid-template-columns: 100px 1fr;
+			grid-template-columns: 120px 1fr;
+		}
+
+		&.fullWidth {
+			.label {
+				margin-bottom: var(--dev-panel-spacing-sm);
+			}
 		}
 
 		.controlWrapper {
 			display: flex;
 			justify-content: flex-end;
+			align-items: center;
 		}
 
 		.label {
 			text-align: start;
-			font-weight: 500;
-			font-size: var(--dev-panel-font-size-xs);
+			font-weight: var(--dev-panel-font-weight-medium);
+			font-size: var(--dev-panel-font-size-sm);
+			color: var(--dev-panel-text-color);
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+			line-height: var(--dev-panel-line-height-tight);
 		}
 	}
 
-	.description,
+	.description {
+		font-size: var(--dev-panel-font-size-xs);
+		color: var(--dev-panel-text-color-muted);
+		line-height: var(--dev-panel-line-height-normal);
+		padding-inline: var(--dev-panel-spacing-xs);
+		margin-top: var(--dev-panel-spacing-sm);
+		font-style: italic;
+		text-align: right;
+	}
+
 	.loading {
 		font-size: var(--dev-panel-font-size-xs);
 		color: var(--dev-panel-text-color-muted);
+		text-align: center;
+		padding: var(--dev-panel-spacing-lg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--dev-panel-spacing-sm);
+
+		&::before {
+			content: "";
+			width: 12px;
+			height: 12px;
+			border: 2px solid var(--dev-panel-border-color);
+			border-top: 2px solid var(--dev-panel-accent-color);
+			border-radius: var(--dev-panel-border-radius-full);
+			animation: spin 1s linear infinite;
+		}
 	}
 
-	.description {
-		text-align: right;
+	.error {
+		font-size: var(--dev-panel-font-size-xs);
+		color: var(--dev-panel-error-color);
+		text-align: center;
+		padding: var(--dev-panel-spacing-lg);
+		background: color-mix(in srgb, var(--dev-panel-error-color) 10%, transparent);
+		border: 1px solid color-mix(in srgb, var(--dev-panel-error-color) 30%, transparent);
+		border-radius: var(--dev-panel-border-radius);
+		margin: var(--dev-panel-spacing-sm) 0;
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
 	}
 }

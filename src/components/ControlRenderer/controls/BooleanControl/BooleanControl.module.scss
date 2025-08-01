@@ -1,19 +1,15 @@
+@use "../../../../styles/abstracts" as *;
+
 .switch {
-	--width: 42px;
-	--height: 20px;
-	--thumb-size: 12px;
-	--thumb-offset: 3px;
-	--thumb-checked-offset: calc(var(--width) - var(--thumb-size) - calc(var(--thumb-offset) * 2) - calc(var(--thumb-offset) / 2));
-	--track-background: var(--dev-panel-input-background-color);
-	--track-border: color-mix(in srgb, var(--dev-panel-border-color) 50%, transparent);
-	--thumb-background: var(--dev-panel-text-color);
-	--thumb-checked-background: white;
-	--focus-ring-color: var(--dev-panel-accent-color);
+	--switch-width: 44px;
+	--switch-height: 24px;
+	--thumb-size: 20px;
+	--thumb-margin: 1px;
 
 	position: relative;
 	display: inline-block;
-	width: var(--width);
-	height: var(--height);
+	width: var(--switch-width);
+	height: var(--switch-height);
 
 	input {
 		position: absolute;
@@ -24,25 +20,29 @@
 		pointer-events: none;
 
 		&:checked + .slider {
-			background-color: var(--focus-ring-color);
+			background-color: var(--dev-panel-accent-color, #6366f1);
+			border-color: var(--dev-panel-accent-color, #6366f1);
 
 			&::before {
-				transform: translateX(var(--thumb-checked-offset));
-				background-color: var(--thumb-checked-background);
+				left: calc(100% - var(--thumb-size) - var(--thumb-margin));
+				background-color: var(--dev-panel-text-color-on-accent, #ffffff);
 			}
 		}
 
 		&:focus + .slider {
+			box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+		}
+
+		&:focus:not(:focus-visible) + .slider {
 			box-shadow: none;
-			outline: none;
 		}
 
 		&:disabled + .slider {
-			opacity: 0.5;
+			opacity: var(--dev-panel-opacity-50, 0.5);
 			cursor: not-allowed;
 
 			&::before {
-				opacity: 0.7;
+				opacity: var(--dev-panel-opacity-70, 0.7);
 			}
 		}
 	}
@@ -53,35 +53,42 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: var(--dev-panel-input-background-color);
-		border: 1px solid color-mix(in srgb, var(--dev-panel-border-color) 20%, transparent);
-		border-radius: var(--dev-panel-border-radius);
+		background-color: var(--dev-panel-input-background-color, #0f172a);
+		border: 1px solid var(--dev-panel-input-border-color, #475569);
+		border-radius: var(--dev-panel-border-radius-full, 9999px);
+		transition: var(--dev-panel-transition, all 0.2s cubic-bezier(0.4, 0, 0.2, 1));
 		cursor: pointer;
-		transition: var(--dev-panel-transition);
 
 		&::before {
 			content: "";
 			position: absolute;
-			top: var(--thumb-offset);
-			left: var(--thumb-offset);
+			top: var(--thumb-margin);
+			left: var(--thumb-margin);
 			width: var(--thumb-size);
 			height: var(--thumb-size);
-			background-color: var(--thumb-background);
-			border-radius: calc(var(--dev-panel-border-radius) - 2px);
-			transition: var(--dev-panel-transition);
-			transform: scale(0.95);
+			background-color: var(--dev-panel-text-color-muted, #94a3b8);
+			border-radius: var(--dev-panel-border-radius-full, 9999px);
+			transition: var(--dev-panel-transition, all 0.2s cubic-bezier(0.4, 0, 0.2, 1));
+			box-shadow: var(--dev-panel-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
 		}
 
 		&:hover {
-			border-color: var(--dev-panel-accent-color);
+			border-color: var(--dev-panel-input-border-color-hover, #64748b);
 
 			&::before {
-				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+				box-shadow: var(--dev-panel-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
 			}
 		}
+	}
 
-		// &:active::before {
-		// 	transform: scale(0.95);
-		// }
+	// Reset hover/active states when disabled
+	input:disabled + .slider {
+		&:hover {
+			border-color: var(--dev-panel-input-border-color, #475569);
+
+			&::before {
+				box-shadow: var(--dev-panel-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+			}
+		}
 	}
 }

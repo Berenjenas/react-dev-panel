@@ -1,24 +1,68 @@
 .empty {
 	text-align: center;
-	color: #888;
-	font-size: 12px;
-	padding: 30px 0;
+	color: var(--dev-panel-text-color-muted);
+	font-family: var(--dev-panel-font-family);
+	font-size: var(--dev-panel-font-size-sm);
+	line-height: var(--dev-panel-line-height-relaxed);
+	padding: var(--dev-panel-spacing-4xl) var(--dev-panel-spacing-xl);
+
+	.icon {
+		width: 48px;
+		height: 48px;
+		margin: 0 auto var(--dev-panel-spacing-xl);
+		opacity: var(--dev-panel-opacity-50);
+		color: var(--dev-panel-text-color-muted);
+	}
+
+	.title {
+		font-size: var(--dev-panel-font-size-md);
+		font-weight: var(--dev-panel-font-weight-semibold);
+		color: var(--dev-panel-text-color-secondary);
+		margin-bottom: var(--dev-panel-spacing-md);
+	}
+
+	.description {
+		margin-bottom: var(--dev-panel-spacing-lg);
+	}
 
 	code {
-		background: #f8f9fa;
-		padding: 2px 4px;
-		border-radius: 3px;
+		background: var(--dev-panel-surface-color);
+		color: var(--dev-panel-accent-color);
+		padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-md);
+		border-radius: var(--dev-panel-border-radius-md);
+		font-family: "Monaco", "Menlo", "Ubuntu Mono", "Courier New", monospace;
+		font-size: var(--dev-panel-font-size-xs);
+		border: 1px solid var(--dev-panel-border-color);
+		font-weight: var(--dev-panel-font-weight-medium);
 	}
-}
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-	.empty {
-		color: #b0b0b0;
+	.cta {
+		margin-top: var(--dev-panel-spacing-xl);
 
-		code {
-			background: #333;
-			color: #e0e0e0;
+		.button {
+			display: inline-flex;
+			align-items: center;
+			gap: var(--dev-panel-spacing-sm);
+			padding: var(--dev-panel-spacing-md) var(--dev-panel-spacing-lg);
+			background: var(--dev-panel-accent-color);
+			color: var(--dev-panel-text-color-on-accent);
+			border: none;
+			border-radius: var(--dev-panel-border-radius);
+			font-family: var(--dev-panel-font-family);
+			font-size: var(--dev-panel-font-size-sm);
+			font-weight: var(--dev-panel-font-weight-medium);
+			cursor: pointer;
+			transition: var(--dev-panel-transition);
+			text-decoration: none;
+
+			&:hover {
+				background: var(--dev-panel-accent-color-hover);
+				transform: translateY(-1px);
+			}
+
+			&:active {
+				transform: translateY(0);
+			}
 		}
 	}
 }
