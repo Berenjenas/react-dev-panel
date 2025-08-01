@@ -1,0 +1,120 @@
+.multiselect {
+	position: relative;
+	width: 100%;
+}
+
+.trigger {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: var(--dev-panel-inputs-height);
+	border: 0;
+	border-radius: var(--dev-panel-border-radius);
+	background-color: var(--dev-panel-input-background-color);
+	color: var(--dev-panel-text-color-highlight);
+	padding-left: var(--dev-panel-spacing-sm);
+	transition: var(--dev-panel-transition);
+	font-size: var(--dev-panel-font-size-sm);
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
+}
+
+.value {
+	flex: 1;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--dev-panel-text-color-highlight);
+	font-size: var(--dev-panel-font-size-sm);
+}
+
+.arrow {
+	display: block;
+	height: 1rem;
+	margin-left: var(--dev-panel-spacing-xs);
+	transition: var(--dev-panel-transition);
+
+	.open & {
+		transform: rotate(180deg);
+	}
+
+	path {
+		fill: var(--dev-panel-text-color-muted);
+	}
+}
+
+.dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background-color: var(--dev-panel-input-background-color);
+	border: 0;
+	border-radius: var(--dev-panel-border-radius);
+	max-height: 200px;
+	overflow-y: auto;
+	box-shadow: var(--dev-panel-shadow);
+	z-index: 1000;
+}
+
+.option {
+	display: flex;
+	align-items: center;
+	padding: var(--dev-panel-spacing-sm);
+	user-select: none;
+	transition: var(--dev-panel-transition);
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--dev-panel-foreground-color);
+	}
+}
+
+.checkbox {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+
+	&:checked {
+		~ .checkmark {
+			background-color: var(--dev-panel-accent-color);
+			border-color: var(--dev-panel-accent-color);
+			color: var(--dev-panel-text-color-highlight);
+		}
+	}
+}
+
+.checkmark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	margin-right: var(--dev-panel-spacing-xs);
+	border: 1px solid var(--dev-panel-text-color-muted);
+	border-radius: 2px;
+	font-size: var(--dev-panel-font-size-xs);
+	color: transparent;
+	transition: var(--dev-panel-transition);
+}
+
+.label {
+	flex: 1;
+	font-size: var(--dev-panel-font-size-sm);
+	color: var(--dev-panel-text-color-highlight);
+}
+
+.disabled {
+	opacity: 0.6;
+	pointer-events: none;
+}
