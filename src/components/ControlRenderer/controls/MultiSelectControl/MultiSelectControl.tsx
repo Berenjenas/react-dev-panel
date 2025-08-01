@@ -23,17 +23,6 @@ import styles from "./MultiSelectControl.module.scss";
  * ```typescript
  * <MultiSelectControl control={{
  *   type: 'multiselect',
- *   value: ['option1', 'option3'],
- *   options: ['option1', 'option2', 'option3'],
- *   onChange: (values) => console.log('Selected:', values),
- *   disabled: false
- * }} />
- * ```
- *
- * @example
- * ```typescript
- * <MultiSelectControl control={{
- *   type: 'multiselect',
  *   value: ['red', 'blue'],
  *   options: [
  *     { label: 'Red Color', value: 'red' },
