@@ -6,6 +6,7 @@ import { useDevPanelSections, useDevPanelUI } from "@/store";
 import { className } from "@/utils";
 
 import { EmptyContent } from "../EmptyContent";
+import { Icon } from "../Icon";
 import { Section } from "../Section";
 
 import type { DevPanelHotkeyConfig, DevPanelProps, Position } from "./types";
@@ -40,7 +41,7 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 		[setPosition],
 	);
 
-	const { isDragging, elementRef, handleMouseDown } = useDragAndDrop({
+	const { isDragging, elementRef, handlePointerDown } = useDragAndDrop({
 		onPositionChange: handlePositionChange,
 	});
 
@@ -71,19 +72,15 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 				height: isCollapsed ? "auto" : undefined,
 			}}
 		>
-			<div className={styles.header} onMouseDown={handleMouseDown}>
+			<div className={styles.header} onPointerDown={handlePointerDown}>
 				<button className={styles.button} onClick={() => setCollapsed(!isCollapsed)} title={isCollapsed ? "Expand" : "Collapse"}>
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={isCollapsed ? styles.collapsed : undefined}>
-						<path d="M16.843 10.211A.75.75 0 0 0 16.251 9H7.75a.75.75 0 0 0-.591 1.212l4.258 5.498a.746.746 0 0 0 1.183-.001l4.243-5.498z" />
-					</svg>
+					<Icon name="ArrowDown" className={isCollapsed ? styles.collapsed : undefined} />
 				</button>
 
 				<div className={styles.title}>{panelTitle}</div>
 
 				<button className={styles.button} onClick={() => setVisible(false)} title="Close">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-						<path d="m12 10.93 5.719-5.72a.749.749 0 1 1 1.062 1.062l-5.72 5.719 5.719 5.719a.75.75 0 1 1-1.061 1.062L12 13.053l-5.719 5.719A.75.75 0 0 1 5.22 17.71l5.719-5.719-5.72-5.719A.752.752 0 0 1 6.281 5.21z" />
-					</svg>
+					<Icon name="Close" />
 				</button>
 			</div>
 

@@ -5,9 +5,9 @@
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 	width: var(--dev-panel-max-width);
 	max-height: var(--dev-panel-max-height);
-	overflow: hidden;
 	user-select: none;
 	font-family: var(--dev-panel-font-family);
+	touch-action: none;
 
 	.header {
 		display: flex;
@@ -15,8 +15,8 @@
 		justify-content: space-between;
 		padding: var(--dev-panel-spacing-xs);
 		background: var(--dev-panel-foreground-color);
-		cursor: move;
 		color: var(--dev-panel-text-color);
+		cursor: move;
 	}
 
 	.title {
@@ -67,7 +67,6 @@
 
 .content {
 	max-height: calc(var(--dev-panel-max-height) - 48px);
-	overflow-y: auto;
 	background-color: var(--dev-panel-background-color);
 
 	/* Scrollbar personalizada */

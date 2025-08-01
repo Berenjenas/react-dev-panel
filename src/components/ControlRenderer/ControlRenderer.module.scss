@@ -7,7 +7,6 @@
 		display: grid;
 		height: 100%;
 		align-items: center;
-		overflow: hidden;
 		color: var(--dev-panel-text-color);
 
 		&:not(.fullWidth) {
