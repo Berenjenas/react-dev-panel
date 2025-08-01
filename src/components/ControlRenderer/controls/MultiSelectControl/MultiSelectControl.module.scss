@@ -74,20 +74,34 @@
 	}
 }
 
+// Portal dropdown container
+.dropdownPortal {
+	position: fixed;
+	z-index: 9999;
+}
+
 .dropdown {
 	@include scrollbar;
 
-	position: absolute;
-	top: calc(100% + 4px);
-	left: 0;
-	right: 0;
+	max-height: 200px;
 	background-color: var(--dev-panel-foreground-color);
 	border: 1px solid var(--dev-panel-border-color);
 	border-radius: var(--dev-panel-border-radius);
-	max-height: 200px;
 	overflow-y: auto;
-	box-shadow: var(--dev-panel-shadow);
-	z-index: var(--dev-panel-z-index-dropdown);
+	box-shadow: var(--dev-panel-shadow-lg);
+	overflow-y: auto;
+	animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .option {
@@ -121,8 +135,9 @@
 		background-color: var(--dev-panel-accent-color);
 		border-color: var(--dev-panel-accent-color);
 		color: var(--dev-panel-text-color-on-accent);
+		opacity: 1;
 
-		&::after {
+		svg {
 			opacity: 1;
 		}
 	}
@@ -138,13 +153,13 @@
 	border: 1px solid var(--dev-panel-input-border-color);
 	border-radius: var(--dev-panel-border-radius-sm);
 	transition: var(--dev-panel-transition);
-	position: relative;
 	flex-shrink: 0;
+	opacity: 0;
 
-	&::after {
-		content: "✓";
-		font-size: var(--dev-panel-font-size-xs);
-		color: currentColor;
+	svg {
+		width: 14px;
+		height: 14px;
+		fill: currentColor;
 		opacity: 0;
 		transition: var(--dev-panel-transition);
 	}

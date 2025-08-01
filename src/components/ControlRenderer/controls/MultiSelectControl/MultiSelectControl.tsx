@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { Icon } from "@/components/Icon";
 import { className } from "@/utils/className";
@@ -6,6 +7,13 @@ import { className } from "@/utils/className";
 import type { MultiSelectControlProps } from "./types";
 
 import styles from "./MultiSelectControl.module.scss";
+
+interface DropdownPosition {
+	top: number;
+	left: number;
+	width: number;
+	maxHeight: number;
+}
 
 /**
  * Component that renders a multi-select control with checkbox options
@@ -35,7 +43,61 @@ import styles from "./MultiSelectControl.module.scss";
  */
 export function MultiSelectControl({ control }: MultiSelectControlProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
+		top: 0,
+		left: 0,
+		width: 0,
+		maxHeight: 200,
+	});
 	const containerRef = useRef<HTMLDivElement>(null);
+	const triggerRef = useRef<HTMLButtonElement>(null);
+
+	/**
+	 * Calculates the optimal position for the dropdown portal
+	 */
+	function calculateDropdownPosition(): DropdownPosition {
+		if (!triggerRef.current) {
+			return { top: 0, left: 0, width: 0, maxHeight: 200 };
+		}
+
+		const triggerRect = triggerRef.current.getBoundingClientRect();
+		const viewportHeight = window.innerHeight;
+		const viewportWidth = window.innerWidth;
+		const dropdownHeight = 200; // Max height from CSS
+		const spacing = 4; // Gap between trigger and dropdown
+
+		// Calculate available space below and above
+		const spaceBelow = viewportHeight - triggerRect.bottom - spacing;
+		const spaceAbove = triggerRect.top - spacing;
+
+		// Determine if dropdown should open upward or downward
+		const shouldOpenUpward = spaceBelow < dropdownHeight && spaceAbove > spaceBelow;
+
+		// Calculate position
+		const top = shouldOpenUpward ? triggerRect.top - Math.min(dropdownHeight, spaceAbove) : triggerRect.bottom + spacing;
+
+		// Ensure dropdown doesn't go off screen horizontally
+		const left = Math.max(8, Math.min(triggerRect.left, viewportWidth - triggerRect.width - 8));
+
+		// Calculate max height based on available space
+		const maxHeight = shouldOpenUpward ? Math.min(dropdownHeight, spaceAbove) : Math.min(dropdownHeight, spaceBelow);
+
+		return {
+			top,
+			left,
+			width: triggerRect.width,
+			maxHeight,
+		};
+	}
+
+	/**
+	 * Updates dropdown position when it's open
+	 */
+	const updateDropdownPosition = useCallback(() => {
+		if (isOpen) {
+			setDropdownPosition(calculateDropdownPosition());
+		}
+	}, [isOpen]);
 
 	/**
 	 * Toggles the selection state of an option
@@ -64,60 +126,120 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 				return optionValue === control.value[0];
 			});
 			const optionLabel = typeof selectedOption === "string" ? selectedOption : selectedOption?.label;
+
 			return optionLabel || control.value[0];
 		}
 
 		return `${control.value.length} selected`;
 	}
 
+	/**
+	 * Handles opening/closing the dropdown
+	 */
+	function handleToggleDropdown() {
+		if (control.disabled) return;
+
+		if (!isOpen) {
+			setDropdownPosition(calculateDropdownPosition());
+			setIsOpen(true);
+		} else {
+			setIsOpen(false);
+		}
+	}
+
+	// Update position when dropdown opens or window resizes/scrolls
 	useEffect(() => {
-		/**
-		 * Handles clicks outside the component to close the dropdown
-		 * @param e - The mouse event
-		 */
+		if (!isOpen) return;
+
+		updateDropdownPosition();
+
+		function handleResize() {
+			updateDropdownPosition();
+		}
+
+		function handleScroll() {
+			updateDropdownPosition();
+		}
+
+		window.addEventListener("resize", handleResize);
+		window.addEventListener("scroll", handleScroll, true);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+			window.removeEventListener("scroll", handleScroll, true);
+		};
+	}, [isOpen, updateDropdownPosition]);
+
+	// Handle clicks outside to close dropdown
+	useEffect(() => {
 		function handleClickOutside(e: MouseEvent) {
 			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+				// Check if click is inside the portal dropdown
+				const dropdownElement = document.querySelector(`.${styles.dropdownPortal}`);
+
+				if (dropdownElement && dropdownElement.contains(e.target as Node)) {
+					return; // Don't close if clicking inside dropdown
+				}
+
 				setIsOpen(false);
 			}
 		}
 
 		document.addEventListener("mousedown", handleClickOutside);
 
-		return (): void => {
+		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);
 
-	return (
+	// Dropdown portal content
+	const dropdownContent = isOpen && !control.disabled && (
 		<div
-			ref={containerRef}
-			{...className(styles.multiselect, {
-				[styles.disabled]: Boolean(control.disabled),
-				[styles.open]: isOpen,
-			})}
+			className={`${styles.dropdownPortal}`}
+			style={{
+				position: "fixed",
+				top: dropdownPosition.top,
+				left: dropdownPosition.left,
+				width: dropdownPosition.width,
+				maxHeight: dropdownPosition.maxHeight,
+				zIndex: 9999,
+			}}
 		>
-			<button type="button" className={styles.trigger} onClick={() => !control.disabled && setIsOpen(!isOpen)} disabled={control.disabled}>
-				<span className={styles.value}>{getDisplayText()}</span>
-				<Icon name="ArrowDown" className={styles.arrow} />
-			</button>
+			<div className={styles.dropdown}>
+				{control.options.map((option) => {
+					const optionValue = typeof option === "string" ? option : option.value;
+					const optionLabel = typeof option === "string" ? option : option.label;
+					const isSelected = control.value.includes(optionValue);
 
-			{isOpen && !control.disabled && (
-				<div className={styles.dropdown}>
-					{control.options.map((option) => {
-						const optionValue = typeof option === "string" ? option : option.value;
-						const optionLabel = typeof option === "string" ? option : option.label;
-						const isSelected = control.value.includes(optionValue);
-
-						return (
-							<label key={optionValue} className={styles.option}>
-								<input type="checkbox" checked={isSelected} onChange={() => toggleOption(optionValue)} className={styles.checkbox} />
-								<span className={styles.checkmark}>✓</span>
-								<span className={styles.label}>{optionLabel}</span>
-							</label>
-						);
-					})}
-				</div>
-			)}
+					return (
+						<label key={optionValue} className={styles.option}>
+							<input type="checkbox" checked={isSelected} onChange={() => toggleOption(optionValue)} className={styles.checkbox} />
+							<Icon name="Check" className={styles.checkmark} />
+							<span className={styles.label}>{optionLabel}</span>
+						</label>
+					);
+				})}
+			</div>
 		</div>
+	);
+
+	return (
+		<>
+			<div
+				ref={containerRef}
+				{...className(styles.multiselect, {
+					[styles.disabled]: Boolean(control.disabled),
+					[styles.open]: isOpen,
+				})}
+			>
+				<button ref={triggerRef} type="button" className={styles.trigger} onClick={handleToggleDropdown} disabled={control.disabled}>
+					<span className={styles.value}>{getDisplayText()}</span>
+					<Icon name="ArrowDown" className={styles.arrow} />
+				</button>
+			</div>
+
+			{/* Render dropdown in portal */}
+			{typeof window !== "undefined" && createPortal(dropdownContent, document.body)}
+		</>
 	);
 }
