@@ -1,58 +1,92 @@
+@use "../../styles/abstracts" as *;
+
 .devPanelContainer {
+	@include scrollbar;
+
 	position: fixed;
-	z-index: 9998;
+	z-index: var(--dev-panel-z-index);
 	border-radius: var(--dev-panel-border-radius);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+	box-shadow: var(--dev-panel-shadow);
 	width: var(--dev-panel-max-width);
+	min-width: var(--dev-panel-min-width);
 	max-height: var(--dev-panel-max-height);
-	overflow: hidden;
+	min-height: var(--dev-panel-min-height);
 	user-select: none;
 	font-family: var(--dev-panel-font-family);
+	font-size: var(--dev-panel-font-size-sm);
+	line-height: var(--dev-panel-line-height-normal);
+	touch-action: none;
+	background: var(--dev-panel-foreground-color);
+	border: 1px solid var(--dev-panel-border-color);
+	overflow-y: auto;
 
 	.header {
+		position: sticky;
+		top: 0;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: var(--dev-panel-spacing-xs);
+		padding: var(--dev-panel-spacing-md) var(--dev-panel-spacing-lg);
 		background: var(--dev-panel-foreground-color);
-		cursor: move;
 		color: var(--dev-panel-text-color);
+		cursor: move;
+		border-bottom: 1px solid var(--dev-panel-border-color);
+		height: var(--dev-panel-header-height);
+		border-radius: var(--dev-panel-border-radius) var(--dev-panel-border-radius) 0 0;
+		z-index: 1;
 	}
 
 	.title {
-		font-size: var(--dev-panel-font-size-xs);
-		font-weight: 600;
+		font-size: var(--dev-panel-font-size-sm);
+		font-weight: var(--dev-panel-font-weight-semibold);
 		display: flex;
 		align-items: center;
-		gap: var(--dev-panel-spacing-sm);
+		gap: var(--dev-panel-spacing-md);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		color: var(--dev-panel-text-color);
 	}
 
 	.button {
 		background: none;
 		border: none;
-		color: inherit;
-		font-size: var(--dev-panel-font-size-sm);
+		color: var(--dev-panel-text-color-muted);
+		font-size: var(--dev-panel-font-size-md);
 		cursor: pointer;
-		padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-sm);
-		border-radius: 4px;
-		transition: all 0.2s ease;
+		padding: var(--dev-panel-spacing-sm);
+		border-radius: var(--dev-panel-border-radius-md);
+		transition: var(--dev-panel-transition);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 24px;
+		min-height: 24px;
 
 		&:hover {
-			background: var(--dev-panel-highlight-color);
-			color: #333;
+			background: var(--dev-panel-surface-color-hover);
+			color: var(--dev-panel-text-color);
 		}
 
 		&:active {
 			transform: scale(0.95);
+			background: var(--dev-panel-surface-color-active);
+		}
+
+		&:focus {
+			outline: 2px solid var(--dev-panel-accent-color);
+			outline-offset: 2px;
+		}
+
+		&:focus:not(:focus-visible) {
+			outline: none;
 		}
 
 		> svg {
 			display: block;
-			height: 1rem;
-			transition: transform ease 200ms;
+			width: 16px;
+			height: 16px;
+			transition: transform var(--dev-panel-transition);
 
 			&.collapsed {
 				transform: rotate(180deg);
@@ -66,25 +100,8 @@
 }
 
 .content {
-	max-height: calc(var(--dev-panel-max-height) - 48px);
-	overflow-y: auto;
+	max-height: calc(var(--dev-panel-max-height) - var(--dev-panel-header-height));
 	background-color: var(--dev-panel-background-color);
-
-	/* Scrollbar personalizada */
-	&::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	&::-webkit-scrollbar-track {
-		background: #f1f1f1;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background: #c1c1c1;
-		border-radius: 3px;
-	}
-
-	&::-webkit-scrollbar-thumb:hover {
-		background: #a8a8a8;
-	}
+	border-radius: 0 0 var(--dev-panel-border-radius) var(--dev-panel-border-radius);
+	overflow-x: hidden;
 }

@@ -6,6 +6,10 @@ import { getConstrainedPosition } from "@/utils/getConstrainedPosition/getConstr
 import { getPositionAdjustment } from "@/utils/getPositionAdjustment/getPositionAdjustment";
 
 export interface UseDragAndDropProps {
+	/**
+	 * Callback function to handle position changes during dragging
+	 * @param position - The new position of the draggable element
+	 */
 	onPositionChange: (position: Position) => void;
 }
 
@@ -16,7 +20,6 @@ export interface UseDragAndDropProps {
  */
 export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 	const elementRef = useRef<HTMLDivElement>(null);
-
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 });
 
@@ -34,8 +37,14 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 		}
 	}, [onPositionChange]);
 
-	const handleMouseMove = useCallback(
-		(e: MouseEvent) => {
+	/**
+	 * Handles pointer move events during dragging
+	 * Calculates new position based on pointer coordinates and drag offset
+	 * Applies boundary constraints to keep element within viewport
+	 * @param e - The pointer event containing coordinate information
+	 */
+	const handlePointerMove = useCallback(
+		(e: PointerEvent) => {
 			if (!isDragging || !elementRef.current) return;
 
 			const newPosition = {
@@ -50,11 +59,21 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 		[isDragging, dragOffset.x, dragOffset.y, onPositionChange],
 	);
 
-	const handleMouseUp = useCallback(() => {
+	/**
+	 * Handles pointer up events to end dragging
+	 * Sets dragging state to false, which triggers cleanup of event listeners
+	 */
+	const handlePointerUp = useCallback(() => {
 		setIsDragging(false);
 	}, []);
 
-	const handleMouseDown = useCallback((e: React.MouseEvent) => {
+	/**
+	 * Handles pointer down events to start dragging
+	 * Only initiates drag if the event target is the draggable element itself
+	 * Calculates and stores the offset between pointer position and element position
+	 * @param e - The React pointer event from the draggable element
+	 */
+	const handlePointerDown = useCallback((e: React.PointerEvent) => {
 		// Only allow drag from the specific element
 		if (e.target !== e.currentTarget) return;
 
@@ -77,15 +96,15 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 		// Options to improve performance
 		const options = { passive: true };
 
-		document.addEventListener("mousemove", handleMouseMove, options);
-		document.addEventListener("mouseup", handleMouseUp, options);
+		document.addEventListener("pointermove", handlePointerMove, options);
+		document.addEventListener("pointerup", handlePointerUp, options);
 
 		// Cleanup function to remove event listeners
 		return () => {
-			document.removeEventListener("mousemove", handleMouseMove);
-			document.removeEventListener("mouseup", handleMouseUp);
+			document.removeEventListener("pointermove", handlePointerMove);
+			document.removeEventListener("pointerup", handlePointerUp);
 		};
-	}, [isDragging, handleMouseMove, handleMouseUp]);
+	}, [isDragging, handlePointerMove, handlePointerUp]);
 
 	// Effect to handle window resize
 	useEffect(() => {
@@ -103,17 +122,17 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 	useEffect(() => {
 		return () => {
 			if (isDragging) {
-				document.removeEventListener("mousemove", handleMouseMove);
-				document.removeEventListener("mouseup", handleMouseUp);
+				document.removeEventListener("pointermove", handlePointerMove);
+				document.removeEventListener("pointerup", handlePointerUp);
 			}
 		};
-	}, [isDragging, handleMouseMove, handleMouseUp]);
+	}, [isDragging, handlePointerMove, handlePointerUp]);
 
 	return {
 		isDragging,
 		elementRef,
-		handleMouseDown,
-		stopDragging: handleMouseUp,
+		handlePointerDown,
+		stopDragging: handlePointerUp,
 		adjustPositionForResize,
 	};
 }

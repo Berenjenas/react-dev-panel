@@ -1,26 +1,115 @@
 .container {
 	display: grid;
 	grid-template-columns: var(--dev-panel-inputs-height) 1fr;
-	gap: 8px;
+	gap: var(--dev-panel-spacing-md);
+	align-items: start;
 
-	label {
+	.colorPreview {
 		overflow: hidden;
-		width: auto;
+		width: var(--dev-panel-inputs-height);
 		height: var(--dev-panel-inputs-height);
 		cursor: pointer;
 		border-radius: var(--dev-panel-border-radius);
+		border: 1px solid var(--dev-panel-input-border-color);
+		transition: var(--dev-panel-transition);
+		position: relative;
+		background-color: var(--dev-panel-input-border-color);
+		background-size: 6px 6px;
+		background-position: 0 0, 0 3px, 3px -3px, -3px 0px;
+
+		&:hover {
+			border-color: var(--dev-panel-input-border-color-hover);
+			transform: scale(1.05);
+		}
+
+		&:focus-within {
+			border-color: var(--dev-panel-input-border-color-focus);
+			box-shadow: 0 0 0 3px color-mix(in srgb, var(--dev-panel-accent-color) 20%, transparent);
+		}
+
+		&:active {
+			transform: scale(0.95);
+		}
+
+		input[type="color"] {
+			background: none;
+			border: 0;
+			width: 150%;
+			height: 150%;
+			margin: -25%;
+			cursor: pointer;
+			opacity: 0;
+
+			&:focus {
+				outline: none;
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				opacity: 0.5;
+			}
+		}
 	}
 
-	input[type="color"] {
-		background: none;
-		border: 0;
-		width: 150%;
-		height: 150%;
-		margin: -25%;
+	.inputSection {
+		display: flex;
+		flex-direction: column;
+		gap: var(--dev-panel-spacing-sm);
+	}
 
-		&:focus {
-			border-radius: 0;
-			outline: none;
+	.errorMessage {
+		font-size: var(--dev-panel-font-size-xs);
+		color: var(--dev-panel-danger-color);
+		font-weight: var(--dev-panel-font-weight-medium);
+	}
+
+	.presets {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--dev-panel-spacing-xs);
+		margin-top: var(--dev-panel-spacing-xs);
+
+		.presetColor {
+			width: 24px;
+			height: 24px;
+			border: 1px solid var(--dev-panel-input-border-color);
+			border-radius: var(--dev-panel-border-radius-sm);
+			cursor: pointer;
+			transition: var(--dev-panel-transition);
+			background: none;
+			padding: 0;
+
+			&:hover {
+				border-color: var(--dev-panel-input-border-color-hover);
+				transform: scale(1.1);
+			}
+
+			&:focus {
+				outline: none;
+				border-color: var(--dev-panel-input-border-color-focus);
+				box-shadow: 0 0 0 2px color-mix(in srgb, var(--dev-panel-accent-color) 20%, transparent);
+			}
+
+			&:active {
+				transform: scale(0.95);
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				opacity: 0.5;
+				transform: none !important;
+			}
+		}
+	}
+
+	// Enhanced disabled state
+	&:has(input:disabled) {
+		opacity: 0.6;
+		pointer-events: none;
+
+		.colorPreview {
+			cursor: not-allowed;
+			transform: none !important;
 		}
 	}
 }

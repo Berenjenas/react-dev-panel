@@ -1,0 +1,166 @@
+// =============================================================================
+// Variables
+// =============================================================================
+
+:root {
+	// Typography
+	--dev-panel-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+	--dev-panel-font-weight-normal: 400;
+	--dev-panel-font-weight-medium: 500;
+	--dev-panel-font-weight-semibold: 600;
+	--dev-panel-font-weight-bold: 700;
+	--dev-panel-font-size-xs: 11px;
+	--dev-panel-font-size-sm: 12px;
+	--dev-panel-font-size-md: 14px;
+	--dev-panel-font-size-lg: 16px;
+	--dev-panel-font-size-xl: 18px;
+	--dev-panel-line-height-tight: 1.25;
+	--dev-panel-line-height-normal: 1.5;
+	--dev-panel-line-height-relaxed: 1.75;
+
+	// Color Palette - Dark Theme (Default)
+	--dev-panel-accent-color: #6366f1;
+	--dev-panel-accent-color-hover: #5855eb;
+	--dev-panel-accent-color-active: #4f46e5;
+	--dev-panel-accent-color-disabled: #6366f150;
+
+	--dev-panel-primary-color: #6366f1;
+	--dev-panel-primary-color-hover: #5855eb;
+	--dev-panel-primary-color-active: #4f46e5;
+
+	--dev-panel-secondary-color: #64748b;
+	--dev-panel-secondary-color-hover: #475569;
+	--dev-panel-secondary-color-active: #334155;
+
+	--dev-panel-success-color: #10b981;
+	--dev-panel-success-color-hover: #059669;
+	--dev-panel-success-color-active: #047857;
+
+	--dev-panel-warning-color: #f59e0b;
+	--dev-panel-warning-color-hover: #d97706;
+	--dev-panel-warning-color-active: #b45309;
+
+	--dev-panel-error-color: #ef4444;
+	--dev-panel-error-color-hover: #dc2626;
+	--dev-panel-error-color-active: #b91c1c;
+
+	--dev-panel-info-color: #06b6d4;
+	--dev-panel-info-color-hover: #0891b2;
+	--dev-panel-info-color-active: #0e7490;
+
+	// Background Colors
+	--dev-panel-background-color: #1e293b;
+	--dev-panel-background-color-secondary: #334155;
+	--dev-panel-background-color-tertiary: #475569;
+	--dev-panel-foreground-color: #0f172a;
+	--dev-panel-surface-color: #334155;
+	--dev-panel-surface-color-hover: #475569;
+	--dev-panel-surface-color-active: #64748b;
+
+	// Text Colors
+	--dev-panel-text-color: #f1f5f9;
+	--dev-panel-text-color-secondary: #cbd5e1;
+	--dev-panel-text-color-muted: #94a3b8;
+	--dev-panel-text-color-disabled: #64748b;
+	--dev-panel-text-color-on-accent: #ffffff;
+	--dev-panel-text-color-on-surface: #f1f5f9;
+
+	// Border Colors
+	--dev-panel-border-color: #475569;
+	--dev-panel-border-color-light: #64748b;
+	--dev-panel-border-color-strong: #334155;
+	--dev-panel-border-color-accent: #6366f1;
+
+	// Input Colors
+	--dev-panel-input-background-color: #0f172a;
+	--dev-panel-input-background-color-hover: #1e293b;
+	--dev-panel-input-background-color-focus: #1e293b;
+	--dev-panel-input-border-color: #475569;
+	--dev-panel-input-border-color-hover: #64748b;
+	--dev-panel-input-border-color-focus: #6366f1;
+	--dev-panel-input-text-color: #f1f5f9;
+	--dev-panel-input-placeholder-color: #64748b;
+
+	// Spacing Scale
+	--dev-panel-spacing-xs: 2px;
+	--dev-panel-spacing-sm: 4px;
+	--dev-panel-spacing-md: 8px;
+	--dev-panel-spacing-lg: 12px;
+	--dev-panel-spacing-xl: 16px;
+	--dev-panel-spacing-2xl: 20px;
+	--dev-panel-spacing-3xl: 24px;
+	--dev-panel-spacing-4xl: 32px;
+
+	// Shadow System
+	--dev-panel-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--dev-panel-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+	--dev-panel-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--dev-panel-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--dev-panel-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+	--dev-panel-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+	--dev-panel-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+	--dev-panel-shadow: var(--dev-panel-shadow-xl);
+
+	// Border Radius Scale
+	--dev-panel-border-radius-none: 0;
+	--dev-panel-border-radius-sm: 2px;
+	--dev-panel-border-radius-md: 4px;
+	--dev-panel-border-radius-lg: 6px;
+	--dev-panel-border-radius-xl: 8px;
+	--dev-panel-border-radius-2xl: 12px;
+	--dev-panel-border-radius-full: 9999px;
+	--dev-panel-border-radius: var(--dev-panel-border-radius-lg);
+
+	// Component Sizes
+	--dev-panel-max-width: 320px;
+	--dev-panel-min-width: 280px;
+	--dev-panel-max-height: 80vh;
+	--dev-panel-min-height: auto;
+	--dev-panel-header-height: auto;
+	--dev-panel-inputs-height: 32px;
+	--dev-panel-inputs-height-sm: 28px;
+	--dev-panel-inputs-height-lg: 36px;
+	--dev-panel-button-height: 32px;
+	--dev-panel-button-height-sm: 28px;
+	--dev-panel-button-height-lg: 36px;
+
+	// Transitions & Animations
+	--dev-panel-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	--dev-panel-transition-normal: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	--dev-panel-transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	--dev-panel-transition: var(--dev-panel-transition-normal);
+
+	// Z-index Scale
+	--dev-panel-z-index-dropdown: 1000;
+	--dev-panel-z-index-sticky: 1020;
+	--dev-panel-z-index-fixed: 1030;
+	--dev-panel-z-index-modal-backdrop: 1040;
+	--dev-panel-z-index-modal: 1050;
+	--dev-panel-z-index-popover: 1060;
+	--dev-panel-z-index-tooltip: 1070;
+	--dev-panel-z-index-toast: 1080;
+	--dev-panel-z-index: var(--dev-panel-z-index-modal);
+
+	// Opacity Scale
+	--dev-panel-opacity-0: 0;
+	--dev-panel-opacity-5: 0.05;
+	--dev-panel-opacity-10: 0.1;
+	--dev-panel-opacity-20: 0.2;
+	--dev-panel-opacity-25: 0.25;
+	--dev-panel-opacity-30: 0.3;
+	--dev-panel-opacity-40: 0.4;
+	--dev-panel-opacity-50: 0.5;
+	--dev-panel-opacity-60: 0.6;
+	--dev-panel-opacity-70: 0.7;
+	--dev-panel-opacity-75: 0.75;
+	--dev-panel-opacity-80: 0.8;
+	--dev-panel-opacity-90: 0.9;
+	--dev-panel-opacity-95: 0.95;
+	--dev-panel-opacity-100: 1;
+
+	// Scrollbar Styling
+	--dev-panel-scrollbar-width: 6px;
+	--dev-panel-scrollbar-track-color: var(--dev-panel-background-color-secondary);
+	--dev-panel-scrollbar-thumb-color: var(--dev-panel-border-color);
+	--dev-panel-scrollbar-thumb-hover-color: var(--dev-panel-border-color-light);
+}

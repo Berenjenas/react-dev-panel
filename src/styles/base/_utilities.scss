@@ -1,0 +1,20 @@
+// =============================================================================
+// Utilities
+// =============================================================================
+
+@use "../abstracts" as *;
+
+// Base scrollbar class (for backward compatibility)
+.dev-panel-scrollbar {
+	@include scrollbar;
+}
+
+// Focus ring utility class
+.dev-panel-focus-ring {
+	@include focus-ring;
+}
+
+// Interactive state utility class
+.dev-panel-interactive {
+	@include interactive;
+}

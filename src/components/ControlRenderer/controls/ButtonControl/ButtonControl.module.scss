@@ -1,22 +1,82 @@
+@use "../../../../styles/abstracts" as *;
+
 .button {
+	@include button-base;
+
 	width: 100%;
-	min-height: var(--dev-panel-inputs-height);
-	padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-sm);
-	border: none;
-	border-radius: 4px;
-	font-size: 11px;
-	font-weight: 500;
+	min-height: var(--dev-panel-button-height);
+	border-color: var(--dev-panel-accent-color);
 	background-color: var(--dev-panel-accent-color);
-	color: var(--dev-panel-text-color-highlight);
-	cursor: pointer;
-	transition: var(--dev-panel-transition);
+	color: var(--dev-panel-text-color-on-accent);
+	text-align: center;
 
 	&:hover:not(:disabled) {
-		background-color: color-mix(in srgb, var(--dev-panel-accent-color) 80%, transparent);
+		background-color: var(--dev-panel-accent-color-hover);
+		border-color: var(--dev-panel-accent-color-hover);
+		box-shadow: var(--dev-panel-shadow-md);
+	}
+
+	&:active:not(:disabled) {
+		background-color: var(--dev-panel-accent-color-active);
+		border-color: var(--dev-panel-accent-color-active);
+		box-shadow: var(--dev-panel-shadow-sm);
+	}
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--dev-panel-accent-color) 30%, transparent);
+	}
+
+	&:focus:not(:focus-visible) {
+		box-shadow: none;
 	}
 
 	&:disabled {
-		background-color: color-mix(in srgb, var(--dev-panel-accent-color) 20%, var(--dev-panel-background-color));
+		background-color: var(--dev-panel-accent-color-disabled);
+		border-color: var(--dev-panel-accent-color-disabled);
+		color: var(--dev-panel-text-color-disabled);
+		transform: none;
+		box-shadow: none;
+		opacity: var(--dev-panel-opacity-50);
 		cursor: not-allowed;
+	}
+
+	// Secondary variant
+	&.secondary {
+		background-color: transparent;
+		color: var(--dev-panel-accent-color);
+		border-color: var(--dev-panel-accent-color);
+
+		&:hover:not(:disabled) {
+			background-color: color-mix(in srgb, var(--dev-panel-accent-color) 10%, transparent);
+			color: var(--dev-panel-accent-color-hover);
+			border-color: var(--dev-panel-accent-color-hover);
+		}
+
+		&:active:not(:disabled) {
+			background-color: color-mix(in srgb, var(--dev-panel-accent-color) 20%, transparent);
+			color: var(--dev-panel-accent-color-active);
+			border-color: var(--dev-panel-accent-color-active);
+		}
+
+		&:disabled {
+			background-color: transparent;
+			color: var(--dev-panel-text-color-disabled);
+			border-color: var(--dev-panel-border-color);
+		}
+	}
+
+	// Small size variant
+	&.small {
+		min-height: var(--dev-panel-button-height-sm);
+		padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-md);
+		font-size: var(--dev-panel-font-size-xs);
+	}
+
+	// Large size variant
+	&.large {
+		min-height: var(--dev-panel-button-height-lg);
+		padding: var(--dev-panel-spacing-lg) var(--dev-panel-spacing-xl);
+		font-size: var(--dev-panel-font-size-md);
 	}
 }

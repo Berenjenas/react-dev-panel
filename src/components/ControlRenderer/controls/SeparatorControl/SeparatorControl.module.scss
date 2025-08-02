@@ -1,47 +1,50 @@
 .line {
 	width: 100%;
 	height: 1px;
-	background-color: var(--dev-panel-border-color);
-	margin: var(--dev-panel-spacing-sm) 0;
-	opacity: 0.3;
+	background: linear-gradient(to right, transparent, var(--dev-panel-border-color), transparent);
+	margin: var(--dev-panel-spacing-lg) 0;
+	opacity: var(--dev-panel-opacity-60);
 }
 
 .space {
-	height: var(--dev-panel-spacing-md);
+	height: var(--dev-panel-spacing-xl);
 	width: 100%;
 }
 
 .labelContainer {
+	position: relative;
 	display: flex;
 	align-items: center;
-	margin: var(--dev-panel-spacing-md) 0 var(--dev-panel-spacing-sm) 0;
-	position: relative;
+	margin: var(--dev-panel-spacing-sm) 0;
 
 	&::before {
 		content: "";
 		flex: 1;
 		height: 1px;
-		background-color: var(--dev-panel-border-color);
-		opacity: 0.3;
-		margin-right: var(--dev-panel-spacing-sm);
+		background: linear-gradient(to right, transparent, var(--dev-panel-border-color) 50%);
+		opacity: var(--dev-panel-opacity-60);
+		margin-right: var(--dev-panel-spacing-md);
 	}
 
 	&::after {
 		content: "";
 		flex: 1;
 		height: 1px;
-		background-color: var(--dev-panel-border-color);
-		opacity: 0.3;
-		margin-left: var(--dev-panel-spacing-sm);
+		background: linear-gradient(to left, transparent, var(--dev-panel-border-color) 50%);
+		opacity: var(--dev-panel-opacity-60);
+		margin-left: var(--dev-panel-spacing-md);
 	}
 }
 
 .label {
 	font-size: var(--dev-panel-font-size-xs);
-	font-weight: 600;
+	font-weight: var(--dev-panel-font-weight-semibold);
 	color: var(--dev-panel-text-color-muted);
 	text-transform: uppercase;
-	letter-spacing: 0.5px;
+	letter-spacing: 0.1em;
 	white-space: nowrap;
-	padding: 0 var(--dev-panel-spacing-xs);
+	padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-md);
+	background: var(--dev-panel-background-color);
+	border-radius: var(--dev-panel-border-radius-full);
+	border: 1px solid var(--dev-panel-border-color);
 }

@@ -1,23 +1,90 @@
+@use "../../../../styles/abstracts" as *;
+
 .buttonGroupContainer {
+	@include scrollbar;
+
 	width: 100%;
-	display: grid;
-	grid-auto-columns: 1fr;
-	grid-auto-flow: column;
-	gap: 1px;
+	display: flex;
+	gap: var(--dev-panel-spacing-sm);
+	background: var(--dev-panel-surface-color);
+	border: 1px solid var(--dev-panel-border-color);
+	border-radius: var(--dev-panel-border-radius);
+	padding: var(--dev-panel-spacing-sm);
+	overflow-x: auto;
+	container-type: inline-size;
 
-	button {
-		&:first-child {
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
+	@container (max-width: 300px) {
+		gap: var(--dev-panel-spacing-xs);
+		padding: var(--dev-panel-spacing-xs);
+
+		.button {
+			padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-md);
+			font-size: var(--dev-panel-font-size-xs);
+		}
+	}
+
+	.button {
+		@include reset-button;
+
+		flex: 0 0 auto;
+		min-width: max-content;
+		background: var(--dev-panel-input-background-color);
+		color: var(--dev-panel-text-color);
+		font-family: var(--dev-panel-font-family);
+		font-size: var(--dev-panel-font-size-sm);
+		font-weight: var(--dev-panel-font-weight-medium);
+		padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-lg);
+		border: 1px solid var(--dev-panel-input-border-color);
+		border-radius: var(--dev-panel-border-radius);
+		transition: var(--dev-panel-transition);
+		min-height: var(--dev-panel-inputs-height);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+		cursor: pointer;
+
+		&:hover:not(:disabled):not(.active) {
+			background: var(--dev-panel-surface-color-hover);
+			border-color: var(--dev-panel-input-border-color-hover);
 		}
 
-		&:not(:last-child):not(:first-child) {
-			border-radius: 0;
+		&:active:not(:disabled) {
+			transform: scale(0.98);
 		}
 
-		&:last-child {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
+		&:focus {
+			outline: none;
+			border-color: var(--dev-panel-input-border-color-focus);
+			box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 		}
+
+		&:focus:not(:focus-visible) {
+			box-shadow: none;
+		}
+
+		&.active {
+			background: var(--dev-panel-accent-color);
+			color: var(--dev-panel-text-color-on-accent);
+			border-color: var(--dev-panel-accent-color);
+
+			&:hover {
+				background: var(--dev-panel-accent-color-hover);
+				border-color: var(--dev-panel-accent-color-hover);
+			}
+		}
+
+		&:disabled {
+			opacity: var(--dev-panel-opacity-50);
+			cursor: not-allowed;
+			background: var(--dev-panel-surface-color);
+		}
+	}
+
+	// Compact variant for many buttons
+	&.compact .button {
+		padding: var(--dev-panel-spacing-xs) var(--dev-panel-spacing-md);
+		font-size: var(--dev-panel-font-size-xs);
+		min-height: calc(var(--dev-panel-inputs-height) - 4px);
 	}
 }

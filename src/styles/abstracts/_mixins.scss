@@ -1,0 +1,187 @@
+// =============================================================================
+// Mixins
+// =============================================================================
+
+// Scrollbar styling mixin
+@mixin scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: var(--dev-panel-scrollbar-thumb-color) var(--dev-panel-scrollbar-track-color);
+
+	&::-webkit-scrollbar {
+		width: var(--dev-panel-scrollbar-width);
+		height: var(--dev-panel-scrollbar-width);
+	}
+
+	&::-webkit-scrollbar-track {
+		background: var(--dev-panel-scrollbar-track-color);
+		border-radius: var(--dev-panel-border-radius-md);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: var(--dev-panel-scrollbar-thumb-color);
+		border-radius: var(--dev-panel-border-radius-md);
+		transition: var(--dev-panel-transition-fast);
+
+		&:hover {
+			background: var(--dev-panel-scrollbar-thumb-hover-color);
+		}
+	}
+
+	&::-webkit-scrollbar-corner {
+		background: var(--dev-panel-scrollbar-track-color);
+	}
+}
+
+// Focus ring mixin
+@mixin focus-ring {
+	&:focus {
+		outline: 2px solid var(--dev-panel-accent-color);
+		outline-offset: 2px;
+	}
+
+	&:focus:not(:focus-visible) {
+		outline: none;
+	}
+}
+
+// Interactive element mixin
+@mixin interactive {
+	transition: var(--dev-panel-transition);
+	cursor: pointer;
+
+	&:hover {
+		opacity: var(--dev-panel-opacity-80);
+	}
+
+	&:active {
+		transform: scale(0.98);
+	}
+
+	&:disabled {
+		opacity: var(--dev-panel-opacity-50);
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+}
+
+// Button base styles mixin
+@mixin button-base {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--dev-panel-spacing-sm);
+	padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-lg);
+	font-family: var(--dev-panel-font-family);
+	font-size: var(--dev-panel-font-size-sm);
+	font-weight: var(--dev-panel-font-weight-medium);
+	line-height: var(--dev-panel-line-height-tight);
+	border: 1px solid transparent;
+	border-radius: var(--dev-panel-border-radius);
+	background: transparent;
+	color: inherit;
+	text-decoration: none;
+	white-space: nowrap;
+	user-select: none;
+	transition: var(--dev-panel-transition);
+	cursor: pointer;
+
+	&:disabled {
+		opacity: var(--dev-panel-opacity-50);
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+}
+
+// Input base styles mixin
+@mixin input-base {
+	display: block;
+	width: 100%;
+	height: var(--dev-panel-inputs-height);
+	padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-lg);
+	font-family: var(--dev-panel-font-family);
+	font-size: var(--dev-panel-font-size-sm);
+	line-height: var(--dev-panel-line-height-normal);
+	color: var(--dev-panel-input-text-color);
+	background-color: var(--dev-panel-input-background-color);
+	border: 1px solid var(--dev-panel-input-border-color);
+	border-radius: var(--dev-panel-border-radius);
+	transition: var(--dev-panel-transition);
+
+	&::placeholder {
+		color: var(--dev-panel-input-placeholder-color);
+	}
+
+	&:hover:not(:disabled) {
+		background-color: var(--dev-panel-input-background-color-hover);
+		border-color: var(--dev-panel-input-border-color-hover);
+	}
+
+	&:focus {
+		outline: none;
+		background-color: var(--dev-panel-input-background-color-focus);
+		border-color: var(--dev-panel-input-border-color-focus);
+		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+	}
+
+	&:disabled {
+		opacity: var(--dev-panel-opacity-50);
+		cursor: not-allowed;
+		background-color: var(--dev-panel-surface-color);
+		border-color: var(--dev-panel-border-color);
+	}
+}
+
+// Surface elevation mixin
+@mixin surface($level: 1) {
+	background-color: var(--dev-panel-surface-color);
+	border: 1px solid var(--dev-panel-border-color);
+	border-radius: var(--dev-panel-border-radius);
+
+	@if $level == 1 {
+		box-shadow: var(--dev-panel-shadow-sm);
+	} @else if $level == 2 {
+		box-shadow: var(--dev-panel-shadow-md);
+	} @else if $level == 3 {
+		box-shadow: var(--dev-panel-shadow-lg);
+	} @else if $level == 4 {
+		box-shadow: var(--dev-panel-shadow-xl);
+	}
+}
+
+// Text truncation mixin
+@mixin truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+// Visually hidden mixin (for accessibility)
+@mixin visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+// Reset button styles mixin
+@mixin reset-button {
+	padding: 0;
+	margin: 0;
+	border: none;
+	background: none;
+	font: inherit;
+	color: inherit;
+	cursor: pointer;
+}
+
+// Reset list styles mixin
+@mixin reset-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
