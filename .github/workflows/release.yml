@@ -1,0 +1,47 @@
+name: Release
+
+on:
+    push:
+        branches:
+            - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        # IMPORTANT: prevent this action from running on forks
+        if: github.repository == 'Berenjenas/react-dev-panel'
+        permissions:
+            contents: write # to create release (changesets/action)
+            pull-requests: write # to create pull request (changesets/action)
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Run Tests
+              run: npm test
+
+            - name: Build Package
+              run: npm run build
+
+            - name: Create Release Pull Request or Publish to npm
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  publish: npm run release
+                  title: "chore: version packages"
+                  commit: "chore: version packages"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
