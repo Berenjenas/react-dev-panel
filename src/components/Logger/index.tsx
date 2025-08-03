@@ -25,7 +25,7 @@ type LoggerProps = {
  * A floating, collapsible logger component that displays object data in JSON format.
  * @returns JSX element or null if not visible
  */
-export function Logger({ items, title = "Logger", theme = "auto", defaultCollapsed = true, defaultVisible = true, onClose }: LoggerProps) {
+export function Logger({ items, title = "Logger", theme = "auto", defaultCollapsed = false, defaultVisible = true, onClose }: LoggerProps) {
 	const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 	const [isVisible, setIsVisible] = useState(defaultVisible);
 	const [isDark, setIsDark] = useState(false);
