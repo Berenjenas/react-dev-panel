@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { className } from "@/utils";
+import { className } from "@/utils/className";
 
 import { Icon } from "../Icon";
 

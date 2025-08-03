@@ -5,7 +5,7 @@ import type { ControlsGroup } from "@/components/ControlRenderer/controls/types"
 import type { DevPanelProps } from "@/components/DevPanel/types";
 import { DevPanelPortal } from "@/components/DevPanelPortal";
 import { DevPanelManager } from "@/managers/DevPanelManager";
-import { useDevPanelSectionActions, useDevPanelSections } from "@/store";
+import { useDevPanelSectionActions, useDevPanelSections } from "@/store/SectionsStore";
 import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged";
 
 type WindowWithDevPanel = Window & { __devPanelAutoMounted?: boolean };

@@ -2,8 +2,10 @@ import { useCallback, useEffect } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotkeys";
-import { useDevPanelSections, useDevPanelThemeActions, useDevPanelUI } from "@/store";
-import { className } from "@/utils";
+import { useDevPanelSections } from "@/store/SectionsStore";
+import { useDevPanelThemeActions } from "@/store/ThemeStore";
+import { useDevPanelUI } from "@/store/UIStore";
+import { className } from "@/utils/className";
 
 import { EmptyContent } from "../EmptyContent";
 import { Icon } from "../Icon";

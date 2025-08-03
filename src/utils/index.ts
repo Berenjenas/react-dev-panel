@@ -7,4 +7,3 @@ export * from "./getCurrentElementPosition";
 export * from "./getPositionAdjustment";
 export * from "./hasControlChanged";
 export * from "./isMacOS";
-export * from "./matrixEffect";

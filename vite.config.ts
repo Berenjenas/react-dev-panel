@@ -29,7 +29,16 @@ export default defineConfig({
 		react(),
 		libInjectCss(),
 		dts({
-			exclude: ["**/*.stories.tsx", "src/test", "**/*.test.tsx", "**/*-env.d.ts", "**/*.spec.ts", "**/*-tests.ts", "src/components/logger.tsx"],
+			exclude: [
+				"**/*.stories.tsx",
+				"src/test",
+				"**/*.test.tsx",
+				"**/*-env.d.ts",
+				"**/*.spec.ts",
+				"**/*-tests.ts",
+				"src/components/Logger/**",
+				"src/utils/matrixEffect/**",
+			],
 			tsconfigPath: "tsconfig.app.json",
 			rollupTypes: false,
 			insertTypesEntry: true,
@@ -54,7 +63,8 @@ export default defineConfig({
 						"src/**/*.test.tsx",
 						"src/**/*.spec.ts",
 						"src/setup-tests.ts",
-						"src/components/logger.tsx",
+						"src/components/Logger/**",
+						"src/utils/matrixEffect/**",
 					],
 				}).map((file) => {
 					const entryName = relative("src", file.slice(0, file.length - extname(file).length));

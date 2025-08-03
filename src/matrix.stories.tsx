@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
-import { createMatrixEffect, type MatrixEffect } from "@/utils";
+import { createMatrixEffect, type MatrixEffect } from "@/utils/matrixEffect";
 
 function Main() {
 	const [matrixMode, setMatrixMode] = useState(false);
