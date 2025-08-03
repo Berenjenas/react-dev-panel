@@ -1,19 +1,14 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { DevPanel } from "@/components";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
 import type { ColorControl as ColorControlType } from "./types";
 
-type ColorControlShowcaseProps = {
-	devPanelTitle?: string;
-};
-
 /**
  * Comprehensive showcase of the ColorControl component with various configurations
  */
-function ColorControlShowcase(props: ColorControlShowcaseProps) {
+function ColorControlShowcase() {
 	const [basicColor, setBasicColor] = useState("#ff6b35");
 	const [hexColor, setHexColor] = useState("#4ecdc4");
 	const [namedColor, setNamedColor] = useState("crimson");
@@ -244,8 +239,6 @@ function ColorControlShowcase(props: ColorControlShowcaseProps) {
 					</div>
 				</div>
 			</div>
-
-			<DevPanel panelTitle={props.devPanelTitle} />
 		</>
 	);
 }
@@ -254,7 +247,7 @@ function ColorControlShowcase(props: ColorControlShowcaseProps) {
 // Storybook Configuration
 // =============================================================================
 
-const meta: Meta<ColorControlShowcaseProps> = {
+const meta: Meta<typeof ColorControlShowcase> = {
 	title: "Controls/ColorControl",
 	parameters: {
 		layout: "fullscreen",
@@ -333,10 +326,10 @@ The control supports all valid CSS color formats:
 
 export default meta;
 
-type Story = StoryObj<ColorControlShowcaseProps>;
+type Story = StoryObj<typeof ColorControlShowcase>;
 
 export const ColorControlDemo: Story = {
-	render: (args) => <ColorControlShowcase {...args} />,
+	render: () => <ColorControlShowcase />,
 	args: {
 		devPanelTitle: "🎨 Color Controls",
 	},

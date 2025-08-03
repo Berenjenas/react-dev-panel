@@ -4,7 +4,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Logger } from "./components/Logger";
 import { useDevPanel } from "./hooks/useDevPanel";
 import { useHotkeys } from "./hooks/useHotkeys";
-import { DevPanel } from "./components";
 import { createHotkey } from "./utils";
 
 type IntegrationTestProps = {
@@ -34,56 +33,62 @@ function IntegrationTest(props: IntegrationTestProps) {
 	const [notifications, setNotifications] = useState(true);
 
 	// User Profile Section
-	useDevPanel("User Profile", {
-		name: {
-			type: "text",
-			value: name,
-			label: "Full Name",
-			placeholder: "Enter your full name",
-			description: "User's display name",
-			onChange: setName,
-		},
-		email: {
-			type: "text",
-			value: email,
-			label: "Email Address",
-			placeholder: "user@example.com",
-			event: "onBlur",
-			onChange: setEmail,
-		},
-		age: {
-			type: "number",
-			value: age,
-			label: "Age",
-			min: 13,
-			max: 120,
-			step: 1,
-			description: "Must be 13 or older",
-			onChange: setAge,
-		},
-		birthDate: {
-			type: "date",
-			value: birthDate,
-			label: "Birth Date",
-			max: "2011-01-01", // Must be at least 13
-			onChange: setBirthDate,
-		},
+	useDevPanel(
+		"User Profile",
+		{
+			name: {
+				type: "text",
+				value: name,
+				label: "Full Name",
+				placeholder: "Enter your full name",
+				description: "User's display name",
+				onChange: setName,
+			},
+			email: {
+				type: "text",
+				value: email,
+				label: "Email Address",
+				placeholder: "user@example.com",
+				event: "onBlur",
+				onChange: setEmail,
+			},
+			age: {
+				type: "number",
+				value: age,
+				label: "Age",
+				min: 13,
+				max: 120,
+				step: 1,
+				description: "Must be 13 or older",
+				onChange: setAge,
+			},
+			birthDate: {
+				type: "date",
+				value: birthDate,
+				label: "Birth Date",
+				max: "2011-01-01", // Must be at least 13
+				onChange: setBirthDate,
+			},
 
-		// Separator for organization
-		profileSeparator: {
-			type: "separator",
-			style: "label",
-			label: "Account Status",
-		},
+			// Separator for organization
+			profileSeparator: {
+				type: "separator",
+				style: "label",
+				label: "Account Status",
+			},
 
-		isActive: {
-			type: "boolean",
-			value: isActive,
-			label: "Active Account",
-			description: isActive ? "✅ Account is active" : "❌ Account is inactive",
-			onChange: setIsActive,
+			isActive: {
+				type: "boolean",
+				value: isActive,
+				label: "Active Account",
+				description: isActive ? "✅ Account is active" : "❌ Account is inactive",
+				onChange: setIsActive,
+			},
 		},
-	});
+		{
+			panelTitle: props.devPanelTitle || "Default title",
+		},
+	);
 
 	// UI Customization Section
 	useDevPanel("UI Customization", {
@@ -285,7 +290,6 @@ function IntegrationTest(props: IntegrationTestProps) {
 			</div>
 
 			<Logger items={currentState} />
-			<DevPanel panelTitle={props.devPanelTitle} />
 		</>
 	);
 }
@@ -309,119 +313,125 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 		setLastAction(action);
 	}
 
-	useDevPanel("Hotkey Configuration", {
-		isEnabled: {
-			type: "boolean",
-			value: isEnabled,
-			label: "Enable Hotkeys",
-			description: isEnabled ? "✅ Hotkeys are active" : "❌ Hotkeys disabled",
-			onChange: setIsEnabled,
-		},
+	useDevPanel(
+		"Hotkey Configuration",
+		{
+			isEnabled: {
+				type: "boolean",
+				value: isEnabled,
+				label: "Enable Hotkeys",
+				description: isEnabled ? "✅ Hotkeys are active" : "❌ Hotkeys disabled",
+				onChange: setIsEnabled,
+			},
 
-		configSeparator: {
-			type: "separator",
-			style: "label",
-			label: "Panel Hotkeys",
-		},
+			configSeparator: {
+				type: "separator",
+				style: "label",
+				label: "Panel Hotkeys",
+			},
 
-		panelInfo: {
-			type: "text",
-			value: "Ctrl+Shift+A",
-			label: "Toggle Panel",
-			description: "Default hotkey to show/hide the dev panel",
-			event: "onBlur",
-			onChange: () => {}, // Read-only for demo
-		},
+			panelInfo: {
+				type: "text",
+				value: "Ctrl+Shift+A",
+				label: "Toggle Panel",
+				description: "Default hotkey to show/hide the dev panel",
+				event: "onBlur",
+				onChange: () => {}, // Read-only for demo
+			},
 
-		demoSeparator: {
-			type: "separator",
-			style: "label",
-			label: "Demo Controls",
-		},
+			demoSeparator: {
+				type: "separator",
+				style: "label",
+				label: "Demo Controls",
+			},
 
-		message: {
-			type: "text",
-			value: message,
-			label: "Message",
-			placeholder: "Type a message and press Ctrl+S to save",
-			description: "Use Ctrl+S to save this message",
-			onChange: setMessage,
-		},
-		counter: {
-			type: "number",
-			value: counter,
-			label: "Counter",
-			description: "Use + and - keys to increment/decrement",
-			min: 0,
-			max: 100,
-			onChange: setCounter,
-		},
-		selectedTheme: {
-			type: "select",
-			value: selectedTheme,
-			label: "Theme",
-			options: [
-				{ label: "🎨 Default", value: "default" },
-				{ label: "🌙 Dark", value: "dark" },
-				{ label: "☀️ Light", value: "light" },
-				{ label: "🌈 Colorful", value: "colorful" },
-			],
-			description: "Use T key to cycle through themes",
-			onChange: setSelectedTheme,
-		},
+			message: {
+				type: "text",
+				value: message,
+				label: "Message",
+				placeholder: "Type a message and press Ctrl+S to save",
+				description: "Use Ctrl+S to save this message",
+				onChange: setMessage,
+			},
+			counter: {
+				type: "number",
+				value: counter,
+				label: "Counter",
+				description: "Use + and - keys to increment/decrement",
+				min: 0,
+				max: 100,
+				onChange: setCounter,
+			},
+			selectedTheme: {
+				type: "select",
+				value: selectedTheme,
+				label: "Theme",
+				options: [
+					{ label: "🎨 Default", value: "default" },
+					{ label: "🌙 Dark", value: "dark" },
+					{ label: "☀️ Light", value: "light" },
+					{ label: "🌈 Colorful", value: "colorful" },
+				],
+				description: "Use T key to cycle through themes",
+				onChange: setSelectedTheme,
+			},
 
-		actionsSeparator: {
-			type: "separator",
-			style: "label",
-			label: "Actions",
-		},
+			actionsSeparator: {
+				type: "separator",
+				style: "label",
+				label: "Actions",
+			},
 
-		actionButtons: {
-			type: "buttonGroup",
-			label: "Quick Actions",
-			buttons: [
-				{
-					label: "🔄 Reset (R)",
-					onClick: () => {
-						setCounter(0);
-						setMessage("");
-						setSelectedTheme("default");
-						addLog("Reset All", "R");
+			actionButtons: {
+				type: "buttonGroup",
+				label: "Quick Actions",
+				buttons: [
+					{
+						label: "🔄 Reset (R)",
+						onClick: () => {
+							setCounter(0);
+							setMessage("");
+							setSelectedTheme("default");
+							addLog("Reset All", "R");
+						},
 					},
-				},
-				{
-					label: "🎲 Random (Space)",
-					onClick: () => {
-						const randomValue = Math.floor(Math.random() * 100);
-						setCounter(randomValue);
-						addLog(`Random: ${randomValue}`, "Space");
+					{
+						label: "🎲 Random (Space)",
+						onClick: () => {
+							const randomValue = Math.floor(Math.random() * 100);
+							setCounter(randomValue);
+							addLog(`Random: ${randomValue}`, "Space");
+						},
 					},
-				},
-				{
-					label: "📋 Copy (Ctrl+C)",
-					onClick: () => {
-						navigator.clipboard.writeText(`Counter: ${counter}, Message: ${message}`);
-						addLog("Copied to clipboard", "Ctrl+C");
+					{
+						label: "📋 Copy (Ctrl+C)",
+						onClick: () => {
+							navigator.clipboard.writeText(`Counter: ${counter}, Message: ${message}`);
+							addLog("Copied to clipboard", "Ctrl+C");
+						},
 					},
+				],
+			},
+
+			logsSeparator: {
+				type: "separator",
+				style: "space",
+			},
+
+			clearLogs: {
+				type: "button",
+				label: "🧹 Clear Logs (Escape)",
+				description: "Clear the action log",
+				onClick: () => {
+					setLogs([]);
+					setLastAction("Logs cleared");
 				},
-			],
-		},
-
-		logsSeparator: {
-			type: "separator",
-			style: "space",
-		},
-
-		clearLogs: {
-			type: "button",
-			label: "🧹 Clear Logs (Escape)",
-			description: "Clear the action log",
-			onClick: () => {
-				setLogs([]);
-				setLastAction("Logs cleared");
 			},
 		},
-	});
+		{
+			panelTitle: props.devPanelTitle || "Hotkey Demo",
+		},
+	);
 
 	// Demo hotkeys using useHotkeys
 	useHotkeys(
@@ -711,8 +721,6 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 			</div>
 
 			<Logger items={{ message, counter, selectedTheme, lastAction, isEnabled, logsCount: logs.length }} />
-
-			<DevPanel panelTitle={props.devPanelTitle} />
 		</>
 	);
 }

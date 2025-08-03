@@ -75,7 +75,7 @@
 	font-size: var(--dev-panel-font-size-sm);
 	font-weight: var(--dev-panel-font-weight-medium);
 	line-height: var(--dev-panel-line-height-tight);
-	border: 1px solid transparent;
+	border: var(--dev-panel-input-border-width) solid transparent;
 	border-radius: var(--dev-panel-border-radius);
 	background: transparent;
 	color: inherit;
@@ -96,14 +96,14 @@
 @mixin input-base {
 	display: block;
 	width: 100%;
-	height: var(--dev-panel-inputs-height);
-	padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-lg);
+	height: var(--dev-panel-inputs-height-sm);
+	padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-md);
 	font-family: var(--dev-panel-font-family);
 	font-size: var(--dev-panel-font-size-sm);
 	line-height: var(--dev-panel-line-height-normal);
 	color: var(--dev-panel-input-text-color);
 	background-color: var(--dev-panel-input-background-color);
-	border: 1px solid var(--dev-panel-input-border-color);
+	border: var(--dev-panel-input-border-width) solid var(--dev-panel-input-border-color);
 	border-radius: var(--dev-panel-border-radius);
 	transition: var(--dev-panel-transition);
 

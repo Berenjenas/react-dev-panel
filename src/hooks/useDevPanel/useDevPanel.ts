@@ -1,13 +1,20 @@
-import { useEffect, useRef } from "react";
+import { createElement, useEffect, useRef } from "react";
+import { createRoot } from "react-dom/client";
 
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
+import type { DevPanelProps } from "@/components/DevPanel/types";
+import { DevPanelPortal } from "@/components/DevPanelPortal";
+import { DevPanelManager } from "@/managers/DevPanelManager";
 import { useDevPanelSectionActions, useDevPanelSections } from "@/store";
 import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged";
 
+type WindowWithDevPanel = Window & { __devPanelAutoMounted?: boolean };
+
 /**
- * Hook to register controls in the dev panel
+ * Hook to register controls in the dev panel with auto-mounting
  * @param sectionName - Section name (e.g: 'Global', 'HomePage')
- * @param controls - Controls configuration
+ * @param controls - Controls configuration object
+ * @param devPanelProps - Optional DevPanel configuration (title, hotkey, theme)
  *
  * @example
  * ```typescript
@@ -16,36 +23,62 @@ import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged"
  *     type: 'select',
  *     value: 'light',
  *     options: ['light', 'dark'],
- *     onChange: (value) => setTheme(value)
+ *     onChange: setTheme
  *   },
  *   debugMode: {
  *     type: 'boolean',
  *     value: false,
- *     onChange: (value) => setDebugMode(value)
+ *     onChange: setDebugMode
  *   }
+ * }, {
+ *   panelTitle: 'My App Controls',
+ *   theme: 'dark'
  * });
  * ```
  */
-export function useDevPanel(sectionName: string, controls: ControlsGroup) {
+export function useDevPanel(sectionName: string, controls: ControlsGroup, devPanelProps?: DevPanelProps) {
 	const sections = useDevPanelSections();
 	const { registerSection, unregisterSection } = useDevPanelSectionActions();
 	const previousControlsRef = useRef<ControlsGroup | undefined>(undefined);
+	const managerRef = useRef<DevPanelManager | null>(null);
+
+	if (!managerRef.current) {
+		managerRef.current = DevPanelManager.getInstance();
+	}
 
 	useEffect(() => {
-		// Check if the section exists in the store
+		const manager = managerRef.current!;
 		const sectionExists = sections[sectionName] !== undefined;
 
-		// Register if the controls have changed or the section does not exist
 		if (hasControlsChanged(controls, previousControlsRef.current) || !sectionExists) {
 			registerSection(sectionName, controls);
 			previousControlsRef.current = controls;
+			manager.addSection(sectionName, devPanelProps);
+		} else if (devPanelProps) {
+			manager.updateProps(devPanelProps);
 		}
-	}, [sectionName, controls, sections, registerSection]);
+	}, [sectionName, controls, devPanelProps, sections, registerSection]);
 
 	useEffect(() => {
-		// Cleanup when the component is unmounted
 		return () => {
+			const manager = managerRef.current!;
 			unregisterSection(sectionName);
+			manager.removeSection(sectionName);
 		};
 	}, [sectionName, unregisterSection]);
+
+	// Auto-mount DevPanelPortal on first hook call
+	useEffect(() => {
+		if ((window as WindowWithDevPanel).__devPanelAutoMounted) return;
+
+		(window as WindowWithDevPanel).__devPanelAutoMounted = true;
+
+		const container = document.createElement("div");
+		container.id = "dev-panel-portal-container";
+		container.style.display = "none";
+		document.body.appendChild(container);
+
+		const root = createRoot(container);
+		root.render(createElement(DevPanelPortal));
+	}, []);
 }

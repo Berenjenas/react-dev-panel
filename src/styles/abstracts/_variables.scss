@@ -9,7 +9,7 @@
 	--dev-panel-font-weight-medium: 500;
 	--dev-panel-font-weight-semibold: 600;
 	--dev-panel-font-weight-bold: 700;
-	--dev-panel-font-size-xs: 11px;
+	--dev-panel-font-size-xs: 10px;
 	--dev-panel-font-size-sm: 12px;
 	--dev-panel-font-size-md: 14px;
 	--dev-panel-font-size-lg: 16px;
@@ -80,6 +80,9 @@
 	--dev-panel-input-border-color-focus: #6366f1;
 	--dev-panel-input-text-color: #f1f5f9;
 	--dev-panel-input-placeholder-color: #64748b;
+
+	// Input Sizes
+	--dev-panel-input-border-width: 1px;
 
 	// Spacing Scale
 	--dev-panel-spacing-xs: 2px;
