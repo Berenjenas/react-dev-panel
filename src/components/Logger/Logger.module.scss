@@ -179,7 +179,6 @@
 	border-radius: var(--dev-panel-border-radius-full);
 	font-size: var(--dev-panel-font-size-xs);
 	font-weight: var(--dev-panel-font-weight-bold);
-	min-width: 18px;
 
 	&.updated {
 		background: var(--dev-panel-success-color);
@@ -188,14 +187,7 @@
 }
 
 @keyframes pulse {
-	0% {
-		transform: scale(1);
-	}
 	50% {
-		transform: scale(1.15);
 		box-shadow: 0 0 0 4px color-mix(in srgb, var(--dev-panel-success-color) 30%, transparent);
-	}
-	100% {
-		transform: scale(1);
 	}
 }

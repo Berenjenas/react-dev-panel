@@ -1,5 +1,5 @@
 ---
-"react-dev-panel": major
+"@berenjena/react-dev-panel": major
 ---
 
 feat: major architecture improvements with auto-mounting and createPortal
