@@ -116,5 +116,16 @@
 		"vite-plugin-dts": "^4.5.4",
 		"vite-plugin-lib-inject-css": "^2.2.2",
 		"vitest": "^3.2.4"
+	},
+	"config": {
+		"commitizen": {
+			"path": "@commitlint/cz-commitlint"
+		}
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npx lint-staged",
+			"prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true"
+		}
 	}
 }
