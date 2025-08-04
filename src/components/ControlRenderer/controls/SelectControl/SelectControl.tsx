@@ -39,7 +39,7 @@ import type { SelectControlProps } from "./types";
  * }} />
  * ```
  */
-export function SelectControl({ control }: SelectControlProps) {
+export function SelectControl({ control }: SelectControlProps): React.ReactNode {
 	return (
 		<Select value={control.value} disabled={control.disabled} onChange={(e) => control.onChange(e.target.value)}>
 			{control.options.map((option) => {

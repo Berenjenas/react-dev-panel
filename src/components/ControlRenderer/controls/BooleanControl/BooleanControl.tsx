@@ -32,10 +32,11 @@ import styles from "./BooleanControl.module.scss";
  * }} />
  * ```
  */
-export function BooleanControl({ control }: BooleanControlProps) {
+export function BooleanControl({ control }: BooleanControlProps): React.ReactNode {
 	return (
 		<label className={styles.switch}>
 			<input type="checkbox" checked={control.value} disabled={control.disabled} onChange={(e) => control.onChange(e.target.checked)} />
+
 			<span className={styles.slider} />
 		</label>
 	);

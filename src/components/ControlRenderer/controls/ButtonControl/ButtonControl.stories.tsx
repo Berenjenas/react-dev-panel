@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DevPanel } from "@/components/DevPanel";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
+function Main(): React.ReactNode {
 	useDevPanel("Button Control", {
 		alert: {
 			type: "button",

@@ -18,8 +18,14 @@ export interface UseDragAndDropProps {
  * Separates the drag logic from the main component
  * Includes boundary constraints and window resize handling
  */
-export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
-	const elementRef = useRef<HTMLDivElement>(null);
+export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps): {
+	isDragging: boolean;
+	elementRef: React.RefObject<HTMLDivElement | null>;
+	handlePointerDown: (e: React.PointerEvent) => void;
+	stopDragging: () => void;
+	adjustPositionForResize: () => void;
+} {
+	const elementRef = useRef<HTMLDivElement | null>(null);
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 });
 
@@ -28,6 +34,7 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 	 */
 	const adjustPositionForResize = useCallback(() => {
 		const element = elementRef.current;
+
 		if (!element) return;
 
 		const { constrainedPosition, needsAdjustment } = getPositionAdjustment(element);
@@ -81,6 +88,7 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 		setIsDragging(true);
 
 		const rect = elementRef.current?.getBoundingClientRect();
+
 		if (rect) {
 			setDragOffset({
 				x: e.clientX - rect.left,
@@ -100,7 +108,7 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 		document.addEventListener("pointerup", handlePointerUp, options);
 
 		// Cleanup function to remove event listeners
-		return () => {
+		return (): void => {
 			document.removeEventListener("pointermove", handlePointerMove);
 			document.removeEventListener("pointerup", handlePointerUp);
 		};
@@ -113,14 +121,14 @@ export function useDragAndDrop({ onPositionChange }: UseDragAndDropProps) {
 
 		window.addEventListener("resize", debouncedResizeHandler);
 
-		return () => {
+		return (): void => {
 			window.removeEventListener("resize", debouncedResizeHandler);
 		};
 	}, [adjustPositionForResize]);
 
 	// Additional cleanup on unmount
 	useEffect(() => {
-		return () => {
+		return (): void => {
 			if (isDragging) {
 				document.removeEventListener("pointermove", handlePointerMove);
 				document.removeEventListener("pointerup", handlePointerUp);

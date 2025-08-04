@@ -47,7 +47,7 @@ import type { NumberControlProps } from "./types";
  * }} />
  * ```
  */
-export function NumberControl({ control }: NumberControlProps) {
+export function NumberControl({ control }: NumberControlProps): React.ReactNode {
 	const eventType = control.event || "onChange"; // Default to "onChange" if not specified
 	const [localValue, setLocalValue] = useState(control.value);
 
@@ -57,8 +57,9 @@ export function NumberControl({ control }: NumberControlProps) {
 	 *
 	 * @param e - The change event from the number input element
 	 */
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		const newValue = Number(e.target.value);
+
 		setLocalValue(newValue);
 
 		if (eventType === "onChange") {
@@ -72,8 +73,9 @@ export function NumberControl({ control }: NumberControlProps) {
 	 *
 	 * @param e - The focus event from the number input element
 	 */
-	function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+	function handleBlur(e: React.FocusEvent<HTMLInputElement>): void {
 		const newValue = Number(e.target.value);
+
 		if (eventType === "onBlur") {
 			control.onChange(newValue);
 		}

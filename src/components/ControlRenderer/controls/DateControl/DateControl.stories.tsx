@@ -5,7 +5,7 @@ import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
+function Main(): React.ReactNode {
 	const [birthDate, setBirthDate] = useState("1990-01-01");
 	const [startDate, setStartDate] = useState("2025-07-26");
 	const [deadline, setDeadline] = useState("2025-12-31");
@@ -38,6 +38,7 @@ function Main() {
 	return (
 		<>
 			<Logger items={{ birthDate, startDate, deadline }} />
+
 			<DevPanel />
 		</>
 	);

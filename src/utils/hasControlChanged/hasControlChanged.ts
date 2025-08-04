@@ -3,7 +3,7 @@ import type { ControlsGroup } from "@/components/ControlRenderer/controls/types"
 /**
  * Compares if the controls have changed (shallow comparison)
  */
-export function hasControlsChanged(current: ControlsGroup, previous?: ControlsGroup) {
+export function hasControlsChanged(current: ControlsGroup, previous?: ControlsGroup): boolean {
 	if (!previous) return true;
 
 	const currentKeys = Object.keys(current);

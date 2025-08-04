@@ -25,7 +25,14 @@ type LoggerProps = {
  * A floating, collapsible logger component that displays object data in JSON format.
  * @returns JSX element or null if not visible
  */
-export function Logger({ items, title = "Logger", theme = "auto", defaultCollapsed = false, defaultVisible = true, onClose }: LoggerProps) {
+export function Logger({
+	items,
+	title = "Logger",
+	theme = "auto",
+	defaultCollapsed = false,
+	defaultVisible = true,
+	onClose,
+}: LoggerProps): React.ReactNode {
 	const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 	const [isVisible, setIsVisible] = useState(defaultVisible);
 	const [isDark, setIsDark] = useState(false);
@@ -65,11 +72,22 @@ export function Logger({ items, title = "Logger", theme = "auto", defaultCollaps
 	useEffect(() => {
 		if (theme === "auto") {
 			const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
 			setIsDark(mediaQuery.matches);
 
-			const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
+			/**
+			 * Handles changes to the color scheme media query
+			 * @param e The event object
+			 */
+			function handleChange(e: MediaQueryListEvent): void {
+				setIsDark(e.matches);
+			}
+
 			mediaQuery.addEventListener("change", handleChange);
-			return () => mediaQuery.removeEventListener("change", handleChange);
+
+			return (): void => {
+				mediaQuery.removeEventListener("change", handleChange);
+			};
 		} else {
 			setIsDark(theme === "dark");
 		}
@@ -98,6 +116,7 @@ export function Logger({ items, title = "Logger", theme = "auto", defaultCollaps
 			<div className={styles.header} onClick={handleToggleCollapse}>
 				<h3 className={styles.title}>
 					{title}
+
 					{itemCount > 0 && <span {...className(styles.badge, { [styles.updated]: hasUpdate })}>{itemCount}</span>}
 				</h3>
 

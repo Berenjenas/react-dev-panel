@@ -1,15 +1,29 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
-	const [fast, setFast] = useState(false);
-	const [good, setGood] = useState(false);
-	const [cheap, setCheap] = useState(false);
+function Main(): React.ReactNode {
+	const [fast, setFast] = useState<boolean>(false);
+	const [good, setGood] = useState<boolean>(false);
+	const [cheap, setCheap] = useState<boolean>(false);
+	const message = useMemo<string>(() => {
+		const activeCount = [fast, good, cheap].filter(Boolean).length;
 
-	const handleTriangleChange = (target: "fast" | "good" | "cheap", newValue: boolean) => {
+		return activeCount <= 2
+			? activeCount === 2
+				? "Perfect! You can only have 2 out of 3 ✅"
+				: "Try to enable them all"
+			: "This shouldn't happen! 🤔";
+	}, [cheap, fast, good]);
+
+	/**
+	 * Handle changes to the developer triangle controls.
+	 * @param target The control that changed.
+	 * @param newValue The new value of the control.
+	 */
+	function handleTriangleChange(target: "fast" | "good" | "cheap", newValue: boolean): void {
 		if (newValue) {
 			const currentCount = [fast, good, cheap].filter(Boolean).length;
 
@@ -31,7 +45,7 @@ function Main() {
 				setCheap(newValue);
 				break;
 		}
-	};
+	}
 
 	useDevPanel(
 		"Developer Triangle",
@@ -70,10 +84,6 @@ function Main() {
 			panelTitle: "The Developer Triangle",
 		},
 	);
-
-	const activeCount = [fast, good, cheap].filter(Boolean).length;
-	const message =
-		activeCount <= 2 ? (activeCount === 2 ? "Perfect! You can only have 2 out of 3 ✅" : "Try to enable them all") : "This shouldn't happen! 🤔";
 
 	return (
 		<Logger

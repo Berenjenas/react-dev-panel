@@ -75,6 +75,7 @@ export abstract class BaseStoreService<TState, TPersistedState = TState> {
 
 		try {
 			const persistedState = this.toPersistableState(this.state);
+
 			localStorage.setItem(this.storageKey, JSON.stringify(persistedState));
 		} catch {
 			console.warn(`Failed to save ${this.getServiceName()} state to localStorage`);
@@ -97,6 +98,7 @@ export abstract class BaseStoreService<TState, TPersistedState = TState> {
 
 			if (stored) {
 				const parsed: TPersistedState = JSON.parse(stored);
+
 				this.state = this.fromPersistedState(parsed, this.state);
 			}
 		} catch {

@@ -50,9 +50,11 @@ export class MatrixEffect {
 		this.config = { ...this.defaultConfig, ...config };
 
 		const ctx = canvas.getContext("2d");
+
 		if (!ctx) {
 			throw new Error("Failed to get 2D context from canvas");
 		}
+
 		this.ctx = ctx;
 
 		this.setupCanvas();
@@ -85,6 +87,7 @@ export class MatrixEffect {
 	 */
 	private initializeDrops(): void {
 		const cols = Math.floor(this.canvas.width / 20) + 1;
+
 		this.drops = Array(cols)
 			.fill(null)
 			.map(() => ({ y: 0 }));
@@ -116,6 +119,7 @@ export class MatrixEffect {
 			const text = Math.random() > 0.5 ? String.fromCharCode(Math.random() * 128) : this.getRandomChar();
 
 			const x = index * 20;
+
 			this.ctx.fillText(text, x, drop.y);
 
 			if (drop.y > 100 + Math.random() * 10000) {
@@ -142,6 +146,7 @@ export class MatrixEffect {
 		if (this.intervalId !== null) {
 			return;
 		}
+
 		this.intervalId = setInterval(this.animate, 50);
 	}
 
@@ -207,18 +212,26 @@ export class MatrixEffect {
  */
 export function createMatrixEffect(config: MatrixConfig = {}): MatrixEffect {
 	const canvas = document.createElement("canvas");
+
 	canvas.id = "matrix-effect";
 	document.body.appendChild(canvas);
 
 	const effect = new MatrixEffect(canvas, config);
 
 	// Handle window resize
-	const handleResize = () => effect.resize();
+	/**
+	 * Handles window resize event by resizing the Matrix effect canvas and drops.
+	 */
+	function handleResize(): void {
+		effect.resize();
+	}
+
 	window.addEventListener("resize", handleResize);
 
 	// Store original destroy method and extend it
 	const originalDestroy = effect.destroy.bind(effect);
-	effect.destroy = () => {
+
+	effect.destroy = (): void => {
 		window.removeEventListener("resize", handleResize);
 		originalDestroy();
 	};

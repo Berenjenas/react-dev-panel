@@ -32,7 +32,7 @@ const defaultHotKeyConfig: DevPanelHotkeyConfig = {
  * <DevPanel />
  * ```
  */
-export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) {
+export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps): React.ReactNode {
 	const { isVisible, isCollapsed, position, setVisible, setCollapsed, setPosition } = useDevPanelUI();
 	const { setTheme } = useDevPanelThemeActions();
 	const sections = useDevPanelSections();

@@ -1,1 +1,1 @@
-export * from './ColorControl';
+export * from "./ColorControl";

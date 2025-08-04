@@ -202,7 +202,11 @@ export function useCurrentTheme(): string {
  * resetTheme();
  * ```
  */
-export function useDevPanelThemeActions() {
+export function useDevPanelThemeActions(): {
+	setTheme: (theme: string) => void;
+	resetTheme: () => void;
+	getCurrentTheme: () => string;
+} {
 	return {
 		setTheme: themeService.setTheme,
 		resetTheme: themeService.resetTheme,

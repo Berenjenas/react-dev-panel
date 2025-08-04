@@ -1,11 +1,17 @@
 import styles from "./EmptyContent.module.scss";
 
-export function EmptyContent() {
-    return (
-        <div className={styles.empty}>
-            No controls registered yet.
-            <br /> <br />
-            Use <code>useDevPanel()</code> to add controls.
-        </div>
-    );
+export function EmptyContent(): React.ReactNode {
+	return (
+		<div className={styles.empty}>
+			<span>No controls registered yet.</span>
+
+			<br />
+
+			<br />
+
+			<span>
+				Use <code>useDevPanel()</code> to add controls.
+			</span>
+		</div>
+	);
 }

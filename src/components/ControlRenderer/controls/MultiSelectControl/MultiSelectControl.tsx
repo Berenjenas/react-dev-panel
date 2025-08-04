@@ -41,7 +41,7 @@ interface DropdownPosition {
  * }} />
  * ```
  */
-export function MultiSelectControl({ control }: MultiSelectControlProps) {
+export function MultiSelectControl({ control }: MultiSelectControlProps): React.ReactNode {
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
 		top: 0,
@@ -123,6 +123,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 		if (control.value.length === 1) {
 			const selectedOption = control.options.find((option) => {
 				const optionValue = typeof option === "string" ? option : option.value;
+
 				return optionValue === control.value[0];
 			});
 			const optionLabel = typeof selectedOption === "string" ? selectedOption : selectedOption?.label;
@@ -136,7 +137,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 	/**
 	 * Handles opening/closing the dropdown
 	 */
-	function handleToggleDropdown() {
+	function handleToggleDropdown(): void {
 		if (control.disabled) return;
 
 		if (!isOpen) {
@@ -153,26 +154,18 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 
 		updateDropdownPosition();
 
-		function handleResize() {
-			updateDropdownPosition();
-		}
+		window.addEventListener("resize", updateDropdownPosition);
+		window.addEventListener("scroll", updateDropdownPosition, true);
 
-		function handleScroll() {
-			updateDropdownPosition();
-		}
-
-		window.addEventListener("resize", handleResize);
-		window.addEventListener("scroll", handleScroll, true);
-
-		return () => {
-			window.removeEventListener("resize", handleResize);
-			window.removeEventListener("scroll", handleScroll, true);
+		return (): void => {
+			window.removeEventListener("resize", updateDropdownPosition);
+			window.removeEventListener("scroll", updateDropdownPosition, true);
 		};
 	}, [isOpen, updateDropdownPosition]);
 
 	// Handle clicks outside to close dropdown
 	useEffect(() => {
-		function handleClickOutside(e: MouseEvent) {
+		function handleClickOutside(e: MouseEvent): void {
 			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
 				// Check if click is inside the portal dropdown
 				const dropdownElement = document.querySelector(`.${styles.dropdownPortal}`);
@@ -187,41 +180,10 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 
 		document.addEventListener("mousedown", handleClickOutside);
 
-		return () => {
+		return (): void => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);
-
-	// Dropdown portal content
-	const dropdownContent = isOpen && !control.disabled && (
-		<div
-			className={`${styles.dropdownPortal}`}
-			style={{
-				position: "fixed",
-				top: dropdownPosition.top,
-				left: dropdownPosition.left,
-				width: dropdownPosition.width,
-				maxHeight: dropdownPosition.maxHeight,
-				zIndex: 9999,
-			}}
-		>
-			<div className={styles.dropdown}>
-				{control.options.map((option) => {
-					const optionValue = typeof option === "string" ? option : option.value;
-					const optionLabel = typeof option === "string" ? option : option.label;
-					const isSelected = control.value.includes(optionValue);
-
-					return (
-						<label key={optionValue} className={styles.option}>
-							<input type="checkbox" checked={isSelected} onChange={() => toggleOption(optionValue)} className={styles.checkbox} />
-							<Icon name="Check" className={styles.checkmark} />
-							<span className={styles.label}>{optionLabel}</span>
-						</label>
-					);
-				})}
-			</div>
-		</div>
-	);
 
 	return (
 		<>
@@ -234,12 +196,52 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 			>
 				<button ref={triggerRef} type="button" className={styles.trigger} onClick={handleToggleDropdown} disabled={control.disabled}>
 					<span className={styles.value}>{getDisplayText()}</span>
+
 					<Icon name="ArrowDown" className={styles.arrow} />
 				</button>
 			</div>
 
 			{/* Render dropdown in portal */}
-			{typeof window !== "undefined" && createPortal(dropdownContent, document.body)}
+			{typeof window !== "undefined" &&
+				createPortal(
+					isOpen && !control.disabled && (
+						<div
+							className={`${styles.dropdownPortal}`}
+							style={{
+								position: "fixed",
+								top: dropdownPosition.top,
+								left: dropdownPosition.left,
+								width: dropdownPosition.width,
+								maxHeight: dropdownPosition.maxHeight,
+								zIndex: 9999,
+							}}
+						>
+							<div className={styles.dropdown}>
+								{control.options.map((option) => {
+									const optionValue = typeof option === "string" ? option : option.value;
+									const optionLabel = typeof option === "string" ? option : option.label;
+									const isSelected = control.value.includes(optionValue);
+
+									return (
+										<label key={optionValue} className={styles.option}>
+											<input
+												type="checkbox"
+												checked={isSelected}
+												onChange={() => toggleOption(optionValue)}
+												className={styles.checkbox}
+											/>
+
+											<Icon name="Check" className={styles.checkmark} />
+
+											<span className={styles.label}>{optionLabel}</span>
+										</label>
+									);
+								})}
+							</div>
+						</div>
+					),
+					document.body,
+				)}
 		</>
 	);
 }

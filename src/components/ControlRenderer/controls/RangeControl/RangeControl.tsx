@@ -48,7 +48,7 @@ import styles from "./RangeControl.module.scss";
  * }} />
  * ```
  */
-export function RangeControl({ control }: RangeControlProps) {
+export function RangeControl({ control }: RangeControlProps): React.ReactNode {
 	const eventType = control.event || "onChange"; // Default to "onChange" for ranges
 	const [localValue, setLocalValue] = useState(control.value);
 
@@ -58,7 +58,7 @@ export function RangeControl({ control }: RangeControlProps) {
 	 *
 	 * @param e - The change event from the range input element
 	 */
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		const newValue = Number(e.target.value);
 
 		setLocalValue(newValue);
@@ -74,7 +74,7 @@ export function RangeControl({ control }: RangeControlProps) {
 	 *
 	 * @param e - The focus event from the range input element
 	 */
-	function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+	function handleBlur(e: React.FocusEvent<HTMLInputElement>): void {
 		const newValue = Number(e.target.value);
 
 		if (eventType === "onBlur") {
@@ -99,6 +99,7 @@ export function RangeControl({ control }: RangeControlProps) {
 				{...(eventType === "onBlur" && { onBlur: handleBlur })}
 				className={styles.range}
 			/>
+
 			<span className={styles.value}>{localValue}</span>
 		</div>
 	);

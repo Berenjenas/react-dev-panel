@@ -95,11 +95,11 @@ Define global hotkeys to trigger custom actions.
 
 ```tsx
 useHotkeys([
-  {
-    keys: ["ctrl", "d"],
-    action: () => toggleDevPanel(),
-    description: "Toggle Dev Panel",
-  },
+	{
+		keys: ["ctrl", "d"],
+		action: () => toggleDevPanel(),
+		description: "Toggle Dev Panel",
+	},
 ]);
 ```
 
@@ -130,10 +130,10 @@ Customize the look of the panel using CSS variables:
 
 ```css
 :root {
-  --dev-panel-background-color: #1a1a1a;
-  --dev-panel-accent-color: #ff6200;
-  --dev-panel-font-size-sm: 12px;
-  --dev-panel-spacing-md: 16px;
+	--dev-panel-background-color: #1a1a1a;
+	--dev-panel-accent-color: #ff6200;
+	--dev-panel-font-size-sm: 12px;
+	--dev-panel-spacing-md: 16px;
 }
 ```
 
@@ -158,11 +158,11 @@ useDevPanel("App", { ... });
 
 ```tsx
 useDevPanel("Settings", {
-  mode: { type: "select", value: mode, onChange: setMode },
-  ...(mode === "advanced" && {
-    separator: { type: "separator", style: "label", label: "Advanced" },
-    debug: { type: "boolean", value: debug, onChange: setDebug },
-}),
+	mode: { type: "select", value: mode, onChange: setMode },
+	...(mode === "advanced" && {
+		separator: { type: "separator", style: "label", label: "Advanced" },
+		debug: { type: "boolean", value: debug, onChange: setDebug },
+	}),
 });
 ```
 

@@ -28,7 +28,7 @@ import styles from "./ColorControl.module.scss";
  * }}/>
  * ```
  */
-export function ColorControl({ control }: ColorControlProps) {
+export function ColorControl({ control }: ColorControlProps): React.ReactNode {
 	const [localValue, setLocalValue] = useState(control.value);
 	const [isValidColor, setIsValidColor] = useState(true);
 	const debouncedChange = useDebouncedCallback(control.onChange, 300);
@@ -43,7 +43,9 @@ export function ColorControl({ control }: ColorControlProps) {
 
 		// Create a temporary element to test color validity
 		const tempElement = document.createElement("div");
+
 		tempElement.style.color = color;
+
 		return tempElement.style.color !== "";
 	}
 
@@ -79,8 +81,9 @@ export function ColorControl({ control }: ColorControlProps) {
 	 * Handles color picker input changes
 	 * @param e - The change event from the color input element
 	 */
-	function handleColorPickerChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleColorPickerChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		const newValue = e.target.value;
+
 		setLocalValue(newValue);
 		setIsValidColor(true);
 		debouncedChange(newValue);
@@ -90,11 +93,13 @@ export function ColorControl({ control }: ColorControlProps) {
 	 * Handles text input changes with validation
 	 * @param e - The change event from the text input element
 	 */
-	function handleTextInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleTextInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		const newValue = e.target.value;
+
 		setLocalValue(newValue);
 
 		const isValid = isValidColorValue(newValue);
+
 		setIsValidColor(isValid);
 
 		if (isValid || newValue === "") {

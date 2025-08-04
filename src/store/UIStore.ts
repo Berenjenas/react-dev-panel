@@ -159,7 +159,7 @@ export function useDevPanelUI(): DevPanelUIState & {
  * const isVisible = useDevPanelVisible();
  * ```
  */
-export function useDevPanelVisible() {
+export function useDevPanelVisible(): boolean {
 	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().isVisible);
 }
 
@@ -174,7 +174,7 @@ export function useDevPanelVisible() {
  * const isCollapsed = useDevPanelCollapsed();
  * ```
  */
-export function useDevPanelCollapsed() {
+export function useDevPanelCollapsed(): boolean {
 	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().isCollapsed);
 }
 
@@ -190,7 +190,7 @@ export function useDevPanelCollapsed() {
  * console.log(`Panel is at ${position.x}, ${position.y}`);
  * ```
  */
-export function useDevPanelPosition() {
+export function useDevPanelPosition(): Position {
 	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().position);
 }
 
@@ -214,7 +214,12 @@ export function useDevPanelPosition() {
  * reset();
  * ```
  */
-export function useDevPanelUIActions() {
+export function useDevPanelUIActions(): {
+	setVisible: (visible: boolean) => void;
+	setCollapsed: (collapsed: boolean) => void;
+	setPosition: (position: Position) => void;
+	reset: () => void;
+} {
 	return {
 		setVisible: devPanelUIService.setVisible,
 		setCollapsed: devPanelUIService.setCollapsed,

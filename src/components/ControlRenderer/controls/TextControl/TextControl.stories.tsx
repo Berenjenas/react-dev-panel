@@ -5,7 +5,7 @@ import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
+function Main(): React.ReactNode {
 	const [description, setDescription] = useState("Test");
 
 	useDevPanel("Text Control", {
@@ -22,6 +22,7 @@ function Main() {
 	return (
 		<>
 			<Logger items={{ description }} />
+
 			<DevPanel />
 		</>
 	);

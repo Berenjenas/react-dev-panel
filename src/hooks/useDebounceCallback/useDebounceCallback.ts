@@ -11,7 +11,7 @@ export function useDebouncedCallback<T extends (...args: Parameters<T>) => void>
 	const timeoutRef = useRef<number | null>(null);
 
 	useEffect(() => {
-		return () => {
+		return (): void => {
 			if (timeoutRef.current) {
 				clearTimeout(timeoutRef.current);
 			}

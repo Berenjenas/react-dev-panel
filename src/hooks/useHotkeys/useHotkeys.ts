@@ -97,7 +97,7 @@ export function useHotkeys(hotkeys: HotkeyConfig[], options: UseHotkeysOptions =
 
 		currentTarget.addEventListener("keydown", handleKeyDown);
 
-		return () => {
+		return (): void => {
 			currentTarget.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [target, enabled, handleKeyDown]);

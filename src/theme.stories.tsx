@@ -275,7 +275,7 @@ const THEME_PRESETS = {
 /**
  * Showcase of pre-built theme presets with easy switching
  */
-function ThemePresetsComponent(props: ThemeShowcaseProps) {
+function ThemePresetsComponent(props: ThemeShowcaseProps): React.ReactNode {
 	const { currentTheme: activeThemeKey, setTheme } = useDevPanelTheme();
 
 	// Theme selector
@@ -376,9 +376,11 @@ function ThemePresetsComponent(props: ThemeShowcaseProps) {
 										boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
 									}}
 								/>
+
 								<div style={{ fontSize: "0.875rem", color: currentTheme.colors.textMuted, textTransform: "capitalize" }}>
 									{name.replace(/([A-Z])/g, " $1")}
 								</div>
+
 								<div style={{ fontSize: "0.75rem", color: currentTheme.colors.textMuted, fontFamily: "monospace" }}>{color}</div>
 							</div>
 						))}

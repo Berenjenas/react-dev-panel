@@ -43,7 +43,7 @@ import type { DateControlProps } from "./types";
  * }} />
  * ```
  */
-export function DateControl({ control }: DateControlProps) {
+export function DateControl({ control }: DateControlProps): React.ReactNode {
 	const eventType = control.event || "onBlur"; // TODO: Review if "onChange" is needed for dates (may not be applicable)
 	const [localValue, setLocalValue] = useState(control.value);
 
@@ -53,8 +53,9 @@ export function DateControl({ control }: DateControlProps) {
 	 *
 	 * @param e - The change event from the date input element
 	 */
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		const newValue = e.target.value;
+
 		setLocalValue(newValue);
 
 		if (eventType === "onChange") {
@@ -68,8 +69,9 @@ export function DateControl({ control }: DateControlProps) {
 	 *
 	 * @param e - The focus event from the date input element
 	 */
-	function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+	function handleBlur(e: React.FocusEvent<HTMLInputElement>): void {
 		const newValue = e.target.value;
+
 		if (eventType === "onBlur") {
 			control.onChange(newValue);
 		}

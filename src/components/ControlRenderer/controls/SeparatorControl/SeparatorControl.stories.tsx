@@ -5,7 +5,7 @@ import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
+function Main(): React.ReactNode {
 	const [name, setName] = useState("John Doe");
 	const [age, setAge] = useState(25);
 	const [email, setEmail] = useState("john@example.com");
@@ -86,6 +86,7 @@ function Main() {
 	return (
 		<>
 			<Logger items={{ name, age, email, isActive, theme, volume }} />
+
 			<DevPanel />
 		</>
 	);

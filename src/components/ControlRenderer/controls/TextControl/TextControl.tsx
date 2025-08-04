@@ -42,7 +42,7 @@ import type { TextControlProps } from "./types";
  * }} />
  * ```
  */
-export function TextControl({ control }: TextControlProps) {
+export function TextControl({ control }: TextControlProps): React.ReactNode {
 	const eventType = control.event || "onChange"; // Default to "onChange" if not specified
 	const [localValue, setLocalValue] = useState(control.value);
 
@@ -52,8 +52,9 @@ export function TextControl({ control }: TextControlProps) {
 	 *
 	 * @param e - The change event from the text input element
 	 */
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		const newValue = e.target.value;
+
 		setLocalValue(newValue);
 
 		if (eventType === "onChange") {
@@ -67,8 +68,9 @@ export function TextControl({ control }: TextControlProps) {
 	 *
 	 * @param e - The focus event from the text input element
 	 */
-	function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+	function handleBlur(e: React.FocusEvent<HTMLInputElement>): void {
 		const newValue = e.target.value;
+
 		if (eventType === "onBlur") {
 			control.onChange(newValue);
 		}

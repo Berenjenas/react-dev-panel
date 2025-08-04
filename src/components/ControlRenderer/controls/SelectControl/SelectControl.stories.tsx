@@ -7,7 +7,7 @@ import { useDevPanel } from "@/hooks/useDevPanel";
 
 const names = ["", "Alice", "Bob", "Charlie", "David", "Eve"];
 
-function Main() {
+function Main(): React.ReactNode {
 	const [name, setName] = useState(names[1]);
 
 	useDevPanel("Select Control", {
@@ -23,6 +23,7 @@ function Main() {
 	return (
 		<>
 			<Logger items={{ name }} />
+
 			<DevPanel />
 		</>
 	);

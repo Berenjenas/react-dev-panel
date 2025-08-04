@@ -13,11 +13,12 @@ import type { DevPanelProps } from "../DevPanel/types";
  *
  * @returns DevPanel rendered as a portal in document.body
  */
-export const DevPanelPortal = () => {
+export function DevPanelPortal(): React.ReactNode {
 	const [mergedProps, setMergedProps] = useState<DevPanelProps>({});
 
 	useEffect(() => {
 		const initialProps = DevPanelManager.getInstance().getAllProps();
+
 		setMergedProps(initialProps);
 
 		// Subscribe to prop updates
@@ -29,4 +30,4 @@ export const DevPanelPortal = () => {
 	}, []);
 
 	return createPortal(<DevPanel {...mergedProps} />, document.body);
-};
+}
