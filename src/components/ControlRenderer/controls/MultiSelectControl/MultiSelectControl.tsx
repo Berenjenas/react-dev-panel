@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import type { Position } from "@/components/DevPanel/types";
 import { Icon } from "@/components/Icon";
+import { useDevPanelPosition } from "@/store";
 import { className } from "@/utils/className";
 
 import type { MultiSelectControlProps } from "./types";
@@ -42,6 +44,7 @@ interface DropdownPosition {
  * ```
  */
 export function MultiSelectControl({ control }: MultiSelectControlProps) {
+	const devPanelPosition = useDevPanelPosition();
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
 		top: 0,
@@ -51,6 +54,16 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 	});
 	const containerRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
+	const devPanelPositionRef = useRef<Position | null>(null);
+
+	/**
+	 * Updates dropdown position when it's open
+	 */
+	const updateDropdownPosition = useCallback(() => {
+		if (isOpen) {
+			setDropdownPosition(calculateDropdownPosition());
+		}
+	}, [isOpen]);
 
 	/**
 	 * Calculates the optimal position for the dropdown portal
@@ -91,15 +104,6 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 	}
 
 	/**
-	 * Updates dropdown position when it's open
-	 */
-	const updateDropdownPosition = useCallback(() => {
-		if (isOpen) {
-			setDropdownPosition(calculateDropdownPosition());
-		}
-	}, [isOpen]);
-
-	/**
 	 * Toggles the selection state of an option
 	 * @param optionValue - The value of the option to toggle
 	 */
@@ -123,6 +127,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 		if (control.value.length === 1) {
 			const selectedOption = control.options.find((option) => {
 				const optionValue = typeof option === "string" ? option : option.value;
+
 				return optionValue === control.value[0];
 			});
 			const optionLabel = typeof selectedOption === "string" ? selectedOption : selectedOption?.label;
@@ -153,25 +158,31 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 
 		updateDropdownPosition();
 
-		function handleResize() {
-			updateDropdownPosition();
-		}
-
-		function handleScroll() {
-			updateDropdownPosition();
-		}
-
-		window.addEventListener("resize", handleResize);
-		window.addEventListener("scroll", handleScroll, true);
+		window.addEventListener("resize", updateDropdownPosition);
+		window.addEventListener("scroll", updateDropdownPosition, true);
 
 		return () => {
-			window.removeEventListener("resize", handleResize);
-			window.removeEventListener("scroll", handleScroll, true);
+			window.removeEventListener("resize", updateDropdownPosition);
+			window.removeEventListener("scroll", updateDropdownPosition, true);
 		};
 	}, [isOpen, updateDropdownPosition]);
 
+	// Update position when the component mounts or position changes
+	useEffect(() => {
+		const currentPosition = devPanelPositionRef.current;
+
+		if (!currentPosition || currentPosition.x !== devPanelPosition.x || currentPosition.y !== devPanelPosition.y) {
+			devPanelPositionRef.current = devPanelPosition;
+			updateDropdownPosition();
+		}
+	}, [devPanelPosition, updateDropdownPosition]);
+
 	// Handle clicks outside to close dropdown
 	useEffect(() => {
+		/**
+		 * Handles click events to close the dropdown if clicked outside
+		 * @param e - The event object
+		 */
 		function handleClickOutside(e: MouseEvent) {
 			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
 				// Check if click is inside the portal dropdown
@@ -192,37 +203,6 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 		};
 	}, []);
 
-	// Dropdown portal content
-	const dropdownContent = isOpen && !control.disabled && (
-		<div
-			className={`${styles.dropdownPortal}`}
-			style={{
-				position: "fixed",
-				top: dropdownPosition.top,
-				left: dropdownPosition.left,
-				width: dropdownPosition.width,
-				maxHeight: dropdownPosition.maxHeight,
-				zIndex: 9999,
-			}}
-		>
-			<div className={styles.dropdown}>
-				{control.options.map((option) => {
-					const optionValue = typeof option === "string" ? option : option.value;
-					const optionLabel = typeof option === "string" ? option : option.label;
-					const isSelected = control.value.includes(optionValue);
-
-					return (
-						<label key={optionValue} className={styles.option}>
-							<input type="checkbox" checked={isSelected} onChange={() => toggleOption(optionValue)} className={styles.checkbox} />
-							<Icon name="Check" className={styles.checkmark} />
-							<span className={styles.label}>{optionLabel}</span>
-						</label>
-					);
-				})}
-			</div>
-		</div>
-	);
-
 	return (
 		<>
 			<div
@@ -234,12 +214,52 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 			>
 				<button ref={triggerRef} type="button" className={styles.trigger} onClick={handleToggleDropdown} disabled={control.disabled}>
 					<span className={styles.value}>{getDisplayText()}</span>
+
 					<Icon name="ArrowDown" className={styles.arrow} />
 				</button>
 			</div>
 
-			{/* Render dropdown in portal */}
-			{typeof window !== "undefined" && createPortal(dropdownContent, document.body)}
+			{/* Dropdown portal */}
+			{typeof window !== "undefined" &&
+				createPortal(
+					isOpen && !control.disabled && (
+						<div
+							className={`${styles.dropdownPortal}`}
+							style={{
+								position: "fixed",
+								top: dropdownPosition.top,
+								left: dropdownPosition.left,
+								width: dropdownPosition.width,
+								maxHeight: dropdownPosition.maxHeight,
+								zIndex: 9999,
+							}}
+						>
+							<div className={styles.dropdown}>
+								{control.options.map((option) => {
+									const optionValue = typeof option === "string" ? option : option.value;
+									const optionLabel = typeof option === "string" ? option : option.label;
+									const isSelected = control.value.includes(optionValue);
+
+									return (
+										<label key={optionValue} className={styles.option}>
+											<input
+												type="checkbox"
+												checked={isSelected}
+												onChange={() => toggleOption(optionValue)}
+												className={styles.checkbox}
+											/>
+
+											<Icon name="Check" className={styles.checkmark} />
+
+											<span className={styles.label}>{optionLabel}</span>
+										</label>
+									);
+								})}
+							</div>
+						</div>
+					),
+					document.body,
+				)}
 		</>
 	);
 }
