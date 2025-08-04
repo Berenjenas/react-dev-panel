@@ -10,8 +10,10 @@
 		border-radius: var(--dev-panel-border-radius);
 		transition: var(--dev-panel-transition);
 
-		&:hover {
-			background: var(--dev-panel-surface-color-hover);
+		&.hoverable {
+			&:hover {
+				background: var(--dev-panel-surface-color-hover);
+			}
 		}
 
 		&:not(.fullWidth) {
@@ -26,8 +28,15 @@
 
 		.controlWrapper {
 			display: flex;
-			justify-content: flex-end;
 			align-items: center;
+
+			&.justifyStart {
+				justify-content: flex-start;
+			}
+
+			&:not(.justifyStart) {
+				justify-content: flex-end;
+			}
 		}
 
 		.label {

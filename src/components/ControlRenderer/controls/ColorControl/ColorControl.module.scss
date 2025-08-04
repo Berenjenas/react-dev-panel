@@ -1,13 +1,13 @@
 .container {
 	display: grid;
-	grid-template-columns: var(--dev-panel-inputs-height) 1fr;
+	grid-template-columns: var(--dev-panel-inputs-height-sm) 1fr;
 	gap: var(--dev-panel-spacing-md);
 	align-items: start;
 
 	.colorPreview {
 		overflow: hidden;
-		width: var(--dev-panel-inputs-height);
-		height: var(--dev-panel-inputs-height);
+		width: var(--dev-panel-inputs-height-sm);
+		height: var(--dev-panel-inputs-height-sm);
 		cursor: pointer;
 		border-radius: var(--dev-panel-border-radius);
 		border: 1px solid var(--dev-panel-input-border-color);
@@ -61,6 +61,8 @@
 		font-size: var(--dev-panel-font-size-xs);
 		color: var(--dev-panel-danger-color);
 		font-weight: var(--dev-panel-font-weight-medium);
+		grid-column: 1 / -1;
+		margin-top: var(--dev-panel-spacing-xs);
 	}
 
 	.presets {

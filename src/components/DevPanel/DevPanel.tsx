@@ -1,9 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotkeys";
-import { useDevPanelSections, useDevPanelUI } from "@/store";
-import { className } from "@/utils";
+import { useDevPanelSections } from "@/store/SectionsStore";
+import { useDevPanelThemeActions } from "@/store/ThemeStore";
+import { useDevPanelUI } from "@/store/UIStore";
+import { className } from "@/utils/className";
 
 import { EmptyContent } from "../EmptyContent";
 import { Icon } from "../Icon";
@@ -32,6 +34,7 @@ const defaultHotKeyConfig: DevPanelHotkeyConfig = {
  */
 export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) {
 	const { isVisible, isCollapsed, position, setVisible, setCollapsed, setPosition } = useDevPanelUI();
+	const { setTheme } = useDevPanelThemeActions();
 	const sections = useDevPanelSections();
 
 	const handlePositionChange = useCallback(
@@ -53,6 +56,10 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) 
 		...props.hotKeyConfig,
 		target: window,
 	});
+
+	useEffect(() => {
+		if (props.theme) setTheme(props.theme);
+	}, [props.theme, setTheme]);
 
 	if (!isVisible) {
 		return null;

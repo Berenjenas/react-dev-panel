@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-import { BaseStoreService } from "./";
+import { BaseStoreService } from "./BaseStoreService";
 
 const themeStorageKey = "dev-panel-theme-storage";
 

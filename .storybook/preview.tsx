@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
 
-import { useDevPanelUI } from "../src/store";
+import { useDevPanelUI } from "../src/store/UIStore";
 
 import "../src/styles/index.scss";
 

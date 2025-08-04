@@ -1,5 +1,5 @@
 .section {
-	padding: var(--dev-panel-spacing-lg);
+	padding: var(--dev-panel-spacing-md) var(--dev-panel-spacing-lg);
 	border-bottom: 1px solid var(--dev-panel-border-color);
 
 	&:last-child {
@@ -14,7 +14,7 @@
 		cursor: pointer;
 		transition: var(--dev-panel-transition);
 		padding: var(--dev-panel-spacing-sm) 0;
-		margin-bottom: var(--dev-panel-spacing-md);
+		//margin-bottom: var(--dev-panel-spacing-md);
 		border-radius: var(--dev-panel-border-radius-md);
 
 		&:hover {
@@ -32,10 +32,10 @@
 
 		.title {
 			font-size: var(--dev-panel-font-size-sm);
-			font-weight: var(--dev-panel-font-weight-semibold);
+			font-weight: var(--dev-panel-font-weight-bold);
 			color: var(--dev-panel-text-color);
 			text-transform: uppercase;
-			letter-spacing: 0.05em;
+			letter-spacing: 0.5px;
 		}
 
 		.toggle {
@@ -66,9 +66,10 @@
 	.content {
 		position: relative;
 		padding-left: var(--dev-panel-spacing-md);
+		margin-top: var(--dev-panel-spacing-md);
 		display: grid;
 		grid-template-columns: 100%;
-		gap: var(--dev-panel-spacing-lg);
+		gap: var(--dev-panel-spacing-md);
 		transition: opacity var(--dev-panel-transition-slow);
 
 		&:before {

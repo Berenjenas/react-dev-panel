@@ -1,6 +1,28 @@
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
 
 export type DevPanelHotkeyConfig = Pick<HotkeyConfig, "key" | "shiftKey" | "altKey" | "ctrlKey" | "metaKey">;
+export type BuiltInTheme =
+	| "auto"
+	| "dark"
+	| "light"
+	| "orange"
+	| "purple"
+	| "green"
+	| "neon"
+	| "corporate"
+	| "highContrast"
+	| "sunset"
+	| "ocean"
+	| "forest"
+	| "midnight"
+	| "cherry"
+	| "gold"
+	| "retro"
+	| "pastel"
+	| "cyberpunk"
+	| "autumn"
+	| "arctic"
+	| "volcano";
 
 export interface DevPanelProps {
 	panelTitle?: string;
@@ -18,6 +40,8 @@ export interface DevPanelProps {
 	 * ```
 	 */
 	hotKeyConfig?: DevPanelHotkeyConfig;
+
+	theme?: BuiltInTheme;
 }
 
 export interface DevPanelSection {
