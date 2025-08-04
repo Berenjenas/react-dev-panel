@@ -110,6 +110,7 @@ If no `event` property is specified, controls default to:
 -   **Number controls**: `onChange` (for immediate feedback)
 -   **Boolean controls**: `onChange` (immediate toggle response)
 -   **Select controls**: `onChange` (immediate selection feedback)
+-   **MultiSelect controls**: `onChange` (immediate selection feedback)
 -   **Range controls**: `onChange` (smooth slider interaction)
 -   **Color controls**: `onChange` (live color preview)
 -   **Date controls**: `onChange` (immediate date selection)
