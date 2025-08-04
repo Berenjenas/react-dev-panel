@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import type { Position } from "@/components/DevPanel/types";
 import { Icon } from "@/components/Icon";
+import { useDevPanelPosition } from "@/store";
 import { className } from "@/utils/className";
 
 import type { MultiSelectControlProps } from "./types";
@@ -42,6 +44,7 @@ interface DropdownPosition {
  * ```
  */
 export function MultiSelectControl({ control }: MultiSelectControlProps): React.ReactNode {
+	const devPanelPosition = useDevPanelPosition();
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
 		top: 0,
@@ -51,6 +54,16 @@ export function MultiSelectControl({ control }: MultiSelectControlProps): React.
 	});
 	const containerRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
+	const devPanelPositionRef = useRef<Position | null>(null);
+
+	/**
+	 * Updates dropdown position when it's open
+	 */
+	const updateDropdownPosition = useCallback(() => {
+		if (isOpen) {
+			setDropdownPosition(calculateDropdownPosition());
+		}
+	}, [isOpen]);
 
 	/**
 	 * Calculates the optimal position for the dropdown portal
@@ -89,15 +102,6 @@ export function MultiSelectControl({ control }: MultiSelectControlProps): React.
 			maxHeight,
 		};
 	}
-
-	/**
-	 * Updates dropdown position when it's open
-	 */
-	const updateDropdownPosition = useCallback(() => {
-		if (isOpen) {
-			setDropdownPosition(calculateDropdownPosition());
-		}
-	}, [isOpen]);
 
 	/**
 	 * Toggles the selection state of an option
@@ -163,8 +167,22 @@ export function MultiSelectControl({ control }: MultiSelectControlProps): React.
 		};
 	}, [isOpen, updateDropdownPosition]);
 
+	// Update position when the component mounts or position changes
+	useEffect(() => {
+		const currentPosition = devPanelPositionRef.current;
+
+		if (!currentPosition || currentPosition.x !== devPanelPosition.x || currentPosition.y !== devPanelPosition.y) {
+			devPanelPositionRef.current = devPanelPosition;
+			updateDropdownPosition();
+		}
+	}, [devPanelPosition, updateDropdownPosition]);
+
 	// Handle clicks outside to close dropdown
 	useEffect(() => {
+		/**
+		 * Handles click events to close the dropdown if clicked outside
+		 * @param e - The event object
+		 */
 		function handleClickOutside(e: MouseEvent): void {
 			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
 				// Check if click is inside the portal dropdown
@@ -201,7 +219,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps): React.
 				</button>
 			</div>
 
-			{/* Render dropdown in portal */}
+			{/* Dropdown portal */}
 			{typeof window !== "undefined" &&
 				createPortal(
 					isOpen && !control.disabled && (

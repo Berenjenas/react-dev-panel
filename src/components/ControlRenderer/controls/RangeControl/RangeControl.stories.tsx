@@ -50,7 +50,7 @@ function Main(): React.ReactNode {
 }
 
 const meta: Meta<typeof Main> = {
-	title: "Controls/RangeControl",
+	title: "Controls",
 	component: Main,
 	argTypes: {},
 };
@@ -59,6 +59,6 @@ export default meta;
 
 type Story = StoryObj<typeof Main>;
 
-export const Default: Story = {
+export const RangeControl: Story = {
 	args: {},
 };
