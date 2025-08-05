@@ -1,41 +1,39 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main(): React.ReactNode {
+function NumberControlDemo(): React.ReactNode {
 	const [amount, setAmount] = useState(0);
 
-	useDevPanel("Number Control", {
-		amount: {
-			type: "number",
-			value: amount,
-			label: "Amount",
-			onChange: (value) => setAmount(value),
+	useDevPanel(
+		"Number Control",
+		{
+			amount: {
+				type: "number",
+				value: amount,
+				label: "Amount",
+				onChange: (value) => setAmount(value),
+			},
 		},
-	});
-
-	return (
-		<>
-			<Logger items={{ amount }} />
-
-			<DevPanel />
-		</>
+		{ panelTitle: "Number Control Panel" },
 	);
+
+	return <Logger items={{ amount }} />;
 }
 
-const meta: Meta<typeof Main> = {
-	title: "Controls/NumberControl",
-	component: Main,
-	argTypes: {},
+// =============================================================================
+// Storybook Configuration
+// =============================================================================
+
+const meta: Meta<typeof NumberControlDemo> = {
+	title: "Controls",
+	component: NumberControlDemo,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Main>;
+type Story = StoryObj<typeof NumberControlDemo>;
 
-export const Default: Story = {
-	args: {},
-};
+export const NumberControl: Story = {};
