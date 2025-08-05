@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { className } from "@/utils";
+import { className } from "@/utils/className";
 
 import type { Control, ControlsNames } from "./controls/types";
 import { controls } from "./controls";

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
-import { useHotkey } from "@/hooks/useHotkeys";
+import { useHotkey } from "@/hooks/useHotKey";
 import { useDevPanelSections } from "@/store/SectionsStore";
 import { useDevPanelThemeActions } from "@/store/UIStore";
 import { useDevPanelUI } from "@/store/UIStore";

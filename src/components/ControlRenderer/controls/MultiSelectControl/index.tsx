@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import type { Position } from "@/components/DevPanel/types";
 import { Icon } from "@/components/Icon";
-import { useDevPanelPosition } from "@/store";
+import { useDevPanelPosition } from "@/store/UIStore";
 import { className } from "@/utils/className";
 
 import type { MultiSelectControlProps } from "./types";
