@@ -55,6 +55,7 @@ export interface DevPanelState {
 	isCollapsed: boolean;
 	sections: Record<string, DevPanelSection>;
 	position: Position;
+	currentTheme: string;
 }
 
 export type DevPanelUIState = Omit<DevPanelState, "sections">;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { useDevPanel } from "./hooks/useDevPanel";
-import { useDevPanelTheme } from "./store/ThemeStore";
+import { useDevPanelTheme } from "./store/UIStore";
 import { DevPanel } from "./components";
 
 type ThemeShowcaseProps = {
@@ -9,11 +9,7 @@ type ThemeShowcaseProps = {
 };
 
 // =============================================================================
-// Theme Variables Showcase
-// =============================================================================
-
-// =============================================================================
-// Pre-built Theme Demos
+// Theming Showcase
 // =============================================================================
 
 // Pre-built theme definitions mapped to data-dev-panel-theme values

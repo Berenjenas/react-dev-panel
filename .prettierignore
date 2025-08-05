@@ -7,7 +7,6 @@ docs/
 coverage/
 
 # Generated files
-*.d.ts
 CHANGELOG.md
 package-lock.json
 yarn.lock
