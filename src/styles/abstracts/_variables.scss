@@ -1,7 +1,56 @@
-// =============================================================================
-// Variables
-// =============================================================================
+// Light theme variables mixin
+@mixin light-theme-variables {
+	color-scheme: light;
 
+	// Background Colors
+	--dev-panel-background-color: #f8fafc;
+	--dev-panel-background-color-secondary: #f1f5f9;
+	--dev-panel-background-color-tertiary: #e2e8f0;
+	--dev-panel-foreground-color: #ffffff;
+	--dev-panel-surface-color: #ffffff;
+	--dev-panel-surface-color-hover: #e2e8f0;
+	--dev-panel-surface-color-active: #e2e8f0;
+
+	// Text Colors
+	--dev-panel-text-color: #0f172a;
+	--dev-panel-text-color-secondary: #334155;
+	--dev-panel-text-color-muted: #64748b;
+	--dev-panel-text-color-disabled: #94a3b8;
+	--dev-panel-text-color-on-accent: #ffffff;
+	--dev-panel-text-color-on-surface: #0f172a;
+
+	// Border Colors
+	--dev-panel-border-color: #e2e8f0;
+	--dev-panel-border-color-light: #cbd5e1;
+	--dev-panel-border-color-strong: #94a3b8;
+	--dev-panel-border-color-accent: #2563eb;
+
+	// Input Colors
+	--dev-panel-input-background-color: #ffffff;
+	--dev-panel-input-background-color-hover: #ffcccc;
+	--dev-panel-input-background-color-focus: #ffffff;
+	--dev-panel-input-border-color: #e2e8f0;
+	--dev-panel-input-border-color-hover: #cbd5e1;
+	--dev-panel-input-border-color-focus: #2563eb;
+	--dev-panel-input-text-color: #0f172a;
+	--dev-panel-input-placeholder-color: #64748b;
+
+	// Shadow System - Lighter for light theme
+	--dev-panel-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+	--dev-panel-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+	--dev-panel-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+	--dev-panel-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+	--dev-panel-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+	--dev-panel-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+	--dev-panel-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.03);
+	--dev-panel-shadow: var(--dev-panel-shadow-xl);
+
+	// Scrollbar Styling
+	--dev-panel-scrollbar-thumb-color: var(--dev-panel-border-color-light);
+	--dev-panel-scrollbar-thumb-hover-color: var(--dev-panel-border-color-strong);
+}
+
+// Base theme variables (dark by default)
 :root {
 	// Typography
 	--dev-panel-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
@@ -19,14 +68,15 @@
 	--dev-panel-line-height-relaxed: 1.75;
 
 	// Color Palette - Dark Theme (Default)
-	--dev-panel-accent-color: #6366f1;
-	--dev-panel-accent-color-hover: #5855eb;
-	--dev-panel-accent-color-active: #4f46e5;
-	--dev-panel-accent-color-disabled: #6366f150;
+	--dev-panel-accent-color: #2563eb;
+	--dev-panel-accent-color-hover: #1d4ed8;
+	--dev-panel-accent-color-active: #1e40af;
+	--dev-panel-accent-color-disabled: #2563eb30;
 
-	--dev-panel-primary-color: #6366f1;
-	--dev-panel-primary-color-hover: #5855eb;
-	--dev-panel-primary-color-active: #4f46e5;
+	--dev-panel-primary-color: #2563eb;
+	--dev-panel-primary-color-hover: #1d4ed8;
+	--dev-panel-primary-color-active: #1e40af;
+	--dev-panel-primary-color-disabled: #2563eb30;
 
 	--dev-panel-secondary-color: #64748b;
 	--dev-panel-secondary-color-hover: #475569;
@@ -69,7 +119,7 @@
 	--dev-panel-border-color: #475569;
 	--dev-panel-border-color-light: #64748b;
 	--dev-panel-border-color-strong: #334155;
-	--dev-panel-border-color-accent: #6366f1;
+	--dev-panel-border-color-accent: #2563eb;
 
 	// Input Colors
 	--dev-panel-input-background-color: #0f172a;
@@ -77,22 +127,24 @@
 	--dev-panel-input-background-color-focus: #1e293b;
 	--dev-panel-input-border-color: #475569;
 	--dev-panel-input-border-color-hover: #64748b;
-	--dev-panel-input-border-color-focus: #6366f1;
+	--dev-panel-input-border-color-focus: #2563eb;
 	--dev-panel-input-text-color: #f1f5f9;
 	--dev-panel-input-placeholder-color: #64748b;
 
 	// Input Sizes
 	--dev-panel-input-border-width: 1px;
 
-	// Spacing Scale
-	--dev-panel-spacing-xs: 2px;
-	--dev-panel-spacing-sm: 4px;
-	--dev-panel-spacing-md: 8px;
-	--dev-panel-spacing-lg: 12px;
-	--dev-panel-spacing-xl: 16px;
-	--dev-panel-spacing-2xl: 20px;
-	--dev-panel-spacing-3xl: 24px;
-	--dev-panel-spacing-4xl: 32px;
+	// Spacing Scale - Base multiplier system
+	--dev-panel-spacing-base: 4px;
+	--dev-panel-spacing-xs: calc(var(--dev-panel-spacing-base) * 0.5); /* 2px */
+	--dev-panel-spacing-sm: var(--dev-panel-spacing-base); /* 4px */
+	--dev-panel-spacing-md: calc(var(--dev-panel-spacing-base) * 2); /* 8px */
+	--dev-panel-spacing-lg: calc(var(--dev-panel-spacing-base) * 3); /* 12px */
+	--dev-panel-spacing-xl: calc(var(--dev-panel-spacing-base) * 4); /* 16px */
+	--dev-panel-spacing-2xl: calc(var(--dev-panel-spacing-base) * 5); /* 20px */
+	--dev-panel-spacing-3xl: calc(var(--dev-panel-spacing-base) * 6); /* 24px */
+	--dev-panel-spacing-4xl: calc(var(--dev-panel-spacing-base) * 8); /* 32px */
+	--dev-panel-spacing: var(--dev-panel-spacing-lg); /* Default spacing */
 
 	// Shadow System
 	--dev-panel-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -115,9 +167,9 @@
 	--dev-panel-border-radius: var(--dev-panel-border-radius-lg);
 
 	// Component Sizes
-	--dev-panel-max-width: 320px;
+	--dev-panel-max-width: 400px;
 	--dev-panel-min-width: 280px;
-	--dev-panel-max-height: 80vh;
+	--dev-panel-max-height: 600px;
 	--dev-panel-min-height: auto;
 	--dev-panel-header-height: auto;
 	--dev-panel-inputs-height: 32px;
@@ -166,4 +218,19 @@
 	--dev-panel-scrollbar-track-color: var(--dev-panel-background-color-secondary);
 	--dev-panel-scrollbar-thumb-color: var(--dev-panel-border-color);
 	--dev-panel-scrollbar-thumb-hover-color: var(--dev-panel-border-color-light);
+
+	// Themes
+	@media (prefers-color-scheme: light) {
+		@include light-theme-variables;
+	}
+
+	&[data-dev-panel-theme="dark"] {
+		color-scheme: dark;
+	}
+
+	&[data-dev-panel-theme="light"] {
+		@include light-theme-variables;
+
+		color-scheme: light;
+	}
 }

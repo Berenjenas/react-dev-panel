@@ -112,60 +112,21 @@
 	}
 
 	&:hover:not(:disabled) {
-		background-color: var(--dev-panel-input-background-color-hover);
 		border-color: var(--dev-panel-input-border-color-hover);
 	}
 
 	&:focus {
 		outline: none;
-		background-color: var(--dev-panel-input-background-color-focus);
 		border-color: var(--dev-panel-input-border-color-focus);
 		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 	}
 
 	&:disabled {
 		opacity: var(--dev-panel-opacity-50);
-		cursor: not-allowed;
 		background-color: var(--dev-panel-surface-color);
 		border-color: var(--dev-panel-border-color);
+		cursor: not-allowed;
 	}
-}
-
-// Surface elevation mixin
-@mixin surface($level: 1) {
-	background-color: var(--dev-panel-surface-color);
-	border: 1px solid var(--dev-panel-border-color);
-	border-radius: var(--dev-panel-border-radius);
-
-	@if $level == 1 {
-		box-shadow: var(--dev-panel-shadow-sm);
-	} @else if $level == 2 {
-		box-shadow: var(--dev-panel-shadow-md);
-	} @else if $level == 3 {
-		box-shadow: var(--dev-panel-shadow-lg);
-	} @else if $level == 4 {
-		box-shadow: var(--dev-panel-shadow-xl);
-	}
-}
-
-// Text truncation mixin
-@mixin truncate {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-// Visually hidden mixin (for accessibility)
-@mixin visually-hidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
 }
 
 // Reset button styles mixin
@@ -177,11 +138,4 @@
 	font: inherit;
 	color: inherit;
 	cursor: pointer;
-}
-
-// Reset list styles mixin
-@mixin reset-list {
-	list-style: none;
-	padding: 0;
-	margin: 0;
 }
