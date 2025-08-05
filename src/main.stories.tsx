@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Logger } from "./components/Logger";
 import { useDevPanel } from "./hooks/useDevPanel";
 import { useHotkeys } from "./hooks/useHotkeys";
-import { createHotkey } from "./utils";
+import { createHotkey } from "./utils/createHotkey";
 
 type IntegrationTestProps = {
 	devPanelTitle?: string;
