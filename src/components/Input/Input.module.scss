@@ -2,6 +2,7 @@
 
 .input {
 	@include input-base;
+
 	cursor: text;
 
 	&::placeholder {
