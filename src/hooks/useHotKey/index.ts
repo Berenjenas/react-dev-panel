@@ -1,5 +1,5 @@
-import type { HotkeyConfig, UseHotkeysOptions } from "./types";
-import { useHotkeys } from "./useHotkeys";
+import { useHotkeys } from "../useHotkeys";
+import type { HotkeyConfig, UseHotkeysOptions } from "../useHotkeys/types";
 
 /**
  * Hook for handling a single hotkey combination
