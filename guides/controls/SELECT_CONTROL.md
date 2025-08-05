@@ -496,6 +496,7 @@ useDevPanel("Location", {
 
 ## Related Controls
 
+-   **[MultiSelect Control](./MULTISELECT_CONTROL.md)** - For multiple selections
 -   **[Boolean Control](./BOOLEAN_CONTROL.md)** - For true/false choices
 -   **[Button Group Control](./BUTTON_GROUP_CONTROL.md)** - For action-based selections
 -   **[Text Control](./TEXT_CONTROL.md)** - For free-form input

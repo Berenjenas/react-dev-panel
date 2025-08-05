@@ -7,35 +7,53 @@ import { BaseStoreService } from "./BaseStoreService";
 const storageKey = "dev-panel-ui-storage";
 const defaultPosition = { x: 20, y: 20 };
 
-const defaultUIState: DevPanelUIState = {
+interface ExtendedDevPanelUIState extends DevPanelUIState {
+	currentTheme: string;
+}
+
+interface PersistedUIState {
+	isVisible: boolean;
+	isCollapsed: boolean;
+	position: Position;
+	currentTheme: string;
+}
+
+const defaultUIState: ExtendedDevPanelUIState = {
 	isVisible: false,
 	isCollapsed: false,
 	position: defaultPosition,
+	currentTheme: "auto",
 };
 
 /**
- * Service class that manages only the UI state of the dev panel (visibility, collapse, position).
- * This is separated from sections state to avoid unnecessary re-renders when UI state changes.
+ * Service class that manages the UI state of the dev panel.
+ * This includes visibility, collapse, position, and theme settings.
+ * Separated from sections state to avoid unnecessary re-renders when UI state changes.
  *
  * Features:
  * - Persistent UI state storage in localStorage
  * - Independent from sections state changes
  * - Optimized re-renders for UI-specific updates
+ * - Automatic theme application on initialization
+ * - Integration with CSS custom properties system
  *
  * @example
  * ```typescript
  * // Use the service through the provided hooks
- * const { isVisible, setVisible } = useDevPanelUI();
+ * const { isVisible, currentTheme, setVisible, setTheme } = useDevPanelUI();
  * const actions = useDevPanelUIActions();
  * ```
  */
-class DevPanelUIService extends BaseStoreService<DevPanelUIState, DevPanelUIState> {
+class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, PersistedUIState> {
 	/**
 	 * Creates a new DevPanelUIService instance and loads persisted state from localStorage.
 	 */
 	constructor() {
 		// UI state should be persisted - shouldLoadOnInit: true, shouldPersist: true
 		super(storageKey, defaultUIState, true, true);
+
+		// Apply the initial theme immediately after construction
+		this.applyTheme(this.getSnapshot().currentTheme);
 	}
 
 	/**
@@ -45,9 +63,12 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, DevPanelUIStat
 	 * @returns The state in persistable format
 	 * @protected
 	 */
-	protected toPersistableState(state: DevPanelUIState): DevPanelUIState {
+	protected toPersistableState(state: ExtendedDevPanelUIState): PersistedUIState {
 		return {
-			...state,
+			isVisible: state.isVisible,
+			isCollapsed: state.isCollapsed,
+			position: state.position,
+			currentTheme: state.currentTheme,
 		};
 	}
 
@@ -59,7 +80,7 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, DevPanelUIStat
 	 * @returns The state in current format
 	 * @protected
 	 */
-	protected fromPersistedState(persistedState: DevPanelUIState, defaultState: DevPanelUIState): DevPanelUIState {
+	protected fromPersistedState(persistedState: PersistedUIState, defaultState: ExtendedDevPanelUIState): ExtendedDevPanelUIState {
 		return {
 			...defaultState,
 			...persistedState,
@@ -77,12 +98,30 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, DevPanelUIStat
 	}
 
 	/**
+	 * Applies the theme to the document root element using data attributes.
+	 *
+	 * @param theme - Theme name to apply
+	 * @private
+	 */
+	private applyTheme(theme: string): void {
+		const root = document.documentElement;
+
+		if (theme === "auto" || theme === "") {
+			// Remove attribute for auto theme (follows system preference)
+			root.removeAttribute("data-dev-panel-theme");
+		} else {
+			// Set the theme data attribute
+			root.setAttribute("data-dev-panel-theme", theme);
+		}
+	}
+
+	/**
 	 * Sets the visibility state of the dev panel.
 	 *
 	 * @param visible - Whether the panel should be visible
 	 */
 	setVisible = (visible: boolean): void => {
-		this.setState((state: DevPanelUIState) => ({ ...state, isVisible: visible }));
+		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, isVisible: visible }));
 	};
 
 	/**
@@ -91,7 +130,7 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, DevPanelUIStat
 	 * @param collapsed - Whether the panel should be collapsed
 	 */
 	setCollapsed = (collapsed: boolean): void => {
-		this.setState((state: DevPanelUIState) => ({ ...state, isCollapsed: collapsed }));
+		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, isCollapsed: collapsed }));
 	};
 
 	/**
@@ -100,15 +139,42 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, DevPanelUIStat
 	 * @param position - New position coordinates {x, y}
 	 */
 	setPosition = (position: Position): void => {
-		this.setState((state: DevPanelUIState) => ({ ...state, position }));
+		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, position }));
+	};
+
+	/**
+	 * Sets the current theme and applies it to the document.
+	 *
+	 * @param theme - Theme name to set
+	 */
+	setTheme = (theme: string): void => {
+		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, currentTheme: theme }));
+		this.applyTheme(theme);
+	};
+
+	/**
+	 * Resets the theme to the default "auto" theme.
+	 */
+	resetTheme = (): void => {
+		this.setTheme("auto");
+	};
+
+	/**
+	 * Gets the current theme name.
+	 *
+	 * @returns The current theme name
+	 */
+	getCurrentTheme = (): string => {
+		return this.getSnapshot().currentTheme;
 	};
 
 	/**
 	 * Resets the dev panel UI to its default state.
-	 * Resets position and sets visibility and collapse to false.
+	 * Resets position, theme, and sets visibility and collapse to false.
 	 */
 	reset = (): void => {
 		this.setState(() => ({ ...defaultUIState }));
+		this.applyTheme(defaultUIState.currentTheme);
 	};
 }
 
@@ -126,15 +192,20 @@ const devPanelUIService = new DevPanelUIService();
  * const {
  *   isVisible,
  *   position,
+ *   currentTheme,
  *   setVisible,
- *   setPosition
+ *   setPosition,
+ *   setTheme
  * } = useDevPanelUI();
  * ```
  */
-export function useDevPanelUI(): DevPanelUIState & {
+export function useDevPanelUI(): ExtendedDevPanelUIState & {
 	setVisible: (visible: boolean) => void;
 	setCollapsed: (collapsed: boolean) => void;
 	setPosition: (position: Position) => void;
+	setTheme: (theme: string) => void;
+	resetTheme: () => void;
+	getCurrentTheme: () => string;
 	reset: () => void;
 } {
 	const state = useSyncExternalStore(devPanelUIService.subscribe, devPanelUIService.getSnapshot);
@@ -144,6 +215,9 @@ export function useDevPanelUI(): DevPanelUIState & {
 		setVisible: devPanelUIService.setVisible,
 		setCollapsed: devPanelUIService.setCollapsed,
 		setPosition: devPanelUIService.setPosition,
+		setTheme: devPanelUIService.setTheme,
+		resetTheme: devPanelUIService.resetTheme,
+		getCurrentTheme: devPanelUIService.getCurrentTheme,
 		reset: devPanelUIService.reset,
 	};
 }
@@ -159,7 +233,7 @@ export function useDevPanelUI(): DevPanelUIState & {
  * const isVisible = useDevPanelVisible();
  * ```
  */
-export function useDevPanelVisible() {
+export function useDevPanelVisible(): boolean {
 	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().isVisible);
 }
 
@@ -174,7 +248,7 @@ export function useDevPanelVisible() {
  * const isCollapsed = useDevPanelCollapsed();
  * ```
  */
-export function useDevPanelCollapsed() {
+export function useDevPanelCollapsed(): boolean {
 	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().isCollapsed);
 }
 
@@ -190,8 +264,61 @@ export function useDevPanelCollapsed() {
  * console.log(`Panel is at ${position.x}, ${position.y}`);
  * ```
  */
-export function useDevPanelPosition() {
+export function useDevPanelPosition(): Position {
 	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().position);
+}
+
+/**
+ * React hook that subscribes only to the current theme state.
+ * Optimized for components that only need to know the current theme.
+ *
+ * @returns String indicating the current theme name
+ *
+ * @example
+ * ```typescript
+ * const currentTheme = useCurrentTheme();
+ * console.log(`Current theme is: ${currentTheme}`);
+ * ```
+ */
+export function useCurrentTheme(): string {
+	return useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().currentTheme);
+}
+
+/**
+ * React hook that provides access to the complete dev panel theme state and actions.
+ * Uses useSyncExternalStore for optimal performance and React 18 compatibility.
+ *
+ * @returns Object containing the current theme state and all available theme actions
+ *
+ * @example
+ * ```typescript
+ * const {
+ *   currentTheme,
+ *   setTheme,
+ *   resetTheme
+ * } = useDevPanelTheme();
+ *
+ * // Set a specific theme
+ * setTheme("dark");
+ *
+ * // Reset to auto theme
+ * resetTheme();
+ * ```
+ */
+export function useDevPanelTheme(): {
+	currentTheme: string;
+	setTheme: (theme: string) => void;
+	resetTheme: () => void;
+	getCurrentTheme: () => string;
+} {
+	const currentTheme = useSyncExternalStore(devPanelUIService.subscribe, () => devPanelUIService.getSnapshot().currentTheme);
+
+	return {
+		currentTheme,
+		setTheme: devPanelUIService.setTheme,
+		resetTheme: devPanelUIService.resetTheme,
+		getCurrentTheme: devPanelUIService.getCurrentTheme,
+	};
 }
 
 /**
@@ -202,7 +329,7 @@ export function useDevPanelPosition() {
  *
  * @example
  * ```typescript
- * const { setVisible, setPosition, reset } = useDevPanelUIActions();
+ * const { setVisible, setPosition, setTheme, reset } = useDevPanelUIActions();
  *
  * // Toggle panel visibility
  * setVisible(true);
@@ -210,16 +337,62 @@ export function useDevPanelPosition() {
  * // Update position
  * setPosition({ x: 100, y: 100 });
  *
+ * // Set theme
+ * setTheme("dark");
+ *
  * // Reset UI state
  * reset();
  * ```
  */
-export function useDevPanelUIActions() {
+export function useDevPanelUIActions(): {
+	setVisible: (visible: boolean) => void;
+	setCollapsed: (collapsed: boolean) => void;
+	setPosition: (position: Position) => void;
+	setTheme: (theme: string) => void;
+	resetTheme: () => void;
+	getCurrentTheme: () => string;
+	reset: () => void;
+} {
 	return {
 		setVisible: devPanelUIService.setVisible,
 		setCollapsed: devPanelUIService.setCollapsed,
 		setPosition: devPanelUIService.setPosition,
+		setTheme: devPanelUIService.setTheme,
+		resetTheme: devPanelUIService.resetTheme,
+		getCurrentTheme: devPanelUIService.getCurrentTheme,
 		reset: devPanelUIService.reset,
+	};
+}
+
+/**
+ * React hook that provides access to all dev panel theme actions without subscribing to state.
+ * Ideal for components that only need to trigger theme actions without rendering on state changes.
+ *
+ * @returns Object containing all available theme actions
+ *
+ * @example
+ * ```typescript
+ * const { setTheme, resetTheme } = useDevPanelThemeActions();
+ *
+ * // Switch to dark theme
+ * setTheme("dark");
+ *
+ * // Switch to neon theme
+ * setTheme("neon");
+ *
+ * // Reset to auto theme
+ * resetTheme();
+ * ```
+ */
+export function useDevPanelThemeActions(): {
+	setTheme: (theme: string) => void;
+	resetTheme: () => void;
+	getCurrentTheme: () => string;
+} {
+	return {
+		setTheme: devPanelUIService.setTheme,
+		resetTheme: devPanelUIService.resetTheme,
+		getCurrentTheme: devPanelUIService.getCurrentTheme,
 	};
 }
 

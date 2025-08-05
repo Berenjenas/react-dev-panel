@@ -39,7 +39,7 @@ import styles from "./SeparatorControl.module.scss";
  * }} />
  * ```
  */
-export function SeparatorControl({ control }: SeparatorControlProps) {
+export function SeparatorControl({ control }: SeparatorControlProps): React.ReactNode {
 	const style = control.style || "line";
 
 	if (style === "space") {

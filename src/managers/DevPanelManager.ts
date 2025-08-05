@@ -18,6 +18,7 @@ export class DevPanelManager {
 		if (!DevPanelManager.instance) {
 			DevPanelManager.instance = new DevPanelManager();
 		}
+
 		return DevPanelManager.instance;
 	}
 
@@ -56,6 +57,7 @@ export class DevPanelManager {
 		}
 
 		this.mountedSections.add(sectionName);
+
 		if (Object.keys(props).length > 0) {
 			this.updateProps(props);
 		} else {
@@ -161,6 +163,7 @@ export class DevPanelManager {
 			clearTimeout(this.cleanupTimeoutId);
 			this.cleanupTimeoutId = null;
 		}
+
 		this.cleanup();
 	}
 

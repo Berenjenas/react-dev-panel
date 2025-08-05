@@ -34,7 +34,7 @@ import styles from "./BooleanControl.module.scss";
  * }} />
  * ```
  */
-export function BooleanControl({ control }: BooleanControlProps) {
+export function BooleanControl({ control }: BooleanControlProps): React.ReactNode {
 	const controlId = useRef(`boolean-control-${control.label || Math.ceil(Math.random() * 100000)}`);
 
 	return (
@@ -47,6 +47,7 @@ export function BooleanControl({ control }: BooleanControlProps) {
 				disabled={control.disabled}
 				onChange={(e) => control.onChange(e.target.checked)}
 			/>
+
 			<span className={styles.slider} />
 		</label>
 	);

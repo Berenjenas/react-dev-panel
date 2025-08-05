@@ -25,7 +25,7 @@ const users = [
 	},
 ];
 
-function Main() {
+function Main(): React.ReactNode {
 	const [name, setName] = useState(users[0].name);
 	const [lastName, setLastName] = useState(users[0].lastName);
 	const [email, setEmail] = useState(users[0].email);
@@ -38,7 +38,7 @@ function Main() {
 			buttons: [
 				{
 					label: "User 1",
-					onClick: () => {
+					onClick: (): void => {
 						setName(users[0].name);
 						setLastName(users[0].lastName);
 						setEmail(users[0].email);
@@ -47,7 +47,7 @@ function Main() {
 				},
 				{
 					label: "User 2",
-					onClick: () => {
+					onClick: (): void => {
 						setName(users[1].name);
 						setLastName(users[1].lastName);
 						setEmail(users[1].email);
@@ -56,7 +56,7 @@ function Main() {
 				},
 				{
 					label: "User 3",
-					onClick: () => {
+					onClick: (): void => {
 						setName(users[2].name);
 						setLastName(users[2].lastName);
 						setEmail(users[2].email);
@@ -65,7 +65,7 @@ function Main() {
 				},
 				{
 					label: "Reset",
-					onClick: () => {
+					onClick: (): void => {
 						setName("");
 						setLastName("");
 						setEmail("");
@@ -83,8 +83,11 @@ function Main() {
 
 			<form action="">
 				<input type="text" name="name" placeholder="User name" value={name} onChange={(e) => setName(e.target.value)} />
+
 				<input type="text" name="lastName" placeholder="User last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+
 				<input type="email" name="email" placeholder="User email" value={email} onChange={(e) => setEmail(e.target.value)} />
+
 				<input type="tel" name="phone" placeholder="User phone number" value={phone} onChange={(e) => setPhone(e.target.value)} />
 			</form>
 		</>

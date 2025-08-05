@@ -36,7 +36,7 @@ type WindowWithDevPanel = Window & { __devPanelAutoMounted?: boolean };
  * });
  * ```
  */
-export function useDevPanel(sectionName: string, controls: ControlsGroup, devPanelProps?: DevPanelProps) {
+export function useDevPanel(sectionName: string, controls: ControlsGroup, devPanelProps?: DevPanelProps): void {
 	const sections = useDevPanelSections();
 	const { registerSection, unregisterSection } = useDevPanelSectionActions();
 	const previousControlsRef = useRef<ControlsGroup | undefined>(undefined);
@@ -60,8 +60,9 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 	}, [sectionName, controls, devPanelProps, sections, registerSection]);
 
 	useEffect(() => {
-		return () => {
+		return (): void => {
 			const manager = managerRef.current!;
+
 			unregisterSection(sectionName);
 			manager.removeSection(sectionName);
 		};
@@ -74,11 +75,13 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 		(window as WindowWithDevPanel).__devPanelAutoMounted = true;
 
 		const container = document.createElement("div");
+
 		container.id = "dev-panel-portal-container";
 		container.style.display = "none";
 		document.body.appendChild(container);
 
 		const root = createRoot(container);
+
 		root.render(createElement(DevPanelPortal));
 	}, []);
 }

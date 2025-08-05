@@ -12,7 +12,9 @@ const config: StorybookConfig = {
 			...(config.optimizeDeps || {}),
 			exclude: ["vite-plugin-dts"],
 		};
+
 		return config;
 	},
 };
+
 export default config;

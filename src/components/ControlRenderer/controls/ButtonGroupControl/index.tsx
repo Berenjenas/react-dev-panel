@@ -39,7 +39,7 @@ import styles from "./ButtonGroupControl.module.scss";
  * }} />
  * ```
  */
-export function ButtonGroupControl({ control }: ButtonGroupControlProps) {
+export function ButtonGroupControl({ control }: ButtonGroupControlProps): React.ReactNode {
 	return (
 		<div className={styles.buttonGroupContainer}>
 			{control.buttons.map((button, index) => (

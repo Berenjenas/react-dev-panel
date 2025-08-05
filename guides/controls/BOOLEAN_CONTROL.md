@@ -440,6 +440,7 @@ useDevPanel("Settings", {
 
 ## Related Controls
 
--   **[Select Control](./SELECT_CONTROL.md)** - For multiple choice options
+-   **[Select Control](./SELECT_CONTROL.md)** - For single choice options
+-   **[MultiSelect Control](./MULTISELECT_CONTROL.md)** - For multiple choice selections
 -   **[Button Control](./BUTTON_CONTROL.md)** - For one-time actions
 -   **[Button Group Control](./BUTTON_GROUP_CONTROL.md)** - For related toggle actions

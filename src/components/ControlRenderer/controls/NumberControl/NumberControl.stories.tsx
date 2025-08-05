@@ -5,7 +5,7 @@ import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
+function Main(): React.ReactNode {
 	const [amount, setAmount] = useState(0);
 
 	useDevPanel("Number Control", {
@@ -20,6 +20,7 @@ function Main() {
 	return (
 		<>
 			<Logger items={{ amount }} />
+
 			<DevPanel />
 		</>
 	);

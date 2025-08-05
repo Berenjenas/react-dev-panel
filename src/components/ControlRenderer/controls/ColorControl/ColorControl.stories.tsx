@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-newline */
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -8,7 +9,7 @@ import type { ColorControl as ColorControlType } from "./types";
 /**
  * Comprehensive showcase of the ColorControl component with various configurations
  */
-function ColorControlShowcase() {
+function ColorControlShowcase(): React.ReactNode {
 	const [basicColor, setBasicColor] = useState("#ff6b35");
 	const [hexColor, setHexColor] = useState("#4ecdc4");
 	const [namedColor, setNamedColor] = useState("crimson");
@@ -152,6 +153,7 @@ function ColorControlShowcase() {
 					<div style={{ display: "grid", gap: "1.5rem" }}>
 						<div>
 							<h3 style={{ color: "var(--dev-panel-text-color)", fontSize: "1.2rem", marginBottom: "0.5rem" }}>Current Colors</h3>
+
 							<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "1rem" }}>
 								{[
 									{ label: "Basic", color: basicColor },
@@ -172,9 +174,11 @@ function ColorControlShowcase() {
 												boxShadow: "var(--dev-panel-shadow-sm)",
 											}}
 										/>
+
 										<div style={{ fontSize: "0.875rem", color: "var(--dev-panel-text-color-muted)", fontWeight: "600" }}>
 											{label}
 										</div>
+
 										<div style={{ fontSize: "0.75rem", color: "var(--dev-panel-text-color-muted)", fontFamily: "monospace" }}>
 											{color}
 										</div>
@@ -185,28 +189,36 @@ function ColorControlShowcase() {
 
 						<div>
 							<h3 style={{ color: "var(--dev-panel-text-color)", fontSize: "1.2rem", marginBottom: "0.5rem" }}>Features</h3>
+
 							<ul style={{ color: "var(--dev-panel-text-color-muted)", lineHeight: "1.6" }}>
 								<li>
 									<strong>🎯 Visual Color Picker:</strong> Native browser color picker with custom styling
 								</li>
+
 								<li>
 									<strong>✏️ Text Input:</strong> Manual entry with real-time validation
 								</li>
+
 								<li>
 									<strong>🎨 Color Presets:</strong> Quick selection from predefined palettes
 								</li>
+
 								<li>
 									<strong>🔧 Format Support:</strong> Hex, RGB, HSL, and named CSS colors
 								</li>
+
 								<li>
 									<strong>⚡ Debounced Updates:</strong> Smooth performance during value changes
 								</li>
+
 								<li>
 									<strong>🚫 Validation:</strong> Real-time color format validation with error feedback
 								</li>
+
 								<li>
 									<strong>♿ Accessibility:</strong> Full keyboard navigation and screen reader support
 								</li>
+
 								<li>
 									<strong>🎭 Transparency:</strong> Checkerboard pattern for transparent colors
 								</li>
@@ -226,13 +238,16 @@ function ColorControlShowcase() {
 					}}
 				>
 					<h3 style={{ color: "var(--dev-panel-text-color)", marginBottom: "1rem" }}>Usage Examples</h3>
+
 					<div style={{ textAlign: "left", fontSize: "0.875rem", color: "var(--dev-panel-text-color-muted)" }}>
 						<p>
 							<strong>Basic:</strong> <code>{`{ type: "color", value: "${basicColor}", onChange: setColor }`}</code>
 						</p>
+
 						<p>
 							<strong>With Presets:</strong> <code>{`{ type: "color", presets: ["#ff0000", "#00ff00"] }`}</code>
 						</p>
+
 						<p>
 							<strong>Format Specific:</strong> <code>{`{ type: "color", format: "hex" }`}</code>
 						</p>

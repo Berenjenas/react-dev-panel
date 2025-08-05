@@ -5,7 +5,7 @@ import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 import { createMatrixEffect, type MatrixEffect } from "@/utils/matrixEffect";
 
-function Main() {
+function Main(): React.ReactNode {
 	const [matrixMode, setMatrixMode] = useState(false);
 	const matrixEffectRef = useRef<MatrixEffect | null>(null);
 	const [fontSize, setFontSize] = useState(18);
@@ -35,7 +35,7 @@ function Main() {
 		}
 
 		// Cleanup on unmount
-		return () => {
+		return (): void => {
 			if (matrixEffectRef.current) {
 				matrixEffectRef.current.destroy();
 				matrixEffectRef.current = null;
@@ -51,14 +51,14 @@ function Main() {
 				value: !matrixMode,
 				label: "Human Mode",
 				description: "Which pill will you take?",
-				onChange: (value) => setMatrixMode(!value),
+				onChange: (value): void => setMatrixMode(!value),
 			},
 			matrixMode: {
 				type: "boolean",
 				value: matrixMode,
 				label: "Matrix Mode",
 				description: "Follow the white rabbit",
-				onChange: (value) => setMatrixMode(value),
+				onChange: (value): void => setMatrixMode(value),
 			},
 			...(matrixMode && {
 				fontSize: {
@@ -68,7 +68,7 @@ function Main() {
 					min: 10,
 					max: 30,
 					step: 1,
-					onChange: (value) => setFontSize(value),
+					onChange: (value): void => setFontSize(value),
 				},
 				gap: {
 					type: "range",
@@ -77,13 +77,13 @@ function Main() {
 					min: 0.5,
 					max: 5,
 					step: 0.5,
-					onChange: (value) => setSpeed(value),
+					onChange: (value): void => setSpeed(value),
 				},
 				textColor: {
 					type: "color",
 					value: textColor,
 					label: "Text Color",
-					onChange: (value) => setTextColor(value),
+					onChange: (value): void => setTextColor(value),
 				},
 			}),
 		},

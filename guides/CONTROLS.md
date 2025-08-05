@@ -24,6 +24,7 @@ All controls share common properties:
 
 -   [**Boolean Control**](./controls/BOOLEAN_CONTROL.md) - Toggle switch for true/false values
 -   [**Select Control**](./controls/SELECT_CONTROL.md) - Dropdown with single selection
+-   [**MultiSelect Control**](./controls/MULTISELECT_CONTROL.md) - Dropdown with multiple selection support
 
 ### Action Controls
 
@@ -78,6 +79,22 @@ For more details, see [Event Handling](./EVENT_HANDLING.md).
   label: 'Choose Option',
   options: ['option1', 'option2', 'option3'],
   onChange: setValue,
+}
+```
+
+### Multiple Selection
+
+```tsx
+{
+  type: 'multiselect',
+  value: ['option1', 'option3'],
+  label: 'Choose Multiple',
+  options: [
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ],
+  onChange: setMultipleValues,
 }
 ```
 

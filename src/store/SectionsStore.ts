@@ -103,6 +103,7 @@ class DevPanelSectionsService extends BaseStoreService<SectionsState, PersistedS
 	unregisterSection = (name: string): void => {
 		this.setState((sections: SectionsState) => {
 			const { [name]: _removed, ...rest } = sections;
+
 			return rest;
 		});
 	};
@@ -171,7 +172,12 @@ export function useDevPanelSections(): SectionsState {
  * toggleSectionCollapse('mySection');
  * ```
  */
-export function useDevPanelSectionActions() {
+export function useDevPanelSectionActions(): {
+	registerSection: (name: string, controls: ControlsGroup) => void;
+	unregisterSection: (name: string) => void;
+	toggleSectionCollapse: (name: string) => void;
+	reset: () => void;
+} {
 	return {
 		registerSection: sectionsService.registerSection,
 		unregisterSection: sectionsService.unregisterSection,

@@ -47,7 +47,7 @@ const frameworks = [
 	{ label: "Remix", value: "remix" },
 ];
 
-function Main() {
+function Main(): React.ReactNode {
 	const [selectedFruits, setSelectedFruits] = useState<string[]>(["Apple", "Cherry"]);
 	const [selectedColors, setSelectedColors] = useState<string[]>(["red", "blue"]);
 	const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>(["react"]);

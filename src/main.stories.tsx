@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-newline */
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -14,7 +15,7 @@ type IntegrationTestProps = {
  * Comprehensive integration test showcasing all available control types
  * and dev panel features in a realistic scenario.
  */
-function IntegrationTest(props: IntegrationTestProps) {
+function IntegrationTest(props: IntegrationTestProps): React.ReactNode {
 	// Basic user information
 	const [name, setName] = useState("John Doe");
 	const [email, setEmail] = useState("john.doe@example.com");
@@ -167,21 +168,21 @@ function IntegrationTest(props: IntegrationTestProps) {
 			buttons: [
 				{
 					label: "🔄 Reload",
-					onClick: () => {
+					onClick: (): void => {
 						console.log("Reloading application...");
 						// Simulate reload
 					},
 				},
 				{
 					label: "🧹 Clear Cache",
-					onClick: () => {
+					onClick: (): void => {
 						console.log("Clearing cache...");
 						localStorage.clear();
 					},
 				},
 				{
 					label: "📊 Export Logs",
-					onClick: () => {
+					onClick: (): void => {
 						console.log("Exporting logs...");
 						// Simulate log export
 					},
@@ -198,7 +199,7 @@ function IntegrationTest(props: IntegrationTestProps) {
 			type: "button",
 			label: "🔧 Reset All Settings",
 			description: "Reset all values to defaults",
-			onClick: () => {
+			onClick: (): void => {
 				setName("John Doe");
 				setEmail("john.doe@example.com");
 				setAge(28);
@@ -236,6 +237,7 @@ function IntegrationTest(props: IntegrationTestProps) {
 				}}
 			>
 				<h1 style={{ color: primaryColor }}>React Dev Panel Integration Test</h1>
+
 				<p>
 					This comprehensive test showcases all control types and features available in the React Dev Panel. Use the dev panel to modify the
 					values and see real-time updates.
@@ -243,6 +245,7 @@ function IntegrationTest(props: IntegrationTestProps) {
 
 				<div style={{ marginTop: "2rem" }}>
 					<h2>User Information</h2>
+
 					{[
 						{ label: "Name", value: name },
 						{ label: "Email", value: email },
@@ -258,6 +261,7 @@ function IntegrationTest(props: IntegrationTestProps) {
 
 				<div style={{ marginTop: "2rem" }}>
 					<h2>Current Theme: {theme}</h2>
+
 					<div
 						style={{
 							width: "100px",
@@ -282,8 +286,11 @@ function IntegrationTest(props: IntegrationTestProps) {
 						}}
 					>
 						<h3>🐛 Debug Information</h3>
+
 						<p>Debug mode is enabled</p>
+
 						<p>Notifications: {notifications ? "Enabled" : "Disabled"}</p>
+
 						<p>Panel opacity: {Math.round(opacity * 100)}%</p>
 					</div>
 				)}
@@ -297,7 +304,7 @@ function IntegrationTest(props: IntegrationTestProps) {
 /**
  * Focused demo showcasing hotkey functionality and keyboard shortcuts
  */
-function HotkeyDemoComponent(props: IntegrationTestProps) {
+function HotkeyDemoComponent(props: IntegrationTestProps): React.ReactNode {
 	const [message, setMessage] = useState("");
 	const [counter, setCounter] = useState(0);
 	const [lastAction, setLastAction] = useState("None");
@@ -305,7 +312,7 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 	const [logs, setLogs] = useState<string[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState("default");
 
-	function addLog(action: string, shortcut: string) {
+	function addLog(action: string, shortcut: string): void {
 		const timestamp = new Date().toLocaleTimeString();
 		const logEntry = `[${timestamp}] ${action} (${shortcut})`;
 
@@ -388,7 +395,7 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 				buttons: [
 					{
 						label: "🔄 Reset (R)",
-						onClick: () => {
+						onClick: (): void => {
 							setCounter(0);
 							setMessage("");
 							setSelectedTheme("default");
@@ -397,15 +404,16 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 					},
 					{
 						label: "🎲 Random (Space)",
-						onClick: () => {
+						onClick: (): void => {
 							const randomValue = Math.floor(Math.random() * 100);
+
 							setCounter(randomValue);
 							addLog(`Random: ${randomValue}`, "Space");
 						},
 					},
 					{
 						label: "📋 Copy (Ctrl+C)",
-						onClick: () => {
+						onClick: (): void => {
 							navigator.clipboard.writeText(`Counter: ${counter}, Message: ${message}`);
 							addLog("Copied to clipboard", "Ctrl+C");
 						},
@@ -422,7 +430,7 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 				type: "button",
 				label: "🧹 Clear Logs (Escape)",
 				description: "Clear the action log",
-				onClick: () => {
+				onClick: (): void => {
 					setLogs([]);
 					setLastAction("Logs cleared");
 				},
@@ -492,6 +500,7 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 					const themes = ["default", "dark", "light", "colorful"];
 					const currentIndex = themes.indexOf(selectedTheme);
 					const nextTheme = themes[(currentIndex + 1) % themes.length];
+
 					setSelectedTheme(nextTheme);
 					addLog(`Theme: ${nextTheme}`, "T");
 				},
@@ -523,6 +532,7 @@ function HotkeyDemoComponent(props: IntegrationTestProps) {
 				" ",
 				() => {
 					const randomValue = Math.floor(Math.random() * 100);
+
 					setCounter(randomValue);
 					addLog(`Random: ${randomValue}`, "Space");
 				},

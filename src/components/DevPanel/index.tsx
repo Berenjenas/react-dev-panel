@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { useHotkey } from "@/hooks/useHotKey";
 import { useDevPanelSections } from "@/store/SectionsStore";
-import { useDevPanelThemeActions } from "@/store/ThemeStore";
+import { useDevPanelThemeActions } from "@/store/UIStore";
 import { useDevPanelUI } from "@/store/UIStore";
 import { className } from "@/utils/className";
 
@@ -32,7 +32,7 @@ const defaultHotKeyConfig: DevPanelHotkeyConfig = {
  * <DevPanel />
  * ```
  */
-export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps) {
+export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps): React.ReactNode {
 	const { isVisible, isCollapsed, position, setVisible, setCollapsed, setPosition } = useDevPanelUI();
 	const { setTheme } = useDevPanelThemeActions();
 	const sections = useDevPanelSections();

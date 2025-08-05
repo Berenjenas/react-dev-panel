@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
 
 import { useDevPanelUI } from "../src/store/UIStore";
@@ -15,7 +15,7 @@ const preview: Preview = {
 		},
 	},
 	decorators: [
-		(Story) => {
+		(Story): React.JSX.Element => {
 			const { isVisible, setVisible } = useDevPanelUI();
 
 			useEffect(() => {

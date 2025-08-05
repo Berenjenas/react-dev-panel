@@ -328,6 +328,7 @@ describe("formatHotkey", () => {
 					...config,
 					action: vi.fn(),
 				} as HotkeyConfig);
+
 				expect(result).toBe(expected);
 			});
 		});
@@ -355,6 +356,7 @@ describe("formatHotkey", () => {
 					...config,
 					action: vi.fn(),
 				} as HotkeyConfig);
+
 				expect(result).toBe(expected);
 			});
 		});

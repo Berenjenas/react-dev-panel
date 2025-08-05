@@ -1,1 +1,1 @@
-export * from './matrixEffect';
+export * from "./matrixEffect";

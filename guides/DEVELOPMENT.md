@@ -61,6 +61,10 @@ npm run test:coverage # Run tests with coverage report
 ```bash
 npm run lint         # Run ESLint
 npm run lint:fix     # Run ESLint with auto-fix
+npm run format       # Check code formatting with Prettier
+npm run format:fix   # Fix code formatting with Prettier
+npm run stylelint    # Run Stylelint for CSS/SCSS
+npm run stylelint:fix # Fix CSS/SCSS with Stylelint
 npm run typecheck    # Run TypeScript type checking
 ```
 
@@ -82,7 +86,80 @@ react-dev-panel/
 └── tests/                  # Test files
 ```
 
-## Development Workflow
+## Code Quality & Standards
+
+This project maintains high code quality standards through automated tooling and consistent formatting.
+
+### Linting Configuration
+
+#### ESLint
+
+The project uses a comprehensive ESLint configuration with TypeScript support:
+
+-   **Base Configuration**: Extends recommended configs for JavaScript, TypeScript, and React
+-   **React Rules**: Comprehensive JSX formatting and React best practices
+-   **TypeScript Rules**: Strict type checking and explicit function return types
+-   **Import Sorting**: Automatic import organization with `eslint-plugin-simple-import-sort`
+-   **Code Formatting**: Padding rules for consistent code structure
+
+#### Stylelint
+
+SCSS/CSS files are linted with Stylelint to maintain consistent styling:
+
+```bash
+npm run stylelint      # Check SCSS/CSS styles
+npm run stylelint:fix  # Auto-fix style issues
+```
+
+#### Prettier
+
+Code formatting is handled by Prettier with the following configuration:
+
+-   **Print Width**: 150 characters
+-   **Indentation**: Tabs (4 spaces)
+-   **Semicolons**: Always required
+-   **Quotes**: Double quotes
+-   **Trailing Commas**: Always
+-   **Line Endings**: LF
+
+Prettier ignores build outputs, dependencies, and generated files via `.prettierignore`.
+
+### Git Hooks & Automation
+
+#### Pre-commit Hooks (Husky + lint-staged)
+
+Automated quality checks run before each commit:
+
+```json
+{
+	"*.scss": ["npm run stylelint:fix", "npm run format:fix"],
+	"*.{js,jsx,ts,tsx}": ["npm run lint:fix", "npm run format:fix"]
+}
+```
+
+This ensures that all committed code meets quality standards automatically.
+
+#### Commit Message Format (Commitlint)
+
+All commits must follow conventional commit format:
+
+```
+type(scope): description
+
+Examples:
+feat(core): add new control type
+fix(ui): resolve panel positioning issue
+docs(readme): update installation guide
+style(css): improve component styling
+refactor(hooks): optimize state management
+test(utils): add unit tests for helpers
+```
+
+**Available Types**: `feature`, `bugfix`, `docs`, `style`, `refactor`, `test`, `build`, `ci`, `chore`, `revert`
+
+**Available Scopes**: `core`, `ui`, `docs`, `tests`, `workflow`
+
+### Development Workflow
 
 ### 1. Component Development
 
@@ -109,14 +186,26 @@ react-dev-panel/
 
 ### Code Style
 
--   Use TypeScript for all new code
--   Follow existing naming conventions
--   Use CSS Modules for component styles
--   Maintain consistent indentation (tabs)
+The project enforces consistent code style through automated tooling:
+
+-   **TypeScript**: Use TypeScript for all new code with strict type checking
+-   **Naming Conventions**: Follow existing patterns (camelCase for variables, PascalCase for components)
+-   **Component Styles**: Use CSS Modules for component-specific styles
+-   **Indentation**: Use tabs (4 spaces) as enforced by Prettier
+-   **Linting**: All code is automatically linted and formatted via pre-commit hooks
+-   **Import Organization**: Imports are automatically sorted by ESLint rules
+
+> **Note**: Code style is automatically enforced via pre-commit hooks. Run `npm run lint:fix` and `npm run format:fix` to fix any style issues manually.
 
 ### Commit Messages
 
-Follow conventional commit format:
+Commit messages are automatically validated using Commitlint. Use the interactive commit tool:
+
+```bash
+npm run commit  # Interactive commit with conventional format
+```
+
+Or follow the conventional commit format manually:
 
 ```
 type(scope): description
@@ -126,14 +215,19 @@ fix(panel): resolve positioning bug
 docs(readme): update installation guide
 ```
 
+> **Note**: Invalid commit messages will be rejected by the pre-commit hooks.
+
 ### Pull Request Process
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes with proper tests
 4. Update documentation as needed
-5. Ensure all tests pass
-6. Submit a pull request with clear description
+5. Ensure all automated checks pass (linting, formatting, tests)
+6. Use `npm run commit` for conventional commit messages
+7. Submit a pull request with clear description
+
+> **Note**: All code quality checks are automated via pre-commit hooks. The CI pipeline will also verify that all standards are met.
 
 ## Component Development Guidelines
 
@@ -220,10 +314,28 @@ docs(readme): update installation guide
 
 ## Release Process
 
-1. **Version Bump**
+This project uses [Changesets](https://github.com/changesets/changesets) for version management and automated releases.
+
+### Adding Changes
+
+When making changes, add a changeset to describe your changes:
+
+```bash
+npm run changeset
+```
+
+This will prompt you to:
+
+1. Select which packages are affected (for monorepos)
+2. Choose the type of change (patch, minor, major)
+3. Write a summary of the changes
+
+### Release Workflow
+
+1. **Create Changeset**
 
     ```bash
-    npm version patch|minor|major
+    npm run changeset  # Add changeset for your changes
     ```
 
 2. **Build and Test**
@@ -233,16 +345,18 @@ docs(readme): update installation guide
     npm run test
     ```
 
-3. **Publish**
-
+3. **Release** (Maintainers only)
     ```bash
-    npm publish
+    npm run release   # Publishes packages and updates changelog
     ```
 
-4. **Tag Release**
-    ```bash
-    git push --tags
-    ```
+### Automated Releases
+
+-   Releases are automated via GitHub Actions when changesets are merged to main
+-   Version bumps and changelog updates are handled automatically
+-   NPM publishing happens automatically on successful builds
+
+For more details, see the [Changesets documentation](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).
 
 ## Troubleshooting
 

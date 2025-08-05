@@ -11,7 +11,7 @@ type SectionProps = {
 	section: DevPanelSection;
 };
 
-export function Section({ sectionName, section }: SectionProps) {
+export function Section({ sectionName, section }: SectionProps): React.ReactNode {
 	const { toggleSectionCollapse } = useDevPanelSectionActions();
 
 	return (

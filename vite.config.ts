@@ -69,6 +69,7 @@ export default defineConfig({
 				}).map((file) => {
 					const entryName = relative("src", file.slice(0, file.length - extname(file).length));
 					const entryUrl = fileURLToPath(new URL(file, import.meta.url));
+
 					return [entryName, entryUrl];
 				}),
 			),

@@ -9,12 +9,13 @@ A powerful, type-safe React development panel that provides an intuitive interfa
 
 ## ✨ Features
 
--   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, and Separator controls
+-   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, MultiSelect, Color, Range, Date, Button, ButtonGroup, and Separator controls
 -   🎨 **Themeable** - Consistent design system with CSS custom properties
 -   ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
 -   📖 **TypeScript First** - Full type safety and IntelliSense support
 -   🚀 **Zero Dependencies** - Only requires React (peer dependency)
--   📦 **Bundle Size**: ![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
+-   � **Developer Experience** - Comprehensive linting, formatting, and quality tools
+-   �📦 **Bundle Size**: ![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
 
 ## 📦 Installation
 
@@ -270,6 +271,17 @@ Registers keyboard shortcuts.
 ## 🛠️ Development
 
 Want to contribute or set up the project locally?
+
+React Dev Panel maintains high code quality standards with comprehensive tooling:
+
+-   **🔍 ESLint** - Comprehensive linting for TypeScript and React
+-   **💅 Prettier** - Automatic code formatting
+-   **🎨 Stylelint** - CSS/SCSS linting and formatting
+-   **📝 Commitlint** - Conventional commit message validation
+-   **🪝 Husky** - Pre-commit hooks for quality assurance
+-   **📦 Changesets** - Automated version management and releases
+
+All quality checks run automatically via pre-commit hooks, ensuring consistent code quality.
 
 **📖 [Development setup, contributing guidelines, and project structure →](./guides/DEVELOPMENT.md)**
 

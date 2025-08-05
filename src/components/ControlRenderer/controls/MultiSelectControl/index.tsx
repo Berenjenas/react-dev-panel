@@ -43,7 +43,7 @@ interface DropdownPosition {
  * }} />
  * ```
  */
-export function MultiSelectControl({ control }: MultiSelectControlProps) {
+export function MultiSelectControl({ control }: MultiSelectControlProps): React.ReactNode {
 	const devPanelPosition = useDevPanelPosition();
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
@@ -141,7 +141,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 	/**
 	 * Handles opening/closing the dropdown
 	 */
-	function handleToggleDropdown() {
+	function handleToggleDropdown(): void {
 		if (control.disabled) return;
 
 		if (!isOpen) {
@@ -161,7 +161,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 		window.addEventListener("resize", updateDropdownPosition);
 		window.addEventListener("scroll", updateDropdownPosition, true);
 
-		return () => {
+		return (): void => {
 			window.removeEventListener("resize", updateDropdownPosition);
 			window.removeEventListener("scroll", updateDropdownPosition, true);
 		};
@@ -183,7 +183,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 		 * Handles click events to close the dropdown if clicked outside
 		 * @param e - The event object
 		 */
-		function handleClickOutside(e: MouseEvent) {
+		function handleClickOutside(e: MouseEvent): void {
 			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
 				// Check if click is inside the portal dropdown
 				const dropdownElement = document.querySelector(`.${styles.dropdownPortal}`);
@@ -198,7 +198,7 @@ export function MultiSelectControl({ control }: MultiSelectControlProps) {
 
 		document.addEventListener("mousedown", handleClickOutside);
 
-		return () => {
+		return (): void => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);

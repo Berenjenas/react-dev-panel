@@ -33,7 +33,7 @@ import styles from "./ButtonControl.module.scss";
  * }} />
  * ```
  */
-export function ButtonControl({ control }: ButtonControlProps) {
+export function ButtonControl({ control }: ButtonControlProps): React.ReactNode {
 	return (
 		<button onClick={control.onClick} disabled={control.disabled} className={styles.button}>
 			{control.label}

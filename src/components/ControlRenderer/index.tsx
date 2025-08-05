@@ -15,13 +15,13 @@ const withoutLabelControls = ["button", "separator"];
 /**
  * Component that renders different types of controls based on the control type
  */
-export function ControlRenderer<Name extends ControlsNames>({ name, control }: ControlRendererProps<Name>) {
+export function ControlRenderer<Name extends ControlsNames>({ name, control }: ControlRendererProps<Name>): React.ReactNode {
 	const label = control?.label || name;
 
 	/**
 	 * Renders the appropriate control component based on the control type
 	 */
-	function renderControl() {
+	function renderControl(): React.ReactNode {
 		if (!control || !control.type) {
 			return <div className={styles.error}>Control type is not defined</div>;
 		}

@@ -5,7 +5,7 @@ import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main() {
+function Main(): React.ReactNode {
 	const [volume, setVolume] = useState(50);
 	const [opacity, setOpacity] = useState(0.8);
 	const [temperature, setTemperature] = useState(22);
@@ -43,6 +43,7 @@ function Main() {
 	return (
 		<>
 			<Logger items={{ volume, opacity, temperature }} />
+
 			<DevPanel />
 		</>
 	);

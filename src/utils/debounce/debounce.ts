@@ -4,14 +4,11 @@
  * @param wait - The number of milliseconds to delay
  * @returns The debounced function
  */
-export function debounce<T extends (...args: unknown[]) => void>(
-    func: T,
-    wait: number
-): (...args: Parameters<T>) => void {
-    let timeoutId: NodeJS.Timeout;
+export function debounce<T extends (...args: unknown[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
+	let timeoutId: NodeJS.Timeout;
 
-    return (...args: Parameters<T>) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func(...args), wait);
-    };
+	return (...args: Parameters<T>) => {
+		clearTimeout(timeoutId);
+		timeoutId = setTimeout(() => func(...args), wait);
+	};
 }
