@@ -24,11 +24,18 @@ pnpm add -D @berenjena/react-dev-panel
 
 ## Basic Usage
 
-Wrap your application logic with `useDevPanel` hook and render the `<DevPanel />` component:
+The package exposes a single hook: `useDevPanel`. This hook handles everything automatically:
+
+- **Auto-mounting**: Creates and mounts the dev panel UI when first called
+- **Auto-unmounting**: Removes the panel from DOM when no controls are active
+- **State management**: Manages all internal state and control synchronization
+- **Portal rendering**: Renders the panel outside your component tree using React portals
+
+Simply call `useDevPanel` in any component to register controls:
 
 ```tsx
 import { useState } from "react";
-import { useDevPanel, DevPanel } from "@berenjena/react-dev-panel";
+import { useDevPanel } from "@berenjena/react-dev-panel";
 
 function App() {
 	const [name, setName] = useState("John");
@@ -47,12 +54,7 @@ function App() {
 		},
 	});
 
-	return (
-		<>
-			<YourApp />
-			<DevPanel />
-		</>
-	);
+	return <YourApp />;
 }
 ```
 
@@ -60,67 +62,201 @@ function App() {
 
 ## API Reference
 
-### `useDevPanel(groupName, controls)`
+### `useDevPanel(sectionName, controls, devPanelProps?)`
 
-Registers a group of interactive controls.
+The only export from this package. This hook manages the entire dev panel lifecycle and handles all the heavy lifting for you.
+
+#### What it does automatically:
+
+- **Portal Management**: Creates a React portal on first use and renders the panel outside your component tree
+- **State Synchronization**: Keeps all controls in sync across multiple component instances
+- **Lifecycle Management**: Mounts the panel when controls are registered, unmounts when all controls are removed
+- **Memory Management**: Cleans up subscriptions and DOM elements when components unmount
+- **Theme Application**: Applies theme configurations and CSS custom properties
 
 #### Parameters
 
-```txt
-| Name      | Type                      | Description                         |
-| --------- | ------------------------- | ----------------------------------- |
-| groupName | `string`                  | Unique label for the control group  |
-| controls  | `Record<string, Control>` | Set of defined controls (see below) |
-```
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sectionName</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>Unique identifier for the control group</td>
+</tr>
+<tr>
+<td><code>controls</code></td>
+<td>ControlsGroup</td>
+<td>Yes</td>
+<td>Object defining the controls for this section</td>
+</tr>
+<tr>
+<td><code>devPanelProps</code></td>
+<td>DevPanelProps</td>
+<td>No</td>
+<td>Panel configuration (title, theme, hotkeys, etc.)</td>
+</tr>
+</tbody>
+</table>
 
-### `<DevPanel />`
+#### DevPanelProps Configuration
 
-The floating UI component that renders all control groups.
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>panelTitle</code></td>
+<td>string</td>
+<td>"Dev panel"</td>
+<td>Title displayed in the panel header</td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td>BuiltInTheme</td>
+<td>"auto"</td>
+<td>Theme for the panel (light, dark, auto, etc.)</td>
+</tr>
+<tr>
+<td><code>hotKeyConfig</code></td>
+<td>DevPanelHotkeyConfig</td>
+<td>Ctrl+Shift+A</td>
+<td>Hotkey configuration for toggling panel visibility</td>
+</tr>
+</tbody>
+</table>
 
-#### Props
+#### Hotkey Configuration
 
-```txt
-| Prop              | Type                       | Description                   |
-| ----------------- | -------------------------- | ----------------------------- |
-| `panelTitle`      | `string`                   | Optional panel title          |
-| `position`        | `{ x: number, y: number }` | Initial screen position       |
-| `defaultExpanded` | `boolean`                  | Whether the panel starts open |
-```
-
-### `useHotkeys(hotkeys)`
-
-Define global hotkeys to trigger custom actions.
-
-#### Example
+The default hotkey is `Ctrl+Shift+A`. You can customize it using the `hotKeyConfig` object:
 
 ```tsx
-useHotkeys([
-	{
-		keys: ["ctrl", "d"],
-		action: () => toggleDevPanel(),
-		description: "Toggle Dev Panel",
-	},
-]);
+{
+	key: "f",           // The key to press
+	ctrlKey: true,      // Requires Ctrl key
+	shiftKey: false,    // Requires Shift key  
+	altKey: true,       // Requires Alt key
+	metaKey: false      // Requires Meta/Cmd key (Mac)
+}
+```
+
+#### Example with panel configuration:
+
+```tsx
+useDevPanel("User Settings", {
+	name: { type: "text", value: name, onChange: setName },
+	theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme }
+}, {
+	panelTitle: "My App Controls",
+	theme: "dark",
+	hotKeyConfig: {
+		key: "d",
+		ctrlKey: true,
+		shiftKey: false,
+		altKey: false,
+		metaKey: false
+	}
+});
 ```
 
 ---
 
 ## Control Types
 
-```txt
-| Type          | Description                             |
-| ------------- | --------------------------------------- |
-| `text`        | Free text input                         |
-| `number`      | Numeric input with range/step support   |
-| `boolean`     | Toggle switch                           |
-| `select`      | Dropdown or labeled options             |
-| `color`       | Color picker                            |
-| `range`       | Slider input                            |
-| `date`        | Date picker                             |
-| `button`      | Single action button                    |
-| `buttonGroup` | Group of labeled buttons                |
-| `separator`   | Section divider (line, space, or label) |
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Free text input</td>
+</tr>
+<tr>
+<td><code>number</code></td>
+<td>Numeric input with range/step support</td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td>Toggle switch</td>
+</tr>
+<tr>
+<td><code>select</code></td>
+<td>Dropdown or labeled options</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>Color picker</td>
+</tr>
+<tr>
+<td><code>range</code></td>
+<td>Slider input</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date picker</td>
+</tr>
+<tr>
+<td><code>button</code></td>
+<td>Single action button</td>
+</tr>
+<tr>
+<td><code>buttonGroup</code></td>
+<td>Group of labeled buttons</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td>Section divider (line, space, or label)</td>
+</tr>
+</tbody>
+</table>
+
+### Panel Configuration
+
+Customize the panel's appearance and behavior:
+
+```tsx
+useDevPanel("My Section", controls, {
+	panelTitle: "Custom Panel Title",
+	theme: "dark", // "light" | "dark" | "auto" | other built-in themes
+	hotKeyConfig: { // Custom toggle hotkey (default: Ctrl+Shift+A)
+		key: "f",
+		ctrlKey: true,
+		shiftKey: true,
+		altKey: false,
+		metaKey: false
+	}
+});
 ```
+
+### Zero Configuration
+
+The beauty of this package is that it requires zero setup. Just import and use:
+
+```tsx
+import { useDevPanel } from "@berenjena/react-dev-panel";
+
+// That's it! No providers, no setup, no configuration required.
+```
+
+The hook handles all the complexity of portal management, state synchronization, and UI lifecycle automatically.
 
 ---
 
@@ -137,46 +273,60 @@ Customize the look of the panel using CSS variables:
 }
 ```
 
-To reposition the panel:
+---
+
+## How It Works
+
+The `useDevPanel` hook is designed to be zero-configuration. Here's what happens under the hood:
+
+1. **First Call**: When `useDevPanel` is called for the first time in your app, it automatically creates a React portal and mounts the dev panel UI
+2. **Section Registration**: Each call registers a new section with its controls in the global state manager
+3. **State Synchronization**: All sections are merged and displayed in a single, unified panel interface
+4. **Auto-cleanup**: When components unmount, their sections are automatically removed
+5. **Smart Unmounting**: When no sections remain active, the entire panel is removed from the DOM
+
+### Multiple Sections
+
+You can call `useDevPanel` from multiple components to create organized sections:
 
 ```tsx
-<DevPanel position={{ x: 100, y: 100 }} />
+// In UserProfile.tsx
+useDevPanel("User Profile", {
+	name: { type: "text", value: name, onChange: setName },
+	avatar: { type: "text", value: avatar, onChange: setAvatar }
+});
+
+// In AppSettings.tsx
+useDevPanel("App Settings", {
+	theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme },
+	debugMode: { type: "boolean", value: debug, onChange: setDebug }
+});
 ```
+
+Both sections will appear in the same panel, automatically organized and managed.
 
 ---
 
 ## Advanced Usage
 
-### Multiple Control Groups
-
-```tsx
-useDevPanel("User", { ... });
-useDevPanel("App", { ... });
-```
-
 ### Conditional Controls
+
+Controls can be conditionally rendered based on state:
 
 ```tsx
 useDevPanel("Settings", {
-	mode: { type: "select", value: mode, onChange: setMode },
+	mode: { type: "select", value: mode, options: ["basic", "advanced"], onChange: setMode },
 	...(mode === "advanced" && {
-		separator: { type: "separator", style: "label", label: "Advanced" },
+		separator: { type: "separator", style: "label", label: "Advanced Options" },
 		debug: { type: "boolean", value: debug, onChange: setDebug },
+		apiEndpoint: { type: "text", value: apiUrl, onChange: setApiUrl }
 	}),
 });
 ```
 
----
+### Panel Configuration
 
-## Logger Component
-
-The `Logger` is a floating console-like panel to inspect structured data visually:
-
-```tsx
-import { Logger } from "@berenjena/react-dev-panel";
-
-<Logger data={{ user, state }} />;
-```
+Customize the panel's appearance and behavior:
 
 ---
 

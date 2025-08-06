@@ -70,6 +70,9 @@
 .dropdownPortal {
 	position: fixed;
 	z-index: 9999;
+	& * {
+		box-sizing: border-box;
+	}
 }
 
 .dropdown {
@@ -85,6 +88,7 @@
 }
 
 .option {
+	position: relative;
 	display: flex;
 	align-items: center;
 	padding: var(--dev-panel-spacing-sm) var(--dev-panel-spacing-md);
@@ -134,27 +138,6 @@
 	&:focus {
 		outline: none;
 		box-shadow: 0 0 0 2px color-mix(in srgb, var(--dev-panel-accent-color) 20%, transparent);
-	}
-}
-
-.checkmark {
-	display: none;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 10px;
-	height: 10px;
-	pointer-events: none;
-
-	.checkbox:checked + & {
-		display: block;
-	}
-
-	path {
-		fill: var(--dev-panel-text-color-on-accent);
-		stroke: var(--dev-panel-text-color-on-accent);
-		stroke-width: 1;
 	}
 }
 

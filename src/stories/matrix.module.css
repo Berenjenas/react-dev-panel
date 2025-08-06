@@ -1,0 +1,36 @@
+:root[data-dev-panel-theme="neon"] {
+	color-scheme: dark !important;
+
+	/* Color Variables */
+	--dev-panel-accent-color: #00ff41 !important;
+	--dev-panel-accent-color-hover: #00e63c !important;
+	--dev-panel-accent-color-active: #00cc33 !important;
+	--dev-panel-background-color: #0a0a0a !important;
+	--dev-panel-background-color-secondary: #111111 !important;
+	--dev-panel-foreground-color: #000000 !important;
+	--dev-panel-surface-color: #111111 !important;
+	--dev-panel-surface-color-hover: #1a1a1a !important;
+	--dev-panel-text-color: #00ff41 !important;
+	--dev-panel-text-color-secondary: #00e63c !important;
+	--dev-panel-text-color-muted: #00cc33 !important;
+	--dev-panel-text-color-on-accent: #000000 !important;
+	--dev-panel-border-color: #003d10 !important;
+	--dev-panel-border-color-light: #004d15 !important;
+	--dev-panel-border-color-strong: #002d0b !important;
+	--dev-panel-border-color-accent: #00ff41 !important;
+	--dev-panel-input-background-color: #000000 !important;
+	--dev-panel-input-border-color: #003d10 !important;
+	--dev-panel-input-text-color: #00ff41 !important;
+	--dev-panel-input-placeholder-color: #00cc33 !important;
+
+	/* Layout Variables */
+	--dev-panel-border-radius: 8px !important;
+	--dev-panel-spacing-base: 4px !important;
+	--dev-panel-font-size-sm: 14px !important;
+	--dev-panel-font-family: "Monaco", "Menlo", "Ubuntu Mono", "Courier New", monospace !important;
+	--dev-panel-shadow: 0 0 20px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 255, 65, 0.2) !important;
+
+	/* Dimensions */
+	--dev-panel-max-width: 400px !important;
+	--dev-panel-max-height: 600px !important;
+}

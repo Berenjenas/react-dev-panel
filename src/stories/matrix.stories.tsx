@@ -5,6 +5,8 @@ import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 import { createMatrixEffect, type MatrixEffect } from "@/utils/matrixEffect";
 
+import "./matrix.module.css";
+
 function MatrixDemo(): React.ReactNode {
 	const matrixEffectRef = useRef<MatrixEffect | null>(null);
 	const [matrixMode, setMatrixMode] = useState(false);
@@ -90,7 +92,7 @@ function MatrixDemo(): React.ReactNode {
 		},
 		{
 			panelTitle: "Wake up, Neo...",
-			theme: matrixMode ? "dark" : "light",
+			theme: matrixMode ? "neon" : "light",
 		},
 	);
 
