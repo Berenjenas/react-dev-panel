@@ -1,75 +1,37 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main(): React.ReactNode {
-	const [fast, setFast] = useState<boolean>(false);
-	const [good, setGood] = useState<boolean>(false);
-	const [cheap, setCheap] = useState<boolean>(false);
-	const message = useMemo<string>(() => {
-		const activeCount = [fast, good, cheap].filter(Boolean).length;
-
-		return activeCount <= 2
-			? activeCount === 2
-				? "Perfect! You can only have 2 out of 3 ✅"
-				: "Try to enable them all"
-			: "This shouldn't happen! 🤔";
-	}, [cheap, fast, good]);
-
-	/**
-	 * Handle changes to the developer triangle controls.
-	 * @param target The control that changed.
-	 * @param newValue The new value of the control.
-	 */
-	function handleTriangleChange(target: "fast" | "good" | "cheap", newValue: boolean): void {
-		if (newValue) {
-			const currentCount = [fast, good, cheap].filter(Boolean).length;
-
-			if (currentCount >= 2) {
-				if (target !== "fast" && fast) setFast(false);
-				else if (target !== "good" && good) setGood(false);
-				else if (target !== "cheap" && cheap) setCheap(false);
-			}
-		}
-
-		switch (target) {
-			case "fast":
-				setFast(newValue);
-				break;
-			case "good":
-				setGood(newValue);
-				break;
-			case "cheap":
-				setCheap(newValue);
-				break;
-		}
-	}
+function BooleanControlDemo(): React.ReactNode {
+	const [isActive, setIsActive] = useState<boolean>(false);
+	const [isVisible, setIsVisible] = useState<boolean>(true);
+	const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
 	useDevPanel(
-		"Developer Triangle",
+		"Boolean Control",
 		{
-			fast: {
+			isActive: {
 				type: "boolean",
-				value: fast,
-				label: "⚡ Fast",
-				description: "Quick development and delivery",
-				onChange: (value) => handleTriangleChange("fast", value),
+				value: isActive,
+				label: "Active",
+				description: "Toggle active state",
+				onChange: (value) => setIsActive(value),
 			},
-			good: {
+			isVisible: {
 				type: "boolean",
-				value: good,
-				label: "✨ Good",
-				description: "High quality and well-architected",
-				onChange: (value) => handleTriangleChange("good", value),
+				value: isVisible,
+				label: "Visible",
+				description: "Toggle visibility",
+				onChange: (value) => setIsVisible(value),
 			},
-			cheap: {
+			isEnabled: {
 				type: "boolean",
-				value: cheap,
-				label: "💰 Cheap",
-				description: "Low cost and budget-friendly",
-				onChange: (value) => handleTriangleChange("cheap", value),
+				value: isEnabled,
+				label: "Enabled",
+				description: "Toggle enabled state",
+				onChange: (value) => setIsEnabled(value),
 			},
 			disabledControl: {
 				type: "boolean",
@@ -80,33 +42,31 @@ function Main(): React.ReactNode {
 				disabled: true,
 			},
 		},
-		{
-			panelTitle: "The Developer Triangle",
-		},
+		{ panelTitle: "Boolean Control Panel" },
 	);
 
 	return (
 		<Logger
 			items={{
-				fast,
-				good,
-				cheap,
-				message,
+				isActive,
+				isVisible,
+				isEnabled,
 			}}
 		/>
 	);
 }
 
-const meta: Meta<typeof Main> = {
+// =============================================================================
+// Storybook Configuration
+// =============================================================================
+
+const meta: Meta<typeof BooleanControlDemo> = {
 	title: "Controls",
-	component: Main,
-	argTypes: {},
+	component: BooleanControlDemo,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Main>;
+type Story = StoryObj<typeof BooleanControlDemo>;
 
-export const BooleanControl: Story = {
-	args: {},
-};
+export const BooleanControl: Story = {};

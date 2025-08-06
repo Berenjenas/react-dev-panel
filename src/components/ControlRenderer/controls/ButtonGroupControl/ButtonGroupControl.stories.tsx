@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { DevPanel } from "@/components/DevPanel";
+import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
 const users = [
@@ -25,83 +25,85 @@ const users = [
 	},
 ];
 
-function Main(): React.ReactNode {
+function ButtonGroupControlDemo(): React.ReactNode {
 	const [name, setName] = useState(users[0].name);
 	const [lastName, setLastName] = useState(users[0].lastName);
 	const [email, setEmail] = useState(users[0].email);
 	const [phone, setPhone] = useState(users[0].phone);
 
-	useDevPanel("Button Control", {
-		group: {
-			type: "buttonGroup",
-			label: "Select User",
-			buttons: [
-				{
-					label: "User 1",
-					onClick: (): void => {
-						setName(users[0].name);
-						setLastName(users[0].lastName);
-						setEmail(users[0].email);
-						setPhone(users[0].phone);
+	useDevPanel(
+		"ButtonGroup Control",
+		{
+			group: {
+				type: "buttonGroup",
+				label: "Select User",
+				buttons: [
+					{
+						label: "User 1",
+						onClick: (): void => {
+							setName(users[0].name);
+							setLastName(users[0].lastName);
+							setEmail(users[0].email);
+							setPhone(users[0].phone);
+						},
 					},
-				},
-				{
-					label: "User 2",
-					onClick: (): void => {
-						setName(users[1].name);
-						setLastName(users[1].lastName);
-						setEmail(users[1].email);
-						setPhone(users[1].phone);
+					{
+						label: "User 2",
+						onClick: (): void => {
+							setName(users[1].name);
+							setLastName(users[1].lastName);
+							setEmail(users[1].email);
+							setPhone(users[1].phone);
+						},
 					},
-				},
-				{
-					label: "User 3",
-					onClick: (): void => {
-						setName(users[2].name);
-						setLastName(users[2].lastName);
-						setEmail(users[2].email);
-						setPhone(users[2].phone);
+					{
+						label: "User 3",
+						onClick: (): void => {
+							setName(users[2].name);
+							setLastName(users[2].lastName);
+							setEmail(users[2].email);
+							setPhone(users[2].phone);
+						},
 					},
-				},
-				{
-					label: "Reset",
-					onClick: (): void => {
-						setName("");
-						setLastName("");
-						setEmail("");
-						setPhone("");
+					{
+						label: "Reset",
+						onClick: (): void => {
+							setName("");
+							setLastName("");
+							setEmail("");
+							setPhone("");
+						},
+						disabled: true,
 					},
-					disabled: true,
-				},
-			],
+				],
+			},
 		},
-	});
+		{ panelTitle: "Button Group Control Panel" },
+	);
 
 	return (
-		<>
-			<DevPanel />
-
-			<form action="">
-				<input type="text" name="name" placeholder="User name" value={name} onChange={(e) => setName(e.target.value)} />
-
-				<input type="text" name="lastName" placeholder="User last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-
-				<input type="email" name="email" placeholder="User email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
-				<input type="tel" name="phone" placeholder="User phone number" value={phone} onChange={(e) => setPhone(e.target.value)} />
-			</form>
-		</>
+		<Logger
+			items={{
+				name,
+				lastName,
+				email,
+				phone,
+			}}
+		/>
 	);
 }
 
-const meta: Meta<typeof Main> = {
-	title: "Controls/ButtonGroupControl",
-	component: Main,
-	argTypes: {},
+// =============================================================================
+// Storybook Configuration
+// =============================================================================
+
+const meta: Meta<typeof ButtonGroupControlDemo> = {
+	title: "Controls",
+	component: ButtonGroupControlDemo,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Main>;
+type Story = StoryObj<typeof ButtonGroupControlDemo>;
 
-export const Default: Story = {};
+export const ButtonGroupControl: Story = {};

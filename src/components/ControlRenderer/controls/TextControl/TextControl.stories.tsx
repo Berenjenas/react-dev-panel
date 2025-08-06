@@ -1,43 +1,56 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { DevPanel } from "@/components/DevPanel";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-function Main(): React.ReactNode {
+function TextControlDemo(): React.ReactNode {
 	const [description, setDescription] = useState("Test");
+	const [name, setName] = useState("John Doe");
+	const [email, setEmail] = useState("john@example.com");
 
-	useDevPanel("Text Control", {
-		description: {
-			type: "text",
-			value: description,
-			placeholder: "Enter a description",
-			label: "Description",
-			event: "onChange",
-			onChange: (value) => setDescription(value),
+	useDevPanel(
+		"Text Control",
+		{
+			description: {
+				type: "text",
+				value: description,
+				placeholder: "Enter a description",
+				label: "Description",
+				onChange: (value) => setDescription(value),
+			},
+			name: {
+				type: "text",
+				value: name,
+				placeholder: "Enter your name",
+				label: "Name",
+				onChange: (value) => setName(value),
+			},
+			email: {
+				type: "text",
+				value: email,
+				placeholder: "Enter your email",
+				label: "Email",
+				onChange: (value) => setEmail(value),
+			},
 		},
-	});
-
-	return (
-		<>
-			<Logger items={{ description }} />
-
-			<DevPanel />
-		</>
+		{ panelTitle: "Text Control Panel" },
 	);
+
+	return <Logger items={{ description, name, email }} />;
 }
 
-const meta: Meta<typeof Main> = {
-	title: "Controls/TextControl",
-	component: Main,
-	argTypes: {},
+// =============================================================================
+// Storybook Configuration
+// =============================================================================
+
+const meta: Meta<typeof TextControlDemo> = {
+	title: "Controls",
+	component: TextControlDemo,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Main>;
+type Story = StoryObj<typeof TextControlDemo>;
 
-export const Default: Story = {
-	args: {},
-};
+export const TextControl: Story = {};

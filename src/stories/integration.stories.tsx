@@ -2,10 +2,10 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Logger } from "./components/Logger";
-import { useDevPanel } from "./hooks/useDevPanel";
-import { useHotkeys } from "./hooks/useHotkeys";
-import { createHotkey } from "./utils/createHotkey";
+import { Logger } from "@/components/Logger";
+import { useDevPanel } from "@/hooks/useDevPanel";
+import { useHotkeys } from "@/hooks/useHotkeys";
+import { createHotkey } from "@/utils/createHotkey";
 
 type IntegrationTestProps = {
 	devPanelTitle?: string;
@@ -227,76 +227,420 @@ function IntegrationTest(props: IntegrationTestProps): React.ReactNode {
 		<>
 			<div
 				style={{
-					padding: "2rem",
-					fontFamily: "system-ui",
+					padding: "3rem",
+					fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif",
 					fontSize: `${fontSize}px`,
 					opacity: opacity,
-					color: theme === "dark" ? "#ffffff" : "#000000",
-					backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
+					color: theme === "dark" ? "#f8fafc" : "#1e293b",
+					background:
+						theme === "dark"
+							? "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)"
+							: "linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%)",
 					minHeight: "100vh",
+					position: "relative",
+					overflow: "hidden",
 				}}
 			>
-				<h1 style={{ color: primaryColor }}>React Dev Panel Integration Test</h1>
+				{/* Background decoration */}
+				<div
+					style={{
+						position: "absolute",
+						top: "-50%",
+						right: "-50%",
+						width: "100%",
+						height: "100%",
+						background: `radial-gradient(circle, ${primaryColor}15 0%, transparent 70%)`,
+						pointerEvents: "none",
+						zIndex: 0,
+					}}
+				/>
 
-				<p>
-					This comprehensive test showcases all control types and features available in the React Dev Panel. Use the dev panel to modify the
-					values and see real-time updates.
-				</p>
+				<div
+					style={{
+						position: "absolute",
+						bottom: "-30%",
+						left: "-30%",
+						width: "60%",
+						height: "60%",
+						background: `radial-gradient(circle, ${primaryColor}10 0%, transparent 50%)`,
+						pointerEvents: "none",
+						zIndex: 0,
+					}}
+				/>
 
-				<div style={{ marginTop: "2rem" }}>
-					<h2>User Information</h2>
-
-					{[
-						{ label: "Name", value: name },
-						{ label: "Email", value: email },
-						{ label: "Age", value: `${age} years old` },
-						{ label: "Birth Date", value: birthDate },
-						{ label: "Status", value: isActive ? "✅ Active" : "❌ Inactive" },
-					].map(({ label, value }, index) => (
-						<p key={index}>
-							<strong>{label}:</strong> {value}
-						</p>
-					))}
-				</div>
-
-				<div style={{ marginTop: "2rem" }}>
-					<h2>Current Theme: {theme}</h2>
-
+				{/* Main content */}
+				<div style={{ position: "relative", zIndex: 1 }}>
+					{/* Hero section */}
 					<div
 						style={{
-							width: "100px",
-							height: "50px",
-							backgroundColor: primaryColor,
-							borderRadius: "8px",
-							display: "inline-block",
-							marginLeft: "1rem",
-						}}
-					/>
-				</div>
-
-				{debugMode && (
-					<div
-						style={{
-							marginTop: "2rem",
-							padding: "1rem",
-							backgroundColor: theme === "dark" ? "#2a2a2a" : "#f5f5f5",
-							borderRadius: "8px",
-							fontFamily: "monospace",
-							fontSize: "12px",
+							textAlign: "center",
+							marginBottom: "4rem",
+							padding: "2rem",
+							background: theme === "dark" ? "rgba(15, 23, 42, 0.6)" : "rgba(255, 255, 255, 0.8)",
+							borderRadius: "24px",
+							backdropFilter: "blur(20px)",
+							border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+							boxShadow: theme === "dark" ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)" : "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
 						}}
 					>
-						<h3>🐛 Debug Information</h3>
+						<h1
+							style={{
+								fontSize: "3.5rem",
+								fontWeight: "800",
+								color: primaryColor,
+								margin: "0 0 1rem 0",
+								letterSpacing: "-0.02em",
+							}}
+						>
+							React Dev Panel
+						</h1>
 
-						<p>Debug mode is enabled</p>
+						<p
+							style={{
+								fontSize: "1.25rem",
+								opacity: 0.8,
+								margin: "0",
+								fontWeight: "400",
+								lineHeight: "1.6",
+							}}
+						>
+							Comprehensive integration test showcasing all control types and features
+						</p>
 
-						<p>Notifications: {notifications ? "Enabled" : "Disabled"}</p>
-
-						<p>Panel opacity: {Math.round(opacity * 100)}%</p>
+						{/* Status indicators */}
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								gap: "1rem",
+								marginTop: "2rem",
+								flexWrap: "wrap",
+							}}
+						>
+							{[
+								{ label: "Theme", value: theme, icon: theme === "dark" ? "🌙" : theme === "light" ? "☀️" : "🔄" },
+								{ label: "Debug", value: debugMode ? "ON" : "OFF", icon: debugMode ? "🐛" : "✅" },
+								{ label: "Notifications", value: notifications ? "ON" : "OFF", icon: notifications ? "🔔" : "🔕" },
+							].map(({ label, value, icon }, index) => (
+								<div
+									key={index}
+									style={{
+										padding: "0.75rem 1.5rem",
+										backgroundColor: theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)",
+										borderRadius: "12px",
+										border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}`,
+										fontSize: "0.9rem",
+										fontWeight: "500",
+									}}
+								>
+									<span style={{ marginRight: "0.5rem" }}>{icon}</span>
+									{label}: <strong style={{ color: primaryColor }}>{value}</strong>
+								</div>
+							))}
+						</div>
 					</div>
-				)}
+
+					{/* Content grid */}
+					<div
+						style={{
+							display: "grid",
+							gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+							gap: "2rem",
+							marginBottom: "3rem",
+						}}
+					>
+						{/* User Information Card */}
+						<div
+							style={{
+								padding: "2rem",
+								background: theme === "dark" ? "rgba(15, 23, 42, 0.8)" : "rgba(255, 255, 255, 0.9)",
+								borderRadius: "20px",
+								border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+								backdropFilter: "blur(20px)",
+								boxShadow: theme === "dark" ? "0 20px 25px -5px rgba(0, 0, 0, 0.3)" : "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+								transition: "transform 0.2s ease, box-shadow 0.2s ease",
+							}}
+							onMouseEnter={(e) => {
+								e.currentTarget.style.transform = "translateY(-4px)";
+								e.currentTarget.style.boxShadow =
+									theme === "dark" ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)" : "0 25px 50px -12px rgba(0, 0, 0, 0.15)";
+							}}
+							onMouseLeave={(e) => {
+								e.currentTarget.style.transform = "translateY(0)";
+								e.currentTarget.style.boxShadow =
+									theme === "dark" ? "0 20px 25px -5px rgba(0, 0, 0, 0.3)" : "0 20px 25px -5px rgba(0, 0, 0, 0.1)";
+							}}
+						>
+							<div style={{ display: "flex", alignItems: "center", marginBottom: "1.5rem" }}>
+								<div
+									style={{
+										width: "3rem",
+										height: "3rem",
+										borderRadius: "12px",
+										background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}80)`,
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+										fontSize: "1.5rem",
+										marginRight: "1rem",
+									}}
+								>
+									👤
+								</div>
+								<h2 style={{ margin: "0", fontSize: "1.5rem", fontWeight: "600" }}>User Profile</h2>
+							</div>
+
+							<div style={{ display: "grid", gap: "1rem" }}>
+								{[
+									{ label: "Name", value: name, icon: "📝" },
+									{ label: "Email", value: email, icon: "📧" },
+									{ label: "Age", value: `${age} years old`, icon: "🎂" },
+									{ label: "Birth Date", value: new Date(birthDate).toLocaleDateString(), icon: "📅" },
+									{ label: "Status", value: isActive ? "Active" : "Inactive", icon: isActive ? "✅" : "❌" },
+								].map(({ label, value, icon }, index) => (
+									<div
+										key={index}
+										style={{
+											display: "flex",
+											alignItems: "center",
+											padding: "1rem",
+											background: theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)",
+											borderRadius: "12px",
+											border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+										}}
+									>
+										<span style={{ fontSize: "1.2rem", marginRight: "1rem" }}>{icon}</span>
+										<div>
+											<div style={{ fontSize: "0.85rem", opacity: 0.7, fontWeight: "500" }}>{label}</div>
+											<div style={{ fontWeight: "600", color: primaryColor }}>{value}</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Theme & Customization Card */}
+						<div
+							style={{
+								padding: "2rem",
+								background: theme === "dark" ? "rgba(15, 23, 42, 0.8)" : "rgba(255, 255, 255, 0.9)",
+								borderRadius: "20px",
+								border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+								backdropFilter: "blur(20px)",
+								boxShadow: theme === "dark" ? "0 20px 25px -5px rgba(0, 0, 0, 0.3)" : "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+								transition: "transform 0.2s ease, box-shadow 0.2s ease",
+							}}
+							onMouseEnter={(e) => {
+								e.currentTarget.style.transform = "translateY(-4px)";
+								e.currentTarget.style.boxShadow =
+									theme === "dark" ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)" : "0 25px 50px -12px rgba(0, 0, 0, 0.15)";
+							}}
+							onMouseLeave={(e) => {
+								e.currentTarget.style.transform = "translateY(0)";
+								e.currentTarget.style.boxShadow =
+									theme === "dark" ? "0 20px 25px -5px rgba(0, 0, 0, 0.3)" : "0 20px 25px -5px rgba(0, 0, 0, 0.1)";
+							}}
+						>
+							<div style={{ display: "flex", alignItems: "center", marginBottom: "1.5rem" }}>
+								<div
+									style={{
+										width: "3rem",
+										height: "3rem",
+										borderRadius: "12px",
+										background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}80)`,
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+										fontSize: "1.5rem",
+										marginRight: "1rem",
+									}}
+								>
+									🎨
+								</div>
+								<h2 style={{ margin: "0", fontSize: "1.5rem", fontWeight: "600" }}>Theme & Style</h2>
+							</div>
+
+							<div style={{ marginBottom: "2rem" }}>
+								<h3
+									style={{
+										fontSize: "1.1rem",
+										fontWeight: "600",
+										marginBottom: "1rem",
+										color: primaryColor,
+									}}
+								>
+									Current Theme: {theme}
+								</h3>
+
+								{/* Color palette display */}
+								<div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem" }}>
+									<div
+										style={{
+											width: "4rem",
+											height: "4rem",
+											backgroundColor: primaryColor,
+											borderRadius: "12px",
+											border: `3px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}`,
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "center",
+											color: "white",
+											fontWeight: "600",
+											fontSize: "0.8rem",
+										}}
+									>
+										Primary
+									</div>
+									<div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+										<div
+											style={{
+												width: "2rem",
+												height: "1.75rem",
+												backgroundColor: theme === "dark" ? "#1e293b" : "#f8fafc",
+												borderRadius: "6px",
+												border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}`,
+											}}
+										/>
+										<div
+											style={{
+												width: "2rem",
+												height: "1.75rem",
+												backgroundColor: theme === "dark" ? "#334155" : "#e2e8f0",
+												borderRadius: "6px",
+												border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}`,
+											}}
+										/>
+									</div>
+								</div>
+							</div>
+
+							{/* Typography and opacity controls */}
+							<div style={{ display: "grid", gap: "1rem" }}>
+								<div
+									style={{
+										padding: "1rem",
+										background: theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)",
+										borderRadius: "12px",
+										border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+									}}
+								>
+									<div style={{ fontSize: "0.85rem", opacity: 0.7, marginBottom: "0.5rem" }}>Font Size</div>
+									<div style={{ fontWeight: "600", color: primaryColor }}>{fontSize}px</div>
+									<div
+										style={{
+											fontSize: `${fontSize}px`,
+											marginTop: "0.5rem",
+											fontStyle: "italic",
+											opacity: 0.8,
+										}}
+									>
+										Sample text at current size
+									</div>
+								</div>
+
+								<div
+									style={{
+										padding: "1rem",
+										background: theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)",
+										borderRadius: "12px",
+										border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+									}}
+								>
+									<div style={{ fontSize: "0.85rem", opacity: 0.7, marginBottom: "0.5rem" }}>Panel Opacity</div>
+									<div style={{ fontWeight: "600", color: primaryColor }}>{Math.round(opacity * 100)}%</div>
+									<div
+										style={{
+											width: "100%",
+											height: "6px",
+											background: theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+											borderRadius: "3px",
+											marginTop: "0.5rem",
+											position: "relative",
+										}}
+									>
+										<div
+											style={{
+												width: `${opacity * 100}%`,
+												height: "100%",
+												background: `linear-gradient(90deg, ${primaryColor}, ${primaryColor}80)`,
+												borderRadius: "3px",
+											}}
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Debug panel (conditional) */}
+					{debugMode && (
+						<div
+							style={{
+								padding: "2rem",
+								background: theme === "dark" ? "rgba(220, 38, 38, 0.1)" : "rgba(220, 38, 38, 0.05)",
+								borderRadius: "20px",
+								border: `2px solid ${theme === "dark" ? "rgba(220, 38, 38, 0.3)" : "rgba(220, 38, 38, 0.2)"}`,
+								marginBottom: "2rem",
+								backdropFilter: "blur(20px)",
+							}}
+						>
+							<div style={{ display: "flex", alignItems: "center", marginBottom: "1.5rem" }}>
+								<span style={{ fontSize: "2rem", marginRight: "1rem" }}>🐛</span>
+								<h3 style={{ margin: "0", fontSize: "1.5rem", fontWeight: "600", color: "#dc2626" }}>Debug Information</h3>
+							</div>
+
+							<div
+								style={{
+									display: "grid",
+									gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+									gap: "1rem",
+									fontFamily: "'Fira Code', 'Monaco', 'Cascadia Code', monospace",
+									fontSize: "0.9rem",
+								}}
+							>
+								{[
+									{ label: "Debug Mode", value: "Enabled", icon: "🔍" },
+									{ label: "Notifications", value: notifications ? "Active" : "Disabled", icon: "🔔" },
+									{ label: "Panel Opacity", value: `${Math.round(opacity * 100)}%`, icon: "👁️" },
+									{ label: "Font Size", value: `${fontSize}px`, icon: "🔤" },
+									{ label: "Theme", value: theme, icon: "🌓" },
+									{ label: "Primary Color", value: primaryColor, icon: "🎨" },
+								].map(({ label, value, icon }, index) => (
+									<div
+										key={index}
+										style={{
+											padding: "1rem",
+											background: theme === "dark" ? "rgba(0, 0, 0, 0.3)" : "rgba(255, 255, 255, 0.8)",
+											borderRadius: "12px",
+											border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"}`,
+										}}
+									>
+										<div style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem" }}>
+											<span style={{ marginRight: "0.5rem" }}>{icon}</span>
+											<span style={{ fontSize: "0.8rem", opacity: 0.7 }}>{label}</span>
+										</div>
+										<div style={{ fontWeight: "600", color: "#dc2626" }}>{value}</div>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
+
+					{/* Footer */}
+					<div
+						style={{
+							textAlign: "center",
+							padding: "2rem",
+							opacity: 0.6,
+							fontSize: "0.9rem",
+						}}
+					>
+						<p style={{ margin: "0" }}>Use the Dev Panel (Ctrl+Shift+A) to modify these values and see real-time updates</p>
+					</div>
+				</div>
 			</div>
 
-			<Logger items={currentState} />
+			<Logger items={currentState} defaultCollapsed />
 		</>
 	);
 }
@@ -790,15 +1134,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const AllControlTypes: Story = {
-	name: "All Control Types",
+export const AllControlsDemo: Story = {
 	args: {
 		devPanelTitle: "Integration Test Panel",
 	},
 };
 
 export const HotkeyDemo: Story = {
-	name: "Hotkey Demo",
 	args: {
 		devPanelTitle: "Hotkey Controls",
 	},

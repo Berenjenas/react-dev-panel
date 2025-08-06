@@ -5,9 +5,9 @@ import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 import { createMatrixEffect, type MatrixEffect } from "@/utils/matrixEffect";
 
-function Main(): React.ReactNode {
-	const [matrixMode, setMatrixMode] = useState(false);
+function MatrixDemo(): React.ReactNode {
 	const matrixEffectRef = useRef<MatrixEffect | null>(null);
+	const [matrixMode, setMatrixMode] = useState(false);
 	const [fontSize, setFontSize] = useState(18);
 	const [speed, setSpeed] = useState(1);
 	const [textColor, setTextColor] = useState("#0F0");
@@ -20,6 +20,7 @@ function Main(): React.ReactNode {
 				speed,
 				textColor,
 			});
+
 			matrixEffectRef.current.start();
 		} else if (matrixMode && matrixEffectRef.current) {
 			// Update existing effect configuration
@@ -89,23 +90,35 @@ function Main(): React.ReactNode {
 		},
 		{
 			panelTitle: "Wake up, Neo...",
-			theme: !matrixMode ? "corporate" : "neon",
+			theme: matrixMode ? "dark" : "light",
 		},
 	);
 
-	return <Logger items={{ matrixMode, humanMode: !matrixMode, fontSize, speed, textColor }} />;
+	return (
+		<Logger
+			defaultCollapsed
+			items={{
+				matrixMode,
+				humanMode: !matrixMode,
+				fontSize,
+				speed,
+				textColor,
+			}}
+		/>
+	);
 }
 
-const meta: Meta<typeof Main> = {
+// =============================================================================
+// Storybook Configuration
+// =============================================================================
+
+const meta: Meta<typeof MatrixDemo> = {
 	title: "Integration Tests",
-	component: Main,
-	argTypes: {},
+	component: MatrixDemo,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Main>;
+type Story = StoryObj<typeof MatrixDemo>;
 
-export const Matrix: Story = {
-	args: {},
-};
+export const Matrix: Story = {};

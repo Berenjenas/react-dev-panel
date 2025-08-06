@@ -25,22 +25,28 @@ export type BuiltInTheme =
 	| "volcano";
 
 export interface DevPanelProps {
+	/**
+	 * Title of the DevPanel, displayed at the top.
+	 */
 	panelTitle?: string;
 	/**
 	 * Hotkey configuration for toggling the DevPanel visibility.
 	 * If not provided, defaults to
 	 * ```json
 	 * {
-	 *   key: "f",
-	 *   shiftKey: true,
-	 *   altKey: true,
-	 *   ctrlKey: false,
-	 *   metaKey: false,
+	 *   "key": "f",
+	 *   "shiftKey": true,
+	 *   "altKey": true,
+	 *   "ctrlKey": false,
+	 *   "metaKey": false,
 	 * }
 	 * ```
 	 */
 	hotKeyConfig?: DevPanelHotkeyConfig;
-
+	/**
+	 * Theme for the DevPanel.
+	 * If not provided, defaults to "auto"
+	 */
 	theme?: BuiltInTheme;
 }
 

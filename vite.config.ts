@@ -31,6 +31,7 @@ export default defineConfig({
 		dts({
 			exclude: [
 				"**/*.stories.tsx",
+				"src/stories/**",
 				"src/test",
 				"**/*.test.tsx",
 				"**/*-env.d.ts",
@@ -53,13 +54,14 @@ export default defineConfig({
 			formats: ["es"],
 		},
 		rollupOptions: {
-			external: ["react/jsx-runtime", ...Object.keys(peerDependencies)],
+			external: ["react", "react-dom", "react/jsx-runtime", "react-dom/client", ...Object.keys(peerDependencies)],
 			// https://rollupjs.org/configuration-options/#input
 			input: Object.fromEntries(
 				globSync(["src/**/*.{ts,tsx}"], {
 					ignore: [
 						"src/**/*.d.ts",
 						"src/**/*.stories.tsx",
+						"src/stories/**",
 						"src/**/*.test.tsx",
 						"src/**/*.spec.ts",
 						"src/setup-tests.ts",
@@ -77,7 +79,10 @@ export default defineConfig({
 				entryFileNames: "[name].js",
 				assetFileNames: "assets/[name][extname]",
 				globals: {
+					react: "React",
+					"react-dom": "ReactDOM",
 					"react/jsx-runtime": "jsxRuntime",
+					"react-dom/client": "ReactDOMClient",
 					...Object.fromEntries(Object.keys(peerDependencies).map((dep) => [dep, dep.replace(/-/g, "").toUpperCase()])),
 				},
 			},

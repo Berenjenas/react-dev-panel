@@ -7,18 +7,9 @@ import { BaseStoreService } from "./BaseStoreService";
 const storageKey = "dev-panel-ui-storage";
 const defaultPosition = { x: 20, y: 20 };
 
-interface ExtendedDevPanelUIState extends DevPanelUIState {
-	currentTheme: string;
-}
+type PersistedUIState = DevPanelUIState;
 
-interface PersistedUIState {
-	isVisible: boolean;
-	isCollapsed: boolean;
-	position: Position;
-	currentTheme: string;
-}
-
-const defaultUIState: ExtendedDevPanelUIState = {
+const defaultUIState: DevPanelUIState = {
 	isVisible: false,
 	isCollapsed: false,
 	position: defaultPosition,
@@ -44,7 +35,7 @@ const defaultUIState: ExtendedDevPanelUIState = {
  * const actions = useDevPanelUIActions();
  * ```
  */
-class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, PersistedUIState> {
+class DevPanelUIService extends BaseStoreService<DevPanelUIState, PersistedUIState> {
 	/**
 	 * Creates a new DevPanelUIService instance and loads persisted state from localStorage.
 	 */
@@ -63,7 +54,7 @@ class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, Persis
 	 * @returns The state in persistable format
 	 * @protected
 	 */
-	protected toPersistableState(state: ExtendedDevPanelUIState): PersistedUIState {
+	protected toPersistableState(state: DevPanelUIState): PersistedUIState {
 		return {
 			isVisible: state.isVisible,
 			isCollapsed: state.isCollapsed,
@@ -80,7 +71,7 @@ class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, Persis
 	 * @returns The state in current format
 	 * @protected
 	 */
-	protected fromPersistedState(persistedState: PersistedUIState, defaultState: ExtendedDevPanelUIState): ExtendedDevPanelUIState {
+	protected fromPersistedState(persistedState: PersistedUIState, defaultState: DevPanelUIState): DevPanelUIState {
 		return {
 			...defaultState,
 			...persistedState,
@@ -121,7 +112,7 @@ class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, Persis
 	 * @param visible - Whether the panel should be visible
 	 */
 	setVisible = (visible: boolean): void => {
-		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, isVisible: visible }));
+		this.setState((state: DevPanelUIState) => ({ ...state, isVisible: visible }));
 	};
 
 	/**
@@ -130,7 +121,7 @@ class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, Persis
 	 * @param collapsed - Whether the panel should be collapsed
 	 */
 	setCollapsed = (collapsed: boolean): void => {
-		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, isCollapsed: collapsed }));
+		this.setState((state: DevPanelUIState) => ({ ...state, isCollapsed: collapsed }));
 	};
 
 	/**
@@ -139,7 +130,7 @@ class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, Persis
 	 * @param position - New position coordinates {x, y}
 	 */
 	setPosition = (position: Position): void => {
-		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, position }));
+		this.setState((state: DevPanelUIState) => ({ ...state, position }));
 	};
 
 	/**
@@ -148,7 +139,7 @@ class DevPanelUIService extends BaseStoreService<ExtendedDevPanelUIState, Persis
 	 * @param theme - Theme name to set
 	 */
 	setTheme = (theme: string): void => {
-		this.setState((state: ExtendedDevPanelUIState) => ({ ...state, currentTheme: theme }));
+		this.setState((state: DevPanelUIState) => ({ ...state, currentTheme: theme }));
 		this.applyTheme(theme);
 	};
 
@@ -199,7 +190,7 @@ const devPanelUIService = new DevPanelUIService();
  * } = useDevPanelUI();
  * ```
  */
-export function useDevPanelUI(): ExtendedDevPanelUIState & {
+export function useDevPanelUI(): DevPanelUIState & {
 	setVisible: (visible: boolean) => void;
 	setCollapsed: (collapsed: boolean) => void;
 	setPosition: (position: Position) => void;
