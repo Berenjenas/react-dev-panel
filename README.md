@@ -5,17 +5,17 @@
 [![License: MIT](https://badgen.net/npm/license/@berenjena/react-dev-panel)](https://opensource.org/licenses/MIT)
 [![Weekly Downloads](https://badgen.net/npm/dw/@berenjena/react-dev-panel)](https://www.npmjs.com/package/@berenjena/react-dev-panel)
 
-A powerful, type-safe React development panel that provides an intuitive interface for controlling component props, debugging state, and rapid prototyping during development.
+A powerful, type-safe development panel for React that allows developers to inspect and control component props, manage state, and accelerate prototyping directly within the application UI.
 
 ## ✨ Features
 
--   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, MultiSelect, Color, Range, Date, Button, ButtonGroup, and Separator controls
--   🎨 **Themeable** - Consistent design system with CSS custom properties
--   ⌨️ **Keyboard Shortcuts** - Quick access with customizable hotkeys
+-   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, ButtonGroup, and Separator controls
+-   🚀 **Zero Configuration** - Auto-mounting and unmounting, no providers or setup required
+-   🎨 **Themeable** - Built-in themes and CSS custom properties for customization
+-   ⌨️ **Keyboard Shortcuts** - Customizable hotkeys for panel toggle
 -   📖 **TypeScript First** - Full type safety and IntelliSense support
--   🚀 **Zero Dependencies** - Only requires React (peer dependency)
--   � **Developer Experience** - Comprehensive linting, formatting, and quality tools
--   �📦 **Bundle Size**: ![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
+-   � **Auto State Management** - Automatic portal rendering and lifecycle management
+-   📦 **Lightweight** - Only requires React as peer dependency
 
 ## 📦 Installation
 
@@ -33,11 +33,18 @@ pnpm add -D @berenjena/react-dev-panel
 
 ## 🚀 Quick Start
 
+The package exposes a single hook: `useDevPanel`. This hook handles everything automatically:
+
+-   **Auto-mounting**: Creates and mounts the dev panel UI when first called
+-   **Auto-unmounting**: Removes the panel from DOM when no controls are active
+-   **State management**: Manages all internal state and control synchronization
+-   **Portal rendering**: Renders the panel outside your component tree
+
 ### Basic Usage
 
 ```tsx
 import { useState } from "react";
-import { useDevPanel, DevPanel } from "@berenjena/react-dev-panel";
+import { useDevPanel } from "@berenjena/react-dev-panel";
 
 function App() {
 	const [name, setName] = useState("John Doe");
@@ -81,12 +88,12 @@ function App() {
 			<p>Age: {age}</p>
 			<p>Status: {isActive ? "Active" : "Inactive"}</p>
 			<p>Theme: {theme}</p>
-
-			<DevPanel />
 		</div>
 	);
 }
 ```
+
+That's it! No additional components or providers needed. The hook automatically handles the entire panel lifecycle.
 
 ## 🎛️ Control Types
 
@@ -157,50 +164,63 @@ The dev panel uses CSS custom properties for easy theming. Here's a quick exampl
 
 ## ⌨️ Keyboard Shortcuts
 
-The dev panel supports customizable keyboard shortcuts:
+The dev panel supports customizable keyboard shortcuts. The default hotkey is `Ctrl+Shift+A`:
 
 ```tsx
-import { useHotkeys } from "@berenjena/react-dev-panel";
-
-function App() {
-	useHotkeys([
-		{
-			keys: ["ctrl", "d"],
-			action: () => toggleDevPanel(),
-			description: "Toggle Dev Panel",
-		},
-		{
-			keys: ["ctrl", "shift", "r"],
-			action: () => resetAllValues(),
-			description: "Reset All Values",
-		},
-	]);
-}
+useDevPanel("My Section", controls, {
+	hotKeyConfig: {
+		key: "d", // The key to press
+		ctrlKey: true, // Requires Ctrl key
+		shiftKey: false, // Requires Shift key
+		altKey: true, // Requires Alt key
+		metaKey: false, // Requires Meta/Cmd key (Mac)
+	},
+});
 ```
 
 ## 🔧 Advanced Usage
 
-### Multiple Panel Groups
+### Multiple Panel Sections
+
+You can call `useDevPanel` from multiple components to create organized sections:
 
 ```tsx
 function App() {
-	// Group 1: User Settings
-	useDevPanel("User", {
+	// In UserProfile.tsx
+	useDevPanel("User Profile", {
 		name: { type: "text", value: name, onChange: setName },
-		age: { type: "number", value: age, onChange: setAge },
+		avatar: { type: "text", value: avatar, onChange: setAvatar },
 	});
 
-	// Group 2: App Settings
-	useDevPanel("App", {
+	// In AppSettings.tsx
+	useDevPanel("App Settings", {
 		theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme },
 		debug: { type: "boolean", value: debug, onChange: setDebug },
 	});
 
-	return <DevPanel />;
+	// Both sections appear in the same panel automatically
+	return <YourApp />;
 }
 ```
 
-**📖 [Advanced patterns, state management, and optimization →](./guides/ADVANCED_USAGE.md)**
+### Panel Configuration
+
+Customize the panel's appearance and behavior:
+
+```tsx
+useDevPanel("My Section", controls, {
+	panelTitle: "Custom Panel Title",
+	theme: "dark", // Built-in themes: light, dark, neon, etc.
+	hotKeyConfig: {
+		// Custom toggle hotkey (default: Ctrl+Shift+A)
+		key: "f",
+		ctrlKey: true,
+		shiftKey: true,
+		altKey: false,
+		metaKey: false,
+	},
+});
+```
 
 ### Event Handling Options
 
@@ -241,32 +261,23 @@ React Dev Panel supports two different event handling strategies for input contr
 
 ## 📚 API Reference
 
-### `useDevPanel(groupName: string, controls: ControlsGroup)`
+### `useDevPanel(sectionName, controls, devPanelProps?)`
 
-Registers a group of controls with the dev panel.
+The only export from this package. This hook manages the entire dev panel lifecycle and handles all the heavy lifting for you.
 
 **Parameters:**
 
--   `groupName` - Unique identifier for the control group
+-   `sectionName` - Unique identifier for the control group
 -   `controls` - Object containing control definitions
+-   `devPanelProps` - Optional panel configuration (title, theme, hotkeys)
 
-### `<DevPanel />`
+**What it does automatically:**
 
-Main component that renders the development panel.
-
-**Props:**
-
--   `panelTitle?: string` - Custom title for the panel
--   `position?: { x: number, y: number }` - Initial position
--   `defaultExpanded?: boolean` - Whether the panel starts expanded
-
-### `useHotkeys(hotkeys: Hotkey[])`
-
-Registers keyboard shortcuts.
-
-**Parameters:**
-
--   `hotkeys` - Array of hotkey definitions with keys, action, and description
+-   **Portal Management**: Creates a React portal on first use and renders the panel outside your component tree
+-   **State Synchronization**: Keeps all controls in sync across multiple component instances
+-   **Lifecycle Management**: Mounts the panel when controls are registered, unmounts when all controls are removed
+-   **Memory Management**: Cleans up subscriptions and DOM elements when components unmount
+-   **Theme Application**: Applies theme configurations and CSS custom properties
 
 ## 🛠️ Development
 

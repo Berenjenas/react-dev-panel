@@ -319,8 +319,6 @@ export function Select({ value, options, onChange, disabled = false, multiple = 
 													className={styles.checkbox}
 												/>
 
-												<Icon name="Check" className={styles.checkmark} />
-
 												<span className={styles.label}>{optionLabel}</span>
 											</label>
 										);
