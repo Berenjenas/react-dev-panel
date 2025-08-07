@@ -17,4 +17,5 @@ export const controls = Object.freeze({
 	separator: lazy(() => import("./SeparatorControl").then((m) => ({ default: m.SeparatorControl }))),
 	text: lazy(() => import("./TextControl").then((m) => ({ default: m.TextControl }))),
 	buttonGroup: lazy(() => import("./ButtonGroupControl").then((m) => ({ default: m.ButtonGroupControl }))),
+	dragAndDrop: lazy(() => import("./DragAndDropControl").then((m) => ({ default: m.DragAndDropControl }))),
 });
