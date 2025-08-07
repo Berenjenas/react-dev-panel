@@ -5,7 +5,7 @@ import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 import { createMatrixEffect, type MatrixEffect } from "@/utils/matrixEffect";
 
-import "./matrix.module.css";
+import "./matrix.css";
 
 function MatrixDemo(): React.ReactNode {
 	const matrixEffectRef = useRef<MatrixEffect | null>(null);
