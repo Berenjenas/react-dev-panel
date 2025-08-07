@@ -6,7 +6,6 @@ export type FileInfo = {
 	type: string;
 	file: File;
 	base64: string;
-	blob: Blob;
 	lastModified: number;
 	webkitRelativePath: string;
 };
@@ -14,6 +13,7 @@ export type FileInfo = {
 export interface DragAndDropControl extends BaseControl {
 	type: "dragAndDrop";
 	onDrop: (value: FileInfo) => void;
+	allowedFileTypes?: string[];
 }
 
 export interface DragAndDropControlProps {

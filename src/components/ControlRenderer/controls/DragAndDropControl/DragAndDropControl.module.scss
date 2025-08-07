@@ -18,8 +18,22 @@
 	justify-content: center;
 	text-align: center;
 	cursor: pointer;
-	transition: background-color 0.2s ease;
+	transition: var(--dev-panel-transition-normal);
 	position: relative;
+
+	&:hover {
+		background-color: var(--dev-panel-surface-color-hover);
+	}
+
+	&.disabled {
+		opacity: var(--dev-panel-opacity-50);
+		cursor: not-allowed;
+		pointer-events: none;
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
 
 	&::before {
 		content: "";
@@ -28,7 +42,7 @@
 		left: -2px;
 		right: -2px;
 		bottom: -2px;
-		border: 2px dashed var(--dev-panel-border-color, #ccc);
+		border: 2px dashed var(--dev-panel-border-color);
 		border-radius: var(--dev-panel-border-radius-md);
 		pointer-events: none;
 	}
@@ -57,12 +71,39 @@
 }
 
 .supportedFormats {
-	font-size: 12px;
-	color: var(--dev-panel-text-color-muted, #666);
-	margin: 8px 0 0 0;
+	font-size: var(--dev-panel-font-size-sm);
+	color: var(--dev-panel-text-color-muted);
+	margin: var(--dev-panel-spacing-md) 0 0 0;
 }
 
 .dropText {
 	margin: 0;
-	color: var(--dev-panel-text-color, inherit);
+	color: var(--dev-panel-text-color);
+}
+
+.droppedFile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.droppedText {
+	margin: 0;
+	color: var(--dev-panel-text-color);
+	font-weight: var(--dev-panel-font-weight-medium);
+	font-size: var(--dev-panel-font-size-md);
+}
+
+.errorMessage {
+	padding: var(--dev-panel-spacing-md) var(--dev-panel-spacing-lg);
+	border-radius: var(--dev-panel-border-radius-sm);
+	color: var(--dev-panel-error-color);
+	font-size: var(--dev-panel-font-size-md);
+	margin: 0;
+
+	p {
+		margin: 0;
+	}
 }
