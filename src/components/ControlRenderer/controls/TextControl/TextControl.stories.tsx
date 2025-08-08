@@ -24,6 +24,7 @@ function TextControlDemo(): React.ReactNode {
 				value: name,
 				placeholder: "Enter your name",
 				label: "Name",
+				disableAutoExpand: true,
 				onChange: (value) => setName(value),
 			},
 			email: {

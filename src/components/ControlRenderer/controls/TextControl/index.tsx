@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Input } from "@/components/Input";
+import { Textarea } from "@/components/Textarea";
 
 import type { TextControlProps } from "./types";
 
@@ -52,7 +52,7 @@ export function TextControl({ control }: TextControlProps): React.ReactNode {
 	 *
 	 * @param e - The change event from the text input element
 	 */
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+	function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
 		const newValue = e.target.value;
 
 		setLocalValue(newValue);
@@ -66,9 +66,9 @@ export function TextControl({ control }: TextControlProps): React.ReactNode {
 	 * Handles blur events for the text control
 	 * Triggers onChange callback when the input loses focus if event type is "onBlur"
 	 *
-	 * @param e - The focus event from the text input element
+	 * @param e - The focus event from the textarea element
 	 */
-	function handleBlur(e: React.FocusEvent<HTMLInputElement>): void {
+	function handleBlur(e: React.FocusEvent<HTMLTextAreaElement>): void {
 		const newValue = e.target.value;
 
 		if (eventType === "onBlur") {
@@ -81,12 +81,12 @@ export function TextControl({ control }: TextControlProps): React.ReactNode {
 	}, [control.value]);
 
 	return (
-		<Input
-			type="text"
+		<Textarea
 			value={localValue}
 			placeholder={control.placeholder}
 			disabled={control.disabled}
 			onChange={handleChange}
+			disableAutoExpand={control.disableAutoExpand}
 			{...(eventType === "onBlur" && { onBlur: handleBlur })}
 		/>
 	);

@@ -1,0 +1,17 @@
+@use "../../styles/abstracts" as *;
+
+.textarea {
+	@include input-base;
+
+	cursor: text;
+
+	&::placeholder {
+		color: var(--dev-panel-input-placeholder-color);
+		opacity: 1;
+	}
+
+	resize: none;
+	min-height: 45px;
+	overflow-y: hidden;
+	transition: none;
+}
