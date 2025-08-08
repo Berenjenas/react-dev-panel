@@ -26,10 +26,10 @@ pnpm add -D @berenjena/react-dev-panel
 
 The package exposes a single hook: `useDevPanel`. This hook handles everything automatically:
 
-- **Auto-mounting**: Creates and mounts the dev panel UI when first called
-- **Auto-unmounting**: Removes the panel from DOM when no controls are active
-- **State management**: Manages all internal state and control synchronization
-- **Portal rendering**: Renders the panel outside your component tree using React portals
+-   **Auto-mounting**: Creates and mounts the dev panel UI when first called
+-   **Auto-unmounting**: Removes the panel from DOM when no controls are active
+-   **State management**: Manages all internal state and control synchronization
+-   **Portal rendering**: Renders the panel outside your component tree using React portals
 
 Simply call `useDevPanel` in any component to register controls:
 
@@ -68,76 +68,88 @@ The only export from this package. This hook manages the entire dev panel lifecy
 
 #### What it does automatically:
 
-- **Portal Management**: Creates a React portal on first use and renders the panel outside your component tree
-- **State Synchronization**: Keeps all controls in sync across multiple component instances
-- **Lifecycle Management**: Mounts the panel when controls are registered, unmounts when all controls are removed
-- **Memory Management**: Cleans up subscriptions and DOM elements when components unmount
-- **Theme Application**: Applies theme configurations and CSS custom properties
+-   **Portal Management**: Creates a React portal on first use and renders the panel outside your component tree
+-   **State Synchronization**: Keeps all controls in sync across multiple component instances
+-   **Lifecycle Management**: Mounts the panel when controls are registered, unmounts when all controls are removed
+-   **Memory Management**: Cleans up subscriptions and DOM elements when components unmount
+-   **Theme Application**: Applies theme configurations and CSS custom properties
 
 #### Parameters
 
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>sectionName</code></td>
-<td>string</td>
-<td>Yes</td>
-<td>Unique identifier for the control group</td>
-</tr>
-<tr>
-<td><code>controls</code></td>
-<td>ControlsGroup</td>
-<td>Yes</td>
-<td>Object defining the controls for this section</td>
-</tr>
-<tr>
-<td><code>devPanelProps</code></td>
-<td>DevPanelProps</td>
-<td>No</td>
-<td>Panel configuration (title, theme, hotkeys, etc.)</td>
-</tr>
-</tbody>
+	<thead>
+		<tr>
+			<th>Parameter</th>
+			<th>Type</th>
+			<th>Required</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>sectionName</code>
+			</td>
+			<td>string</td>
+			<td>Yes</td>
+			<td>Unique identifier for the control group</td>
+		</tr>
+		<tr>
+			<td>
+				<code>controls</code>
+			</td>
+			<td>ControlsGroup</td>
+			<td>Yes</td>
+			<td>Object defining the controls for this section</td>
+		</tr>
+		<tr>
+			<td>
+				<code>devPanelProps</code>
+			</td>
+			<td>DevPanelProps</td>
+			<td>No</td>
+			<td>Panel configuration (title, theme, hotkeys, etc.)</td>
+		</tr>
+	</tbody>
 </table>
 
 #### DevPanelProps Configuration
 
 <table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>panelTitle</code></td>
-<td>string</td>
-<td>"Dev panel"</td>
-<td>Title displayed in the panel header</td>
-</tr>
-<tr>
-<td><code>theme</code></td>
-<td>BuiltInTheme</td>
-<td>"auto"</td>
-<td>Theme for the panel (light, dark, auto, etc.)</td>
-</tr>
-<tr>
-<td><code>hotKeyConfig</code></td>
-<td>DevPanelHotkeyConfig</td>
-<td>Ctrl+Shift+A</td>
-<td>Hotkey configuration for toggling panel visibility</td>
-</tr>
-</tbody>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>panelTitle</code>
+			</td>
+			<td>string</td>
+			<td>"Dev panel"</td>
+			<td>Title displayed in the panel header</td>
+		</tr>
+		<tr>
+			<td>
+				<code>theme</code>
+			</td>
+			<td>BuiltInTheme</td>
+			<td>"auto"</td>
+			<td>Theme for the panel (light, dark, auto, etc.)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>hotKeyConfig</code>
+			</td>
+			<td>DevPanelHotkeyConfig</td>
+			<td>Ctrl+Shift+A</td>
+			<td>Hotkey configuration for toggling panel visibility</td>
+		</tr>
+	</tbody>
 </table>
 
 #### Hotkey Configuration
@@ -148,7 +160,7 @@ The default hotkey is `Ctrl+Shift+A`. You can customize it using the `hotKeyConf
 {
 	key: "f",           // The key to press
 	ctrlKey: true,      // Requires Ctrl key
-	shiftKey: false,    // Requires Shift key  
+	shiftKey: false,    // Requires Shift key
 	altKey: true,       // Requires Alt key
 	metaKey: false      // Requires Meta/Cmd key (Mac)
 }
@@ -157,20 +169,24 @@ The default hotkey is `Ctrl+Shift+A`. You can customize it using the `hotKeyConf
 #### Example with panel configuration:
 
 ```tsx
-useDevPanel("User Settings", {
-	name: { type: "text", value: name, onChange: setName },
-	theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme }
-}, {
-	panelTitle: "My App Controls",
-	theme: "dark",
-	hotKeyConfig: {
-		key: "d",
-		ctrlKey: true,
-		shiftKey: false,
-		altKey: false,
-		metaKey: false
-	}
-});
+useDevPanel(
+	"User Settings",
+	{
+		name: { type: "text", value: name, onChange: setName },
+		theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme },
+	},
+	{
+		panelTitle: "My App Controls",
+		theme: "dark",
+		hotKeyConfig: {
+			key: "d",
+			ctrlKey: true,
+			shiftKey: false,
+			altKey: false,
+			metaKey: false,
+		},
+	},
+);
 ```
 
 ---
@@ -178,54 +194,74 @@ useDevPanel("User Settings", {
 ## Control Types
 
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>text</code></td>
-<td>Free text input</td>
-</tr>
-<tr>
-<td><code>number</code></td>
-<td>Numeric input with range/step support</td>
-</tr>
-<tr>
-<td><code>boolean</code></td>
-<td>Toggle switch</td>
-</tr>
-<tr>
-<td><code>select</code></td>
-<td>Dropdown or labeled options</td>
-</tr>
-<tr>
-<td><code>color</code></td>
-<td>Color picker</td>
-</tr>
-<tr>
-<td><code>range</code></td>
-<td>Slider input</td>
-</tr>
-<tr>
-<td><code>date</code></td>
-<td>Date picker</td>
-</tr>
-<tr>
-<td><code>button</code></td>
-<td>Single action button</td>
-</tr>
-<tr>
-<td><code>buttonGroup</code></td>
-<td>Group of labeled buttons</td>
-</tr>
-<tr>
-<td><code>separator</code></td>
-<td>Section divider (line, space, or label)</td>
-</tr>
-</tbody>
+	<thead>
+		<tr>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>text</code>
+			</td>
+			<td>Free text input</td>
+		</tr>
+		<tr>
+			<td>
+				<code>number</code>
+			</td>
+			<td>Numeric input with range/step support</td>
+		</tr>
+		<tr>
+			<td>
+				<code>boolean</code>
+			</td>
+			<td>Toggle switch</td>
+		</tr>
+		<tr>
+			<td>
+				<code>select</code>
+			</td>
+			<td>Dropdown or labeled options</td>
+		</tr>
+		<tr>
+			<td>
+				<code>color</code>
+			</td>
+			<td>Color picker</td>
+		</tr>
+		<tr>
+			<td>
+				<code>range</code>
+			</td>
+			<td>Slider input</td>
+		</tr>
+		<tr>
+			<td>
+				<code>date</code>
+			</td>
+			<td>Date picker</td>
+		</tr>
+		<tr>
+			<td>
+				<code>button</code>
+			</td>
+			<td>Single action button</td>
+		</tr>
+		<tr>
+			<td>
+				<code>buttonGroup</code>
+			</td>
+			<td>Group of labeled buttons</td>
+		</tr>
+		<tr>
+			<td>
+				<code>separator</code>
+			</td>
+			<td>Section divider (line, space, or label)</td>
+		</tr>
+	</tbody>
 </table>
 
 ### Panel Configuration
@@ -236,13 +272,14 @@ Customize the panel's appearance and behavior:
 useDevPanel("My Section", controls, {
 	panelTitle: "Custom Panel Title",
 	theme: "dark", // "light" | "dark" | "auto" | other built-in themes
-	hotKeyConfig: { // Custom toggle hotkey (default: Ctrl+Shift+A)
+	hotKeyConfig: {
+		// Custom toggle hotkey (default: Ctrl+Shift+A)
 		key: "f",
 		ctrlKey: true,
 		shiftKey: true,
 		altKey: false,
-		metaKey: false
-	}
+		metaKey: false,
+	},
 });
 ```
 
@@ -293,13 +330,13 @@ You can call `useDevPanel` from multiple components to create organized sections
 // In UserProfile.tsx
 useDevPanel("User Profile", {
 	name: { type: "text", value: name, onChange: setName },
-	avatar: { type: "text", value: avatar, onChange: setAvatar }
+	avatar: { type: "text", value: avatar, onChange: setAvatar },
 });
 
 // In AppSettings.tsx
 useDevPanel("App Settings", {
 	theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme },
-	debugMode: { type: "boolean", value: debug, onChange: setDebug }
+	debugMode: { type: "boolean", value: debug, onChange: setDebug },
 });
 ```
 
@@ -319,7 +356,7 @@ useDevPanel("Settings", {
 	...(mode === "advanced" && {
 		separator: { type: "separator", style: "label", label: "Advanced Options" },
 		debug: { type: "boolean", value: debug, onChange: setDebug },
-		apiEndpoint: { type: "text", value: apiUrl, onChange: setApiUrl }
+		apiEndpoint: { type: "text", value: apiUrl, onChange: setApiUrl },
 	}),
 });
 ```
