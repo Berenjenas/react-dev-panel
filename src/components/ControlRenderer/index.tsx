@@ -8,9 +8,9 @@ import type { ControlRendererProps } from "./types";
 
 import styles from "./ControlRenderer.module.scss";
 
-const oneLineControls = ["button", "buttonGroup", "separator"];
-const notHoverableControls = ["separator"];
-const withoutLabelControls = ["button", "separator"];
+const oneLineControls = ["button", "buttonGroup", "separator", "dragAndDrop"];
+const notHoverableControls = ["separator", "dragAndDrop"];
+const withoutLabelControls = ["button", "separator", "dragAndDrop"];
 
 /**
  * Component that renders different types of controls based on the control type

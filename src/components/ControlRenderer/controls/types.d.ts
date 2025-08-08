@@ -3,6 +3,7 @@ import type { ButtonControl } from "./ButtonControl/types";
 import type { ButtonGroupControl } from "./ButtonGroupControl/types";
 import type { ColorControl } from "./ColorControl/types";
 import type { DateControl } from "./DateControl/types";
+import type { DragAndDropControl } from "./DragAndDropControl/types";
 import type { MultiSelectControl } from "./MultiSelectControl/types";
 import type { NumberControl } from "./NumberControl/types";
 import type { RangeControl } from "./RangeControl/types";
@@ -33,6 +34,7 @@ export type Controls = {
 	date: DateControl;
 	separator: SeparatorControl;
 	buttonGroup: ButtonGroupControl;
+	dragAndDrop: DragAndDropControl;
 };
 
 export type ControlsNames = keyof Controls;

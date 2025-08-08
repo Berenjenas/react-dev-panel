@@ -44,7 +44,7 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps):
 		[setPosition],
 	);
 
-	const { isDragging, elementRef, handlePointerDown } = useDragAndDrop({
+	const { elementRef, handlePointerDown } = useDragAndDrop({
 		onPositionChange: handlePositionChange,
 	});
 
@@ -70,9 +70,7 @@ export function DevPanel({ panelTitle = "Dev panel", ...props }: DevPanelProps):
 	return (
 		<div
 			ref={elementRef}
-			{...className(styles.devPanelContainer, {
-				[styles.dragging]: isDragging,
-			})}
+			{...className(styles.devPanelContainer)}
 			style={{
 				left: position.x,
 				top: position.y,

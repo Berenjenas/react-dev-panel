@@ -47,6 +47,7 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		color: var(--dev-panel-text-color);
+		pointer-events: none;
 	}
 
 	.button {
