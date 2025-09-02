@@ -101,6 +101,7 @@
 	font-family: var(--dev-panel-font-family);
 	font-size: var(--dev-panel-font-size-sm);
 	cursor: pointer;
+	overflow-wrap: anywhere;
 
 	&:hover {
 		background-color: var(--dev-panel-surface-color-hover);

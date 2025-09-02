@@ -1,5 +1,6 @@
 .controlRendererContainer {
 	display: grid;
+	word-break: break-word;
 
 	.controlContainer {
 		gap: var(--dev-panel-spacing-md);
@@ -9,6 +10,7 @@
 		padding: var(--dev-panel-spacing-xs);
 		border-radius: var(--dev-panel-border-radius);
 		transition: var(--dev-panel-transition);
+		min-width: 1px;
 
 		&.hoverable {
 			&:hover {
@@ -17,7 +19,7 @@
 		}
 
 		&:not(.fullWidth) {
-			grid-template-columns: 120px 1fr;
+			grid-template-columns: 120px calc(100% - 120px - var(--dev-panel-spacing-md));
 		}
 
 		&.fullWidth {
@@ -29,6 +31,8 @@
 		.controlWrapper {
 			display: flex;
 			align-items: center;
+			word-break: break-word;
+			overflow-wrap: break-word;
 
 			&.justifyStart {
 				justify-content: flex-start;
