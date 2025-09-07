@@ -8,6 +8,7 @@ function BooleanControlDemo(): React.ReactNode {
 	const [isActive, setIsActive] = useState<boolean>(false);
 	const [isVisible, setIsVisible] = useState<boolean>(true);
 	const [isEnabled, setIsEnabled] = useState<boolean>(false);
+	const [persistent, setPersistent] = useState<boolean>(false);
 
 	useDevPanel(
 		"Boolean Control",
@@ -40,6 +41,14 @@ function BooleanControlDemo(): React.ReactNode {
 				description: "Boolean control can be disabled",
 				onChange: () => {},
 				disabled: true,
+			},
+			persistent: {
+				type: "boolean",
+				value: persistent,
+				label: "Persistent Control",
+				description: "This control's state persists across sessions",
+				onChange: (value) => setPersistent(value),
+				persist: true,
 			},
 		},
 		{ panelTitle: "Boolean Control Panel" },

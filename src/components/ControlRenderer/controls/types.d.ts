@@ -15,6 +15,7 @@ export interface BaseControl {
 	label?: string;
 	description?: string;
 	disabled?: boolean;
+	persist?: boolean;
 }
 
 export interface BaseInputControl extends BaseControl {

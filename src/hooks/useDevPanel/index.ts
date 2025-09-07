@@ -5,6 +5,7 @@ import type { ControlsGroup } from "@/components/ControlRenderer/controls/types"
 import type { DevPanelProps } from "@/components/DevPanel/types";
 import { DevPanelPortal } from "@/components/DevPanelPortal";
 import { DevPanelManager } from "@/managers/DevPanelManager";
+import { controlPersistenceService } from "@/store/ControlPersistenceService";
 import { useDevPanelSectionActions, useDevPanelSections } from "@/store/SectionsStore";
 import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged";
 
@@ -41,18 +42,60 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 	const { registerSection, unregisterSection } = useDevPanelSectionActions();
 	const previousControlsRef = useRef<ControlsGroup | undefined>(undefined);
 	const managerRef = useRef<DevPanelManager | null>(null);
+	const persistentControlsProcessedRef = useRef<Set<string>>(new Set());
 
 	if (!managerRef.current) {
 		managerRef.current = DevPanelManager.getInstance();
 	}
 
 	useEffect(() => {
+		Object.entries(controls).forEach(([controlKey, control]) => {
+			const persistKey = `${sectionName}-${controlKey}`;
+
+			if (control.persist && !persistentControlsProcessedRef.current.has(persistKey)) {
+				const persistedValue = controlPersistenceService.getPersistedValue(sectionName, controlKey);
+
+				if (persistedValue !== undefined && "onChange" in control && typeof control.onChange === "function") {
+					(control.onChange as (value: unknown) => void)(persistedValue);
+				}
+
+				persistentControlsProcessedRef.current.add(persistKey);
+			}
+		});
+	}, [sectionName, controls]);
+
+	const enhancedControls = useRef<ControlsGroup>({});
+
+	useEffect(() => {
+		const newEnhancedControls: ControlsGroup = {};
+
+		Object.entries(controls).forEach(([controlKey, control]) => {
+			if (control.persist && "onChange" in control && typeof control.onChange === "function") {
+				const originalOnChange = control.onChange;
+
+				newEnhancedControls[controlKey] = {
+					...control,
+					onChange: (value: unknown): void => {
+						controlPersistenceService.setPersistedValue(sectionName, controlKey, value);
+
+						(originalOnChange as (value: unknown) => void)(value);
+					},
+				};
+			} else {
+				newEnhancedControls[controlKey] = control;
+			}
+		});
+
+		enhancedControls.current = newEnhancedControls;
+	}, [sectionName, controls]);
+
+	useEffect(() => {
 		const manager = managerRef.current!;
 		const sectionExists = sections[sectionName] !== undefined;
 
-		if (hasControlsChanged(controls, previousControlsRef.current) || !sectionExists) {
-			registerSection(sectionName, controls);
-			previousControlsRef.current = controls;
+		if (hasControlsChanged(enhancedControls.current, previousControlsRef.current) || !sectionExists) {
+			registerSection(sectionName, enhancedControls.current);
+			previousControlsRef.current = enhancedControls.current;
 			manager.addSection(sectionName, devPanelProps);
 		} else if (devPanelProps) {
 			manager.updateProps(devPanelProps);
@@ -60,11 +103,15 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 	}, [sectionName, controls, devPanelProps, sections, registerSection]);
 
 	useEffect(() => {
+		const processedControls = persistentControlsProcessedRef.current;
+
 		return (): void => {
 			const manager = managerRef.current!;
 
 			unregisterSection(sectionName);
 			manager.removeSection(sectionName);
+
+			processedControls.clear();
 		};
 	}, [sectionName, unregisterSection]);
 
