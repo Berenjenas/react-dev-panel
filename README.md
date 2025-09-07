@@ -1,4 +1,4 @@
-# React Dev Panel
+# React Dev P- **Zero Configuration** - Auto-mounting and unmounting, no providers or setup requirednel
 
 ![NPM Version](https://badgen.net/npm/v/@berenjena/react-dev-panel)
 ![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
@@ -10,11 +10,12 @@ A powerful, type-safe development panel for React that allows developers to insp
 ## ✨ Features
 
 -   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, ButtonGroup, and Separator controls
--   🚀 **Zero Configuration** - Auto-mounting and unmounting, no providers or setup required
+-   � **Automatic Persistence** - Control values automatically saved to localStorage and restored on reload
+-   �🚀 **Zero Configuration** - Auto-mounting and unmounting, no providers or setup required
 -   🎨 **Themeable** - Built-in themes and CSS custom properties for customization
 -   ⌨️ **Keyboard Shortcuts** - Customizable hotkeys for panel toggle
 -   📖 **TypeScript First** - Full type safety and IntelliSense support
--   � **Auto State Management** - Automatic portal rendering and lifecycle management
+-   **Auto State Management** - Automatic portal rendering and lifecycle management
 -   📦 **Lightweight** - Only requires React as peer dependency
 
 ## 📦 Installation
@@ -31,7 +32,7 @@ yarn add -D @berenjena/react-dev-panel
 pnpm add -D @berenjena/react-dev-panel
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 The package exposes a single hook: `useDevPanel`. This hook handles everything automatically:
 
@@ -57,6 +58,7 @@ function App() {
 			type: "text",
 			value: name,
 			label: "Full Name",
+			persist: true, // Automatically save and restore value
 			onChange: setName,
 		},
 		age: {
@@ -65,12 +67,14 @@ function App() {
 			label: "Age",
 			min: 0,
 			max: 120,
+			persist: true, // Value persists across page reloads
 			onChange: setAge,
 		},
 		isActive: {
 			type: "boolean",
 			value: isActive,
 			label: "Active User",
+			persist: true,
 			onChange: setIsActive,
 		},
 		theme: {
@@ -78,6 +82,7 @@ function App() {
 			value: theme,
 			label: "Theme",
 			options: ["light", "dark", "auto"],
+			persist: true,
 			onChange: setTheme,
 		},
 	});
@@ -107,6 +112,7 @@ React Dev Panel provides rich control types for different data types. Here are s
   value: 'Hello World',
   label: 'Message',
   placeholder: 'Enter message...',
+  persist: true, // Value automatically saved to localStorage
   onChange: (value: string) => setValue(value),
 }
 ```
@@ -120,6 +126,7 @@ React Dev Panel provides rich control types for different data types. Here are s
   label: 'Count',
   min: 0,
   max: 100,
+  persist: true, // Persists across page reloads
   onChange: (value: number) => setValue(value),
 }
 ```
@@ -131,7 +138,20 @@ React Dev Panel provides rich control types for different data types. Here are s
   type: 'boolean',
   value: true,
   label: 'Enable Feature',
+  persist: true, // Checkbox state is remembered
   onChange: (value: boolean) => setValue(value),
+}
+```
+
+### Color Control
+
+```tsx
+{
+  type: 'color',
+  value: '#ff6200',
+  label: 'Theme Color',
+  persist: true, // Color choice is automatically saved
+  onChange: (value: string) => setValue(value),
 }
 ```
 
@@ -178,7 +198,7 @@ useDevPanel("My Section", controls, {
 });
 ```
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### Multiple Panel Sections
 
@@ -251,6 +271,7 @@ React Dev Panel supports two different event handling strategies for input contr
 ### Core Guides
 
 -   **[Control Types](./guides/CONTROLS.md)** - Complete guide to all available controls
+-   **[Data Persistence](./guides/PERSISTENCE.md)** - Automatic value persistence and state management
 -   **[Event Handling](./guides/EVENT_HANDLING.md)** - onChange vs onBlur strategies and best practices
 -   **[Styling & Theming](./guides/STYLING.md)** - Customization, themes, and responsive design
 -   **[Advanced Usage](./guides/ADVANCED_USAGE.md)** - Complex patterns, state management, and optimization

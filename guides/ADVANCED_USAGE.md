@@ -1,4 +1,4 @@
-# 🔧 Advanced Usage
+# Advanced Usage
 
 This guide covers advanced patterns and techniques for using React Dev Panel in complex applications.
 
@@ -72,30 +72,15 @@ function DynamicGroupsExample() {
 
 ## State Persistence and Synchronization
 
-### Local Storage Integration
+React Dev Panel now includes built-in persistence that automatically saves and restores control values. This section covers advanced persistence patterns and integration with external state management.
+
+### Automatic Persistence
+
+Enable automatic persistence for any control by adding `persist: true`:
 
 ```tsx
-import { useState, useEffect } from "react";
-
-function usePersistentState<T>(key: string, defaultValue: T): [T, (value: T) => void] {
-	const [state, setState] = useState<T>(() => {
-		try {
-			const item = localStorage.getItem(key);
-			return item ? JSON.parse(item) : defaultValue;
-		} catch {
-			return defaultValue;
-		}
-	});
-
-	useEffect(() => {
-		localStorage.setItem(key, JSON.stringify(state));
-	}, [key, state]);
-
-	return [state, setState];
-}
-
-function PersistentDevPanel() {
-	const [settings, setSettings] = usePersistentState("devPanelSettings", {
+function PersistentSettingsPanel() {
+	const [settings, setSettings] = useState({
 		theme: "dark",
 		debugMode: false,
 		apiEndpoint: "https://api.example.com",
@@ -106,17 +91,124 @@ function PersistentDevPanel() {
 			type: "select",
 			value: settings.theme,
 			options: ["light", "dark", "auto"],
+			persist: true, // Automatically saved to localStorage
 			onChange: (theme) => setSettings((prev) => ({ ...prev, theme })),
 		},
 		debugMode: {
 			type: "boolean",
 			value: settings.debugMode,
+			persist: true, // Persists across page reloads
 			onChange: (debugMode) => setSettings((prev) => ({ ...prev, debugMode })),
 		},
 		apiEndpoint: {
 			type: "text",
 			value: settings.apiEndpoint,
+			persist: true, // Saved and restored automatically
 			onChange: (apiEndpoint) => setSettings((prev) => ({ ...prev, apiEndpoint })),
+		},
+	});
+
+	return <DevPanel />;
+}
+```
+
+### Initializing State with Persisted Values
+
+For optimal user experience, initialize your component state with persisted values:
+
+```tsx
+import { controlPersistenceService } from "@berenjena/react-dev-panel";
+
+function getInitialValue<T>(sectionName: string, controlKey: string, defaultValue: T): T {
+	const persistedValue = controlPersistenceService.getPersistedValue(sectionName, controlKey);
+	return persistedValue !== undefined ? (persistedValue as T) : defaultValue;
+}
+
+function AdvancedPersistenceExample() {
+	const sectionName = "Advanced Settings";
+
+	// Initialize state with persisted values to prevent flash of defaults
+	const [settings, setSettings] = useState(() => ({
+		theme: getInitialValue(sectionName, "theme", "dark"),
+		debugMode: getInitialValue(sectionName, "debugMode", false),
+		apiEndpoint: getInitialValue(sectionName, "apiEndpoint", "https://api.example.com"),
+		features: getInitialValue(sectionName, "features", []),
+	}));
+
+	useDevPanel(sectionName, {
+		theme: {
+			type: "select",
+			value: settings.theme,
+			options: ["light", "dark", "auto"],
+			persist: true,
+			onChange: (theme) => setSettings((prev) => ({ ...prev, theme })),
+		},
+		debugMode: {
+			type: "boolean",
+			value: settings.debugMode,
+			persist: true,
+			onChange: (debugMode) => setSettings((prev) => ({ ...prev, debugMode })),
+		},
+		apiEndpoint: {
+			type: "text",
+			value: settings.apiEndpoint,
+			persist: true,
+			onChange: (apiEndpoint) => setSettings((prev) => ({ ...prev, apiEndpoint })),
+		},
+		features: {
+			type: "multiselect",
+			value: settings.features,
+			options: ["analytics", "logging", "cache", "debugging"],
+			persist: true,
+			onChange: (features) => setSettings((prev) => ({ ...prev, features })),
+		},
+	});
+
+	return <DevPanel />;
+}
+```
+
+### Manual Persistence Control
+
+For advanced scenarios, you can manually control persistence:
+
+```tsx
+import { controlPersistenceService } from "@berenjena/react-dev-panel";
+
+function ManualPersistenceExample() {
+	const [config, setConfig] = useState({});
+
+	const saveConfiguration = () => {
+		controlPersistenceService.setPersistedValue("MyApp", "config", config);
+	};
+
+	const loadConfiguration = () => {
+		const savedConfig = controlPersistenceService.getPersistedValue("MyApp", "config");
+		if (savedConfig) {
+			setConfig(savedConfig);
+		}
+	};
+
+	const clearConfiguration = () => {
+		controlPersistenceService.removeSection("MyApp");
+		setConfig({});
+	};
+
+	useDevPanel("Manual Persistence", {
+		saveConfig: {
+			type: "button",
+			label: "Save Configuration",
+			onClick: saveConfiguration,
+		},
+		loadConfig: {
+			type: "button",
+			label: "Load Configuration",
+			onClick: loadConfiguration,
+		},
+		clearConfig: {
+			type: "button",
+			label: "Clear All Data",
+			onClick: clearConfiguration,
 		},
 	});
 

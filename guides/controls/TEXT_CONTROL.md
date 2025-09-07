@@ -25,12 +25,13 @@ The text control provides string input functionality with support for placeholde
 
 ### Optional Properties
 
-| Property      | Type                     | Default     | Description                       |
-| ------------- | ------------------------ | ----------- | --------------------------------- |
-| `label`       | `string`                 | `undefined` | Display label for the control     |
-| `placeholder` | `string`                 | `undefined` | Placeholder text when empty       |
-| `event`       | `'onChange' \| 'onBlur'` | `'onBlur'`  | When to trigger onChange callback |
-| `disabled`    | `boolean`                | `false`     | Whether the control is disabled   |
+| Property      | Type                     | Default     | Description                        |
+| ------------- | ------------------------ | ----------- | ---------------------------------- |
+| `label`       | `string`                 | `undefined` | Display label for the control      |
+| `placeholder` | `string`                 | `undefined` | Placeholder text when empty        |
+| `event`       | `'onChange' \| 'onBlur'` | `'onBlur'`  | When to trigger onChange callback  |
+| `disabled`    | `boolean`                | `false`     | Whether the control is disabled    |
+| `persist`     | `boolean`                | `false`     | Enable automatic value persistence |
 
 ## Event Handling
 
@@ -56,9 +57,30 @@ Text controls default to `onBlur` event handling to prevent excessive updates wh
   value: username,
   label: 'Username',
   event: 'onBlur', // Updates when focus is lost
+  persist: true, // Username automatically saved
   onChange: setUsername,
 }
 ```
+
+## Persistence
+
+Text controls support automatic persistence to maintain user input across sessions:
+
+```tsx
+{
+  type: 'text',
+  value: userInput,
+  label: 'Notes',
+  persist: true, // Text automatically saved to localStorage
+  onChange: setUserInput,
+}
+```
+
+When persistence is enabled, the text value is automatically:
+
+-   **Saved** when the user changes the text (respects event strategy)
+-   **Restored** when the component mounts or page reloads
+-   **Cleaned up** when the component unmounts
 
 ## Common Patterns
 

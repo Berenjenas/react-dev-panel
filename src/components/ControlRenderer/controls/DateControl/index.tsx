@@ -44,7 +44,7 @@ import type { DateControlProps } from "./types";
  * ```
  */
 export function DateControl({ control }: DateControlProps): React.ReactNode {
-	const eventType = control.event || "onBlur"; // TODO: Review if "onChange" is needed for dates (may not be applicable)
+	const eventType = control.event || "onBlur";
 	const [localValue, setLocalValue] = useState(control.value);
 
 	/**
