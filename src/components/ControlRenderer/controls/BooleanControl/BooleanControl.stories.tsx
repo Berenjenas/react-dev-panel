@@ -42,6 +42,13 @@ function BooleanControlDemo(): React.ReactNode {
 				onChange: () => {},
 				disabled: true,
 			},
+
+			separator: {
+				type: "separator",
+				style: "label",
+				label: "Persistence",
+			},
+
 			persistent: {
 				type: "boolean",
 				value: persistent,

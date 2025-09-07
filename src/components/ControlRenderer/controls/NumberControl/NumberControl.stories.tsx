@@ -6,6 +6,7 @@ import { useDevPanel } from "@/hooks/useDevPanel";
 
 function NumberControlDemo(): React.ReactNode {
 	const [amount, setAmount] = useState(0);
+	const [persistent, setPersistent] = useState(0);
 
 	useDevPanel(
 		"Number Control",
@@ -14,7 +15,22 @@ function NumberControlDemo(): React.ReactNode {
 				type: "number",
 				value: amount,
 				label: "Amount",
-				onChange: (value) => setAmount(value),
+				onChange: setAmount,
+			},
+
+			separator: {
+				type: "separator",
+				style: "label",
+				label: "Persistence",
+			},
+
+			persistent: {
+				type: "number",
+				value: persistent,
+				label: "Persistent Control",
+				description: "This control's state persists across sessions",
+				onChange: setPersistent,
+				persist: true,
 			},
 		},
 		{ panelTitle: "Number Control Panel" },
