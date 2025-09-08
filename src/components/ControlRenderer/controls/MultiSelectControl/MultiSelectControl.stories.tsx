@@ -20,6 +20,7 @@ const fruits = [
 	"Papaya",
 	"Quince",
 	"Raspberry",
+	"Afruitwithalonglonglonglonglonglonglonglonglongname",
 ];
 const colors = [
 	{ label: "Red", value: "red" },
