@@ -4,14 +4,13 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Logger } from "@/components/Logger";
 import { useDevPanel } from "@/hooks/useDevPanel";
 
-import type { ColorControl as ColorControlType } from "./types";
-
 function ColorControlDemo(): React.ReactNode {
 	const [basicColor, setBasicColor] = useState("#ff6b35");
 	const [hexColor, setHexColor] = useState("#4ecdc4");
 	const [namedColor, setNamedColor] = useState("crimson");
 	const [customPresetColor, setCustomPresetColor] = useState("#8b5cf6");
 	const [rgbColor, setRgbColor] = useState("rgb(139, 69, 19)");
+	const [persistentColor, setPersistentColor] = useState("#4caf50");
 
 	// Custom theme-based color presets
 	const themePresets = [
@@ -53,7 +52,7 @@ function ColorControlDemo(): React.ReactNode {
 				label: "Basic Color",
 				description: "Standard color picker with default settings",
 				onChange: setBasicColor,
-			} as ColorControlType,
+			},
 
 			hexColor: {
 				type: "color",
@@ -62,7 +61,7 @@ function ColorControlDemo(): React.ReactNode {
 				description: "Color picker that formats output as hex",
 				format: "hex",
 				onChange: setHexColor,
-			} as ColorControlType,
+			},
 
 			namedColor: {
 				type: "color",
@@ -70,7 +69,7 @@ function ColorControlDemo(): React.ReactNode {
 				label: "Named Colors",
 				description: "Supports CSS named colors like 'crimson', 'steelblue'",
 				onChange: setNamedColor,
-			} as ColorControlType,
+			},
 
 			customPresetColor: {
 				type: "color",
@@ -79,7 +78,7 @@ function ColorControlDemo(): React.ReactNode {
 				description: "Color picker with custom preset palette",
 				presets: themePresets,
 				onChange: setCustomPresetColor,
-			} as ColorControlType,
+			},
 
 			rgbColor: {
 				type: "color",
@@ -87,7 +86,7 @@ function ColorControlDemo(): React.ReactNode {
 				label: "RGB Color",
 				description: "Color picker supporting RGB format",
 				onChange: setRgbColor,
-			} as ColorControlType,
+			},
 
 			separator: {
 				type: "separator",
@@ -102,7 +101,7 @@ function ColorControlDemo(): React.ReactNode {
 				description: "Material Design color palette",
 				presets: materialPresets,
 				onChange: (value: string) => console.log("Material color:", value),
-			} as ColorControlType,
+			},
 
 			disabledColor: {
 				type: "color",
@@ -111,7 +110,22 @@ function ColorControlDemo(): React.ReactNode {
 				description: "Shows disabled color picker",
 				disabled: true,
 				onChange: () => {},
-			} as ColorControlType,
+			},
+
+			separator1: {
+				type: "separator",
+				style: "label",
+				label: "Persistence",
+			},
+
+			persistenceColor: {
+				type: "color",
+				value: persistentColor,
+				label: "Persistence Color",
+				description: "Shows color picker with persistence",
+				onChange: setPersistentColor,
+				persist: true,
+			},
 		},
 		{ panelTitle: "Color Control Panel" },
 	);

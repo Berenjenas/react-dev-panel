@@ -27,11 +27,12 @@ The MultiSelect control provides a dropdown interface for selecting multiple opt
 
 ### Optional Properties
 
-| Property      | Type      | Default     | Description                     |
-| ------------- | --------- | ----------- | ------------------------------- |
-| `label`       | `string`  | `undefined` | Display label for the control   |
-| `description` | `string`  | `undefined` | Help text for the control       |
-| `disabled`    | `boolean` | `false`     | Whether the control is disabled |
+| Property      | Type      | Default     | Description                        |
+| ------------- | --------- | ----------- | ---------------------------------- |
+| `label`       | `string`  | `undefined` | Display label for the control      |
+| `description` | `string`  | `undefined` | Help text for the control          |
+| `disabled`    | `boolean` | `false`     | Whether the control is disabled    |
+| `persist`     | `boolean` | `false`     | Enable automatic value persistence |
 
 ### Option Types
 
@@ -61,12 +62,34 @@ MultiSelect controls use `onChange` event handling for immediate selection feedb
     { label: 'Vue.js', value: 'vue' },
     { label: 'Angular', value: 'angular' },
   ],
+  persist: true, // Selected frameworks automatically saved
   onChange: (values) => {
     console.log('Selected frameworks:', values);
     setSelectedFrameworks(values);
   },
 }
 ```
+
+## Persistence
+
+MultiSelect controls support automatic persistence to maintain multiple selections across sessions:
+
+```tsx
+{
+  type: 'multiselect',
+  value: selectedFeatures,
+  label: 'Enabled Features',
+  options: ['analytics', 'logging', 'cache', 'debugging'],
+  persist: true, // Array of selections automatically saved to localStorage
+  onChange: setSelectedFeatures,
+}
+```
+
+When persistence is enabled, the array of selected values is automatically:
+
+-   **Saved** when the user changes selections
+-   **Restored** when the component mounts or page reloads
+-   **Cleaned up** when the component unmounts
 
 ## Common Patterns
 

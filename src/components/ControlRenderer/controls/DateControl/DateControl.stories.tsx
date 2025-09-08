@@ -8,6 +8,7 @@ function DateControlDemo(): React.ReactNode {
 	const [birthDate, setBirthDate] = useState("1990-01-01");
 	const [startDate, setStartDate] = useState("2025-07-26");
 	const [deadline, setDeadline] = useState("2025-12-31");
+	const [persistent, setPersistent] = useState<string>("2025-07-26");
 
 	useDevPanel(
 		"Date Control",
@@ -33,6 +34,21 @@ function DateControlDemo(): React.ReactNode {
 				label: "Deadline",
 				min: "2025-07-26",
 				onChange: (value) => setDeadline(value),
+			},
+
+			separator: {
+				type: "separator",
+				style: "label",
+				label: "Persistence",
+			},
+
+			persistent: {
+				type: "date",
+				value: persistent,
+				label: "Persistent Control",
+				description: "This control's state persists across sessions",
+				onChange: (value) => setPersistent(value),
+				persist: true,
 			},
 		},
 		{ panelTitle: "Date Control Panel" },

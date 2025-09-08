@@ -25,10 +25,11 @@ The boolean control provides a toggle switch for true/false values with immediat
 
 ### Optional Properties
 
-| Property   | Type      | Default     | Description                     |
-| ---------- | --------- | ----------- | ------------------------------- |
-| `label`    | `string`  | `undefined` | Display label for the control   |
-| `disabled` | `boolean` | `false`     | Whether the control is disabled |
+| Property   | Type      | Default     | Description                        |
+| ---------- | --------- | ----------- | ---------------------------------- |
+| `label`    | `string`  | `undefined` | Display label for the control      |
+| `disabled` | `boolean` | `false`     | Whether the control is disabled    |
+| `persist`  | `boolean` | `false`     | Enable automatic value persistence |
 
 ## Event Handling
 
@@ -39,9 +40,30 @@ Boolean controls always use `onChange` event handling for immediate toggle respo
   type: 'boolean',
   value: isEnabled,
   label: 'Enable Notifications',
+  persist: true, // Toggle state automatically saved
   onChange: setIsEnabled, // Triggered immediately on click
 }
 ```
+
+## Persistence
+
+Boolean controls support automatic persistence to maintain toggle states across sessions:
+
+```tsx
+{
+  type: 'boolean',
+  value: debugMode,
+  label: 'Debug Mode',
+  persist: true, // State automatically saved to localStorage
+  onChange: setDebugMode,
+}
+```
+
+When persistence is enabled, the boolean value is automatically:
+
+-   **Saved** when the user toggles the control
+-   **Restored** when the component mounts or page reloads
+-   **Cleaned up** when the component unmounts
 
 ## Common Patterns
 

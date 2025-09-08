@@ -27,10 +27,11 @@ The select control provides a dropdown interface for choosing from predefined op
 
 ### Optional Properties
 
-| Property   | Type      | Default     | Description                     |
-| ---------- | --------- | ----------- | ------------------------------- |
-| `label`    | `string`  | `undefined` | Display label for the control   |
-| `disabled` | `boolean` | `false`     | Whether the control is disabled |
+| Property   | Type      | Default     | Description                        |
+| ---------- | --------- | ----------- | ---------------------------------- |
+| `label`    | `string`  | `undefined` | Display label for the control      |
+| `disabled` | `boolean` | `false`     | Whether the control is disabled    |
+| `persist`  | `boolean` | `false`     | Enable automatic value persistence |
 
 ### Option Types
 
@@ -49,6 +50,42 @@ options: [
 ## Event Handling
 
 Select controls always use `onChange` event handling for immediate selection feedback.
+
+```tsx
+{
+  type: 'select',
+  value: theme,
+  label: 'Theme',
+  options: ['light', 'dark', 'auto'],
+  persist: true, // Selection automatically saved
+  onChange: setTheme,
+}
+```
+
+## Persistence
+
+Select controls support automatic persistence to maintain user selections across sessions:
+
+```tsx
+{
+  type: 'select',
+  value: language,
+  label: 'Language',
+  options: [
+    { label: 'English', value: 'en' },
+    { label: 'Español', value: 'es' },
+    { label: 'Français', value: 'fr' },
+  ],
+  persist: true, // Selection automatically saved to localStorage
+  onChange: setLanguage,
+}
+```
+
+When persistence is enabled, the selected value is automatically:
+
+-   **Saved** when the user makes a selection
+-   **Restored** when the component mounts or page reloads
+-   **Cleaned up** when the component unmounts
 
 ```tsx
 {

@@ -9,6 +9,7 @@ All controls share common properties:
 -   `label` - Display label for the control
 -   `value` - Current value
 -   `onChange` - Callback function when value changes
+-   `persist` - Optional boolean to enable automatic value persistence
 
 ## Available Controls
 
@@ -35,14 +36,28 @@ All controls share common properties:
 
 -   [**Separator Control**](./controls/SEPARATOR_CONTROL.md) - Visual separators and labels
 
-## Event Handling
+## Event Handling & Persistence
 
 All input controls support two event handling strategies:
 
 -   **onChange**: Real-time updates as user interacts
 -   **onBlur**: Updates only when control loses focus
 
-For more details, see [Event Handling](./EVENT_HANDLING.md).
+### Automatic Persistence
+
+Add `persist: true` to any control to automatically save and restore its value:
+
+```tsx
+{
+  type: 'text',
+  value: userInput,
+  label: 'User Input',
+  persist: true, // Value automatically saved to localStorage
+  onChange: setValue,
+}
+```
+
+For more details, see [Event Handling](./EVENT_HANDLING.md) and [Data Persistence](./PERSISTENCE.md).
 
 ## Quick Examples
 
@@ -53,6 +68,7 @@ For more details, see [Event Handling](./EVENT_HANDLING.md).
   type: 'text',
   value: 'Hello World',
   label: 'Message',
+  persist: true, // Automatically saved and restored
   onChange: setValue,
 }
 ```
@@ -66,6 +82,7 @@ For more details, see [Event Handling](./EVENT_HANDLING.md).
   label: 'Count',
   min: 0,
   max: 100,
+  persist: true, // Numeric value persisted
   onChange: setValue,
 }
 ```
@@ -78,6 +95,19 @@ For more details, see [Event Handling](./EVENT_HANDLING.md).
   value: 'option1',
   label: 'Choose Option',
   options: ['option1', 'option2', 'option3'],
+  persist: true, // Selected option remembered
+  onChange: setValue,
+}
+```
+
+### Color Picker
+
+```tsx
+{
+  type: 'color',
+  value: '#ff6200',
+  label: 'Theme Color',
+  persist: true, // Color choice automatically saved
   onChange: setValue,
 }
 ```

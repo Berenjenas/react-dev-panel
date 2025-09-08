@@ -25,10 +25,11 @@ The color control provides a color picker interface for selecting and managing c
 
 ### Optional Properties
 
-| Property   | Type      | Default     | Description                     |
-| ---------- | --------- | ----------- | ------------------------------- |
-| `label`    | `string`  | `undefined` | Display label for the control   |
-| `disabled` | `boolean` | `false`     | Whether the control is disabled |
+| Property   | Type      | Default     | Description                        |
+| ---------- | --------- | ----------- | ---------------------------------- |
+| `label`    | `string`  | `undefined` | Display label for the control      |
+| `disabled` | `boolean` | `false`     | Whether the control is disabled    |
+| `persist`  | `boolean` | `false`     | Enable automatic value persistence |
 
 ## Event Handling
 
@@ -39,9 +40,30 @@ Color controls always use `onChange` event handling for immediate color preview.
   type: 'color',
   value: backgroundColor,
   label: 'Background Color',
+  persist: true, // Color choice automatically saved
   onChange: setBackgroundColor, // Triggered immediately on color change
 }
 ```
+
+## Persistence
+
+Color controls support automatic persistence to maintain user color choices across sessions:
+
+```tsx
+{
+  type: 'color',
+  value: accentColor,
+  label: 'Accent Color',
+  persist: true, // Color automatically saved to localStorage
+  onChange: setAccentColor,
+}
+```
+
+When persistence is enabled, the color value is automatically:
+
+-   **Saved** when the user changes the color
+-   **Restored** when the component mounts or page reloads
+-   **Cleaned up** when the component unmounts
 
 ## Common Patterns
 
@@ -62,24 +84,28 @@ useDevPanel("Theme Colors", {
 		type: "color",
 		value: themeColors.primary,
 		label: "Primary Color",
+		persist: true, // Theme colors persist across sessions
 		onChange: (value) => setThemeColors((prev) => ({ ...prev, primary: value })),
 	},
 	secondary: {
 		type: "color",
 		value: themeColors.secondary,
 		label: "Secondary Color",
+		persist: true,
 		onChange: (value) => setThemeColors((prev) => ({ ...prev, secondary: value })),
 	},
 	success: {
 		type: "color",
 		value: themeColors.success,
 		label: "Success Color",
+		persist: true,
 		onChange: (value) => setThemeColors((prev) => ({ ...prev, success: value })),
 	},
 	danger: {
 		type: "color",
 		value: themeColors.danger,
 		label: "Danger Color",
+		persist: true,
 		onChange: (value) => setThemeColors((prev) => ({ ...prev, danger: value })),
 	},
 });

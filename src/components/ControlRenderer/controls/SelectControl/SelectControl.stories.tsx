@@ -8,6 +8,7 @@ const names = ["", "Alice", "Bob", "Charlie", "David", "Eve"];
 
 function SelectControlDemo(): React.ReactNode {
 	const [name, setName] = useState(names[1]);
+	const [persistent, setPersistent] = useState(names[1]);
 
 	useDevPanel(
 		"Select Control",
@@ -18,6 +19,22 @@ function SelectControlDemo(): React.ReactNode {
 				value: name,
 				label: "Select Name",
 				onChange: (value) => setName(value),
+			},
+
+			separator: {
+				type: "separator",
+				style: "label",
+				label: "Persistence",
+			},
+
+			persistent: {
+				type: "select",
+				options: names,
+				value: persistent,
+				label: "Persistent Control",
+				description: "This control's state persists across sessions",
+				onChange: setPersistent,
+				persist: true,
 			},
 		},
 		{ panelTitle: "Select Control Panel" },

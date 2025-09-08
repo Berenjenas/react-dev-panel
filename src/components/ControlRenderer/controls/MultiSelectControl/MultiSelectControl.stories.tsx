@@ -52,6 +52,7 @@ function MultiSelectControlDemo(): React.ReactNode {
 	const [selectedColors, setSelectedColors] = useState<string[]>(["red", "blue"]);
 	const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>(["react"]);
 	const [disabledSelection, setDisabledSelection] = useState<string[]>(["disabled1"]);
+	const [persistentSelection, setPersistentSelection] = useState<string[]>(["react"]);
 
 	useDevPanel(
 		"MultiSelect Control",
@@ -89,11 +90,6 @@ function MultiSelectControlDemo(): React.ReactNode {
 				onChange: (value) => setSelectedFrameworks(value),
 			},
 
-			separator: {
-				type: "separator",
-				style: "line",
-			},
-
 			disabled: {
 				type: "multiselect",
 				options: ["disabled1", "disabled2", "disabled3"],
@@ -102,6 +98,22 @@ function MultiSelectControlDemo(): React.ReactNode {
 				description: "This control is disabled",
 				disabled: true,
 				onChange: (value) => setDisabledSelection(value),
+			},
+
+			separator: {
+				type: "separator",
+				style: "label",
+				label: "Persistence",
+			},
+
+			persistent: {
+				type: "multiselect",
+				options: frameworks,
+				value: persistentSelection,
+				label: "Persistent MultiSelect",
+				description: "This control's state persists across sessions",
+				onChange: setPersistentSelection,
+				persist: true,
 			},
 		},
 		{ panelTitle: "MultiSelect Control Panel" },

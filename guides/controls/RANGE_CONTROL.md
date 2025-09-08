@@ -27,13 +27,14 @@ The range control provides a slider interface for selecting numeric values withi
 
 ### Optional Properties
 
-| Property   | Type      | Default     | Description                     |
-| ---------- | --------- | ----------- | ------------------------------- |
-| `label`    | `string`  | `undefined` | Display label for the control   |
-| `min`      | `number`  | `0`         | Minimum allowed value           |
-| `max`      | `number`  | `100`       | Maximum allowed value           |
-| `step`     | `number`  | `1`         | Step increment for slider       |
-| `disabled` | `boolean` | `false`     | Whether the control is disabled |
+| Property   | Type      | Default     | Description                        |
+| ---------- | --------- | ----------- | ---------------------------------- |
+| `label`    | `string`  | `undefined` | Display label for the control      |
+| `min`      | `number`  | `0`         | Minimum allowed value              |
+| `max`      | `number`  | `100`       | Maximum allowed value              |
+| `step`     | `number`  | `1`         | Step increment for slider          |
+| `disabled` | `boolean` | `false`     | Whether the control is disabled    |
+| `persist`  | `boolean` | `false`     | Enable automatic value persistence |
 
 ## Event Handling
 
@@ -47,9 +48,32 @@ Range controls always use `onChange` event handling for smooth slider interactio
   min: 0,
   max: 1,
   step: 0.1,
+  persist: true, // Slider value automatically saved
   onChange: setOpacity, // Triggered on every slider movement
 }
 ```
+
+## Persistence
+
+Range controls support automatic persistence to maintain slider positions across sessions:
+
+```tsx
+{
+  type: 'range',
+  value: volume,
+  label: 'Volume',
+  min: 0,
+  max: 100,
+  persist: true, // Volume level automatically saved to localStorage
+  onChange: setVolume,
+}
+```
+
+When persistence is enabled, the numeric value is automatically:
+
+-   **Saved** when the user moves the slider
+-   **Restored** when the component mounts or page reloads
+-   **Cleaned up** when the component unmounts
 
 ## Common Patterns
 

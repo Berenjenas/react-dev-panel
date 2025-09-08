@@ -25,14 +25,19 @@ The number control provides numeric input functionality with support for constra
 
 ### Optional Properties
 
-| Property   | Type                     | Default      | Description                       |
-| ---------- | ------------------------ | ------------ | --------------------------------- |
-| `label`    | `string`                 | `undefined`  | Display label for the control     |
-| `min`      | `number`                 | `undefined`  | Minimum allowed value             |
-| `max`      | `number`                 | `undefined`  | Maximum allowed value             |
-| `step`     | `number`                 | `1`          | Step increment for arrow keys     |
-| `event`    | `'onChange' \| 'onBlur'` | `'onChange'` | When to trigger onChange callback |
-| `disabled` | `boolean`                | `false`      | Whether the control is disabled   |
+| Property   | Type                     | Default      | Description                        |
+| ---------- | ------------------------ | ------------ | ---------------------------------- |
+| `label`    | `string`                 | `undefined`  | Display label for the control      |
+| `min`      | `number`                 | `undefined`  | Minimum allowed value              |
+| `max`      | `number`                 | `undefined`  | Maximum allowed value              |
+| `step`     | `number`                 | `1`          | Step increment for arrows          |
+| `event`    | `'onChange' \| 'onBlur'` | `'onBlur'`   | When to trigger onChange callback  |
+| `disabled` | `boolean`                | `false`      | Whether the control is disabled    |
+| `persist`  | `boolean`                | `false`      | Enable automatic value persistence |
+| `max`      | `number`                 | `undefined`  | Maximum allowed value              |
+| `step`     | `number`                 | `1`          | Step increment for arrow keys      |
+| `event`    | `'onChange' \| 'onBlur'` | `'onChange'` | When to trigger onChange callback  |
+| `disabled` | `boolean`                | `false`      | Whether the control is disabled    |
 
 ## Event Handling
 

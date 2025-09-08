@@ -25,14 +25,17 @@ The date control provides a date picker interface for selecting dates, times, an
 
 ### Optional Properties
 
-| Property   | Type                     | Default      | Description                       |
-| ---------- | ------------------------ | ------------ | --------------------------------- |
-| `label`    | `string`                 | `undefined`  | Display label for the control     |
-| `min`      | `string`                 | `undefined`  | Minimum allowed date (ISO)        |
-| `max`      | `string`                 | `undefined`  | Maximum allowed date (ISO)        |
-| `step`     | `number`                 | `1`          | Step increment in days            |
-| `disabled` | `boolean`                | `false`      | Whether the control is disabled   |
-| `event`    | `'onChange' \| 'onBlur'` | `'onChange'` | When to trigger onChange callback |
+| Property   | Type                     | Default      | Description                        |
+| ---------- | ------------------------ | ------------ | ---------------------------------- |
+| `label`    | `string`                 | `undefined`  | Display label for the control      |
+| `min`      | `string`                 | `undefined`  | Minimum allowed date (ISO)         |
+| `max`      | `string`                 | `undefined`  | Maximum allowed date (ISO)         |
+| `disabled` | `boolean`                | `false`      | Whether the control is disabled    |
+| `persist`  | `boolean`                | `false`      | Enable automatic value persistence |
+| `max`      | `string`                 | `undefined`  | Maximum allowed date (ISO)         |
+| `step`     | `number`                 | `1`          | Step increment in days             |
+| `disabled` | `boolean`                | `false`      | Whether the control is disabled    |
+| `event`    | `'onChange' \| 'onBlur'` | `'onChange'` | When to trigger onChange callback  |
 
 ## Date Formats
 
