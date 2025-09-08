@@ -1,6 +1,6 @@
 {
 	"private": false,
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"license": "MIT",
 	"name": "@berenjena/react-dev-panel",
 	"description": "A React development panel with various tools and utilities.",
