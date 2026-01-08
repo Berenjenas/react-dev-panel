@@ -41,6 +41,13 @@ import type { SelectControlProps } from "./types";
  */
 export function SelectControl({ control }: SelectControlProps): React.ReactNode {
 	return (
-		<Select value={control.value} options={control.options} disabled={control.disabled} onChange={(value) => control.onChange(value as string)} />
+		<Select
+			value={control.value}
+			options={control.options}
+			disabled={control.disabled}
+			searchable={control.searchable}
+			searchPlaceholder={control.searchPlaceholder}
+			onChange={(value) => control.onChange(value as string)}
+		/>
 	);
 }
