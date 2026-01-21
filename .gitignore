@@ -30,3 +30,10 @@ storybook-static
 coverage
 docs
 .secrets
+
+# Bundle size analysis
+.size-limit-output.json
+size-current.json
+size-base.json
+bundle-report.md
+.bundlewatch.json

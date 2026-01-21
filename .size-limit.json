@@ -1,0 +1,39 @@
+[
+	{
+		"name": "Full library import",
+		"path": "dist/index.js",
+		"import": "*",
+		"limit": "50 KB",
+		"gzip": true,
+		"brotli": true
+	},
+	{
+		"name": "useDevPanel hook only",
+		"path": "dist/hooks/useDevPanel/index.js",
+		"import": "{ useDevPanel }",
+		"limit": "30 KB",
+		"gzip": true,
+		"brotli": true
+	},
+	{
+		"name": "DevPanel component",
+		"path": "dist/components/DevPanel/index.js",
+		"limit": "25 KB",
+		"gzip": true,
+		"brotli": true
+	},
+	{
+		"name": "All controls (lazy loaded)",
+		"path": "dist/components/ControlRenderer/controls/index.js",
+		"limit": "40 KB",
+		"gzip": true,
+		"brotli": true
+	},
+	{
+		"name": "Store services",
+		"path": "dist/store/*.js",
+		"limit": "15 KB",
+		"gzip": true,
+		"brotli": true
+	}
+]

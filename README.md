@@ -1,348 +1,184 @@
-# React Dev P- **Zero Configuration** - Auto-mounting and unmounting, no providers or setup requirednel
+# React Dev Panel
 
 ![NPM Version](https://badgen.net/npm/v/@berenjena/react-dev-panel)
 ![npm package minimized gzipped size](<https://img.shields.io/bundlejs/size/%40berenjena%2Freact-dev-panel?label=Bundle%20size%20(gzip)>)
 [![License: MIT](https://badgen.net/npm/license/@berenjena/react-dev-panel)](https://opensource.org/licenses/MIT)
 [![Weekly Downloads](https://badgen.net/npm/dw/@berenjena/react-dev-panel)](https://www.npmjs.com/package/@berenjena/react-dev-panel)
 
-A powerful, type-safe development panel for React that allows developers to inspect and control component props, manage state, and accelerate prototyping directly within the application UI.
+A lightweight, type-safe development panel for React that lets you control component state and props in real-time during development.
 
-## ✨ Features
+## Features
 
--   🎛️ **Rich Control Types** - Boolean, Number, Text, Select, Color, Range, Date, Button, ButtonGroup, and Separator controls
--   � **Automatic Persistence** - Control values automatically saved to localStorage and restored on reload
--   �🚀 **Zero Configuration** - Auto-mounting and unmounting, no providers or setup required
--   🎨 **Themeable** - Built-in themes and CSS custom properties for customization
--   ⌨️ **Keyboard Shortcuts** - Customizable hotkeys for panel toggle
--   📖 **TypeScript First** - Full type safety and IntelliSense support
--   **Auto State Management** - Automatic portal rendering and lifecycle management
--   📦 **Lightweight** - Only requires React as peer dependency
+-   **One Hook**: Single `useDevPanel` hook - no providers, no setup
+-   **12 Control Types**: Text, Number, Boolean, Select, Color, Range, Date, Button, and more
+-   **Auto-Persistence**: Optional localStorage sync for control values
+-   **Type-Safe**: Full TypeScript support with IntelliSense
+-   **Themeable**: 21 built-in themes + CSS custom properties
+-   **Lightweight**: ~16 KB gzipped, zero runtime dependencies
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install -D @berenjena/react-dev-panel
 ```
 
-```bash
-yarn add -D @berenjena/react-dev-panel
-```
-
-```bash
-pnpm add -D @berenjena/react-dev-panel
-```
-
 ## Quick Start
-
-The package exposes a single hook: `useDevPanel`. This hook handles everything automatically:
-
--   **Auto-mounting**: Creates and mounts the dev panel UI when first called
--   **Auto-unmounting**: Removes the panel from DOM when no controls are active
--   **State management**: Manages all internal state and control synchronization
--   **Portal rendering**: Renders the panel outside your component tree
-
-### Basic Usage
 
 ```tsx
 import { useState } from "react";
 import { useDevPanel } from "@berenjena/react-dev-panel";
 
 function App() {
-	const [name, setName] = useState("John Doe");
+	const [name, setName] = useState("John");
 	const [age, setAge] = useState(25);
-	const [isActive, setIsActive] = useState(true);
 	const [theme, setTheme] = useState("dark");
 
-	useDevPanel("User Settings", {
-		name: {
-			type: "text",
-			value: name,
-			label: "Full Name",
-			persist: true, // Automatically save and restore value
-			onChange: setName,
-		},
-		age: {
-			type: "number",
-			value: age,
-			label: "Age",
-			min: 0,
-			max: 120,
-			persist: true, // Value persists across page reloads
-			onChange: setAge,
-		},
-		isActive: {
-			type: "boolean",
-			value: isActive,
-			label: "Active User",
-			persist: true,
-			onChange: setIsActive,
-		},
-		theme: {
-			type: "select",
-			value: theme,
-			label: "Theme",
-			options: ["light", "dark", "auto"],
-			persist: true,
-			onChange: setTheme,
-		},
-	});
-
-	return (
-		<div>
-			<h1>Hello, {name}!</h1>
-			<p>Age: {age}</p>
-			<p>Status: {isActive ? "Active" : "Inactive"}</p>
-			<p>Theme: {theme}</p>
-		</div>
-	);
-}
-```
-
-That's it! No additional components or providers needed. The hook automatically handles the entire panel lifecycle.
-
-## 🎛️ Control Types
-
-React Dev Panel provides rich control types for different data types. Here are some quick examples:
-
-### Text Control
-
-```tsx
-{
-  type: 'text',
-  value: 'Hello World',
-  label: 'Message',
-  placeholder: 'Enter message...',
-  persist: true, // Value automatically saved to localStorage
-  onChange: (value: string) => setValue(value),
-}
-```
-
-### Number Control
-
-```tsx
-{
-  type: 'number',
-  value: 42,
-  label: 'Count',
-  min: 0,
-  max: 100,
-  persist: true, // Persists across page reloads
-  onChange: (value: number) => setValue(value),
-}
-```
-
-### Boolean Control
-
-```tsx
-{
-  type: 'boolean',
-  value: true,
-  label: 'Enable Feature',
-  persist: true, // Checkbox state is remembered
-  onChange: (value: boolean) => setValue(value),
-}
-```
-
-### Color Control
-
-```tsx
-{
-  type: 'color',
-  value: '#ff6200',
-  label: 'Theme Color',
-  persist: true, // Color choice is automatically saved
-  onChange: (value: string) => setValue(value),
-}
-```
-
-### Button Control
-
-```tsx
-{
-  type: 'button',
-  label: 'Reset Values',
-  onClick: () => resetToDefaults(),
-}
-```
-
-**📖 [View all control types and detailed documentation →](./guides/CONTROLS.md)**
-
-## 🎨 Styling and Theming
-
-The dev panel uses CSS custom properties for easy theming. Here's a quick example:
-
-```css
-:root {
-	--dev-panel-background-color: #1a1a1a;
-	--dev-panel-text-color: #ffffff;
-	--dev-panel-accent-color: #ff6200;
-	--dev-panel-border-color: #333333;
-}
-```
-
-**📖 [Complete theming guide and customization options →](./guides/STYLING.md)**
-
-## ⌨️ Keyboard Shortcuts
-
-The dev panel supports customizable keyboard shortcuts. The default hotkey is `Ctrl+Shift+A`:
-
-```tsx
-useDevPanel("My Section", controls, {
-	hotKeyConfig: {
-		key: "d", // The key to press
-		ctrlKey: true, // Requires Ctrl key
-		shiftKey: false, // Requires Shift key
-		altKey: true, // Requires Alt key
-		metaKey: false, // Requires Meta/Cmd key (Mac)
-	},
-});
-```
-
-## Advanced Usage
-
-### Multiple Panel Sections
-
-You can call `useDevPanel` from multiple components to create organized sections:
-
-```tsx
-function App() {
-	// In UserProfile.tsx
-	useDevPanel("User Profile", {
+	useDevPanel("Settings", {
 		name: { type: "text", value: name, onChange: setName },
-		avatar: { type: "text", value: avatar, onChange: setAvatar },
-	});
-
-	// In AppSettings.tsx
-	useDevPanel("App Settings", {
+		age: { type: "number", value: age, min: 0, max: 100, onChange: setAge },
 		theme: { type: "select", value: theme, options: ["light", "dark"], onChange: setTheme },
-		debug: { type: "boolean", value: debug, onChange: setDebug },
 	});
 
-	// Both sections appear in the same panel automatically
-	return <YourApp />;
+	return <div>Hello, {name}!</div>;
 }
 ```
 
-### Panel Configuration
+**That's it!** Press `Ctrl+Shift+A` to toggle the panel.
 
-Customize the panel's appearance and behavior:
+## Control Types
+
+All 12 control types available:
 
 ```tsx
-useDevPanel("My Section", controls, {
-	panelTitle: "Custom Panel Title",
-	theme: "dark", // Built-in themes: light, dark, neon, etc.
-	hotKeyConfig: {
-		// Custom toggle hotkey (default: Ctrl+Shift+A)
-		key: "f",
-		ctrlKey: true,
-		shiftKey: true,
-		altKey: false,
-		metaKey: false,
-	},
+{
+  text: { type: "text", value: string, onChange: (v) => void }
+  number: { type: "number", value: number, min?: number, max?: number, onChange: (v) => void }
+  boolean: { type: "boolean", value: boolean, onChange: (v) => void }
+  select: { type: "select", value: string, options: string[], onChange: (v) => void }
+  multiselect: { type: "multiselect", value: string[], options: string[], onChange: (v) => void }
+  color: { type: "color", value: string, onChange: (v) => void }
+  range: { type: "range", value: number, min: number, max: number, step?: number, onChange: (v) => void }
+  date: { type: "date", value: string, min?: string, max?: string, onChange: (v) => void }
+  button: { type: "button", onClick: () => void }
+  buttonGroup: { type: "buttonGroup", buttons: Array<{label: string, onClick: () => void}> }
+  dragAndDrop: { type: "dragAndDrop", onChange: (files: FileList) => void }
+  separator: { type: "separator", variant?: "line" | "label" | "space" }
+}
+```
+
+**Common options** (available on most controls):
+
+-   `label?: string` - Display label
+-   `description?: string` - Help text
+-   `disabled?: boolean` - Disable control
+-   `persist?: boolean` - Auto-save to localStorage
+
+📖 **[Full control documentation →](./guides/CONTROLS.md)**
+
+## Configuration
+
+### Custom Hotkey
+
+```tsx
+useDevPanel("Settings", controls, {
+	hotKeyConfig: { key: "d", ctrlKey: true, shiftKey: true },
 });
 ```
 
-### Event Handling Options
+### Panel Theme
 
-React Dev Panel supports two different event handling strategies for input controls:
+```tsx
+useDevPanel("Settings", controls, {
+	theme: "neon", // 21 built-in themes available
+	panelTitle: "My Dev Panel",
+});
+```
 
-**onChange Event**: Provides real-time updates as the user types or interacts with the control. This is ideal for immediate feedback and live previews, but may trigger more frequent re-renders.
+### Event Handling
 
-**onBlur Event**: Updates the value only when the user finishes interacting with the control (loses focus). This approach is more performance-friendly for expensive operations and provides a better user experience when dealing with API calls or heavy computations.
+Choose when controls trigger updates:
 
 ```tsx
 {
-  type: 'text',
+  type: "text",
   value: searchTerm,
-  event: 'onChange', // Real-time updates
-  onChange: setSearchTerm,
+  event: "onChange", // Update on every keystroke (default)
+  onChange: setSearchTerm
 }
 
 {
-  type: 'number',
-  value: price,
-  event: 'onBlur', // Update only when focus is lost
-  onChange: setPrice,
+  type: "text",
+  value: apiKey,
+  event: "onBlur", // Update only when focus is lost
+  onChange: setApiKey
 }
 ```
 
-## 📚 Documentation
+📖 **[Styling guide](./guides/STYLING.md)** | **[Event handling](./guides/EVENT_HANDLING.md)** | **[Advanced usage](./guides/ADVANCED_USAGE.md)**
 
-### Core Guides
+## Documentation
 
--   **[Control Types](./guides/CONTROLS.md)** - Complete guide to all available controls
--   **[Data Persistence](./guides/PERSISTENCE.md)** - Automatic value persistence and state management
--   **[Event Handling](./guides/EVENT_HANDLING.md)** - onChange vs onBlur strategies and best practices
--   **[Styling & Theming](./guides/STYLING.md)** - Customization, themes, and responsive design
--   **[Advanced Usage](./guides/ADVANCED_USAGE.md)** - Complex patterns, state management, and optimization
+**Guides:**
 
-### Development
+-   [Control Types](./guides/CONTROLS.md) - All 12 control types with examples
+-   [Persistence](./guides/PERSISTENCE.md) - Auto-save to localStorage
+-   [Styling & Theming](./guides/STYLING.md) - Themes and CSS customization
+-   [Event Handling](./guides/EVENT_HANDLING.md) - onChange vs onBlur strategies
+-   [Advanced Usage](./guides/ADVANCED_USAGE.md) - Complex patterns and optimization
+-   [Bundle Size](./guides/BUNDLE_SIZE.md) - Size tracking and optimization
+-   [Development](./guides/DEVELOPMENT.md) - Contributing and setup
 
--   **[Development Guide](./guides/DEVELOPMENT.md)** - Setup, contributing, and project structure
+**Live Examples:**
 
-## 📚 API Reference
+-   [Storybook](https://berenjenas.github.io/react-dev-panel/) - Interactive component demos
+-   Run locally: `npm run storybook`
 
-### `useDevPanel(sectionName, controls, devPanelProps?)`
+## API Reference
 
-The only export from this package. This hook manages the entire dev panel lifecycle and handles all the heavy lifting for you.
+### `useDevPanel(sectionName, controls, options?)`
 
 **Parameters:**
 
--   `sectionName` - Unique identifier for the control group
--   `controls` - Object containing control definitions
--   `devPanelProps` - Optional panel configuration (title, theme, hotkeys)
+-   `sectionName: string` - Unique identifier for this control group
+-   `controls: ControlsGroup` - Object mapping control keys to control definitions
+-   `options?: DevPanelProps` - Optional configuration
 
-**What it does automatically:**
+**Options:**
 
--   **Portal Management**: Creates a React portal on first use and renders the panel outside your component tree
--   **State Synchronization**: Keeps all controls in sync across multiple component instances
--   **Lifecycle Management**: Mounts the panel when controls are registered, unmounts when all controls are removed
--   **Memory Management**: Cleans up subscriptions and DOM elements when components unmount
--   **Theme Application**: Applies theme configurations and CSS custom properties
+```tsx
+{
+  panelTitle?: string;           // Custom panel header
+  theme?: string;                // Built-in theme name
+  hotKeyConfig?: {               // Custom toggle hotkey
+    key: string;
+    ctrlKey?: boolean;
+    shiftKey?: boolean;
+    altKey?: boolean;
+    metaKey?: boolean;
+  }
+}
+```
 
-## 🛠️ Development
+## Contributing
 
-Want to contribute or set up the project locally?
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-React Dev Panel maintains high code quality standards with comprehensive tooling:
-
--   **🔍 ESLint** - Comprehensive linting for TypeScript and React
--   **💅 Prettier** - Automatic code formatting
--   **🎨 Stylelint** - CSS/SCSS linting and formatting
--   **📝 Commitlint** - Conventional commit message validation
--   **🪝 Husky** - Pre-commit hooks for quality assurance
--   **📦 Changesets** - Automated version management and releases
-
-All quality checks run automatically via pre-commit hooks, ensuring consistent code quality.
-
-**📖 [Development setup, contributing guidelines, and project structure →](./guides/DEVELOPMENT.md)**
-
-## 📖 Storybook
-
-Explore all components and controls in our Storybook:
+**Development:**
 
 ```bash
+git clone https://github.com/Berenjenas/react-dev-panel.git
+cd react-dev-panel
+npm install
 npm run storybook
 ```
 
-Visit `http://localhost:6006` to see interactive examples and documentation.
+## License
 
-## 🤝 Contributing
+MIT © [Berenjena](https://berenjena.com.ar)
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+---
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 🔗 Links
-
--   [NPM Package](https://www.npmjs.com/package/@berenjena/react-dev-panel)
--   [GitHub Repository](https://github.com/Berenjenas/react-dev-panel)
--   [Bug Reports](https://github.com/Berenjenas/react-dev-panel/issues)
--   [Berenjena](https://berenjena.com.ar)
+**Links:** [NPM](https://www.npmjs.com/package/@berenjena/react-dev-panel) · [GitHub](https://github.com/Berenjenas/react-dev-panel) · [Issues](https://github.com/Berenjenas/react-dev-panel/issues) · [Berenjena](https://berenjena.com.ar)
 
 ---
 
