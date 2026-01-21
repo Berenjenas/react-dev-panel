@@ -84,7 +84,7 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.5",
-		"@commitlint/cli": "^19.8.1",
+		"@commitlint/cli": "^20.3.1",
 		"@commitlint/config-conventional": "^19.8.1",
 		"@commitlint/cz-commitlint": "^19.8.1",
 		"@eslint/js": "^9.32.0",
