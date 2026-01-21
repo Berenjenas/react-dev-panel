@@ -1,0 +1,172 @@
+name: Bundle Size Check
+
+on:
+    pull_request:
+        branches: [main, develop]
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    bundle-size:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout PR
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build library
+              run: npm run build
+
+            - name: Get current bundle size
+              id: current-size
+              run: |
+                  npm run size -- --json > size-current.json
+                  TOTAL_SIZE=$(node -p "JSON.parse(require('fs').readFileSync('size-current.json', 'utf8')).reduce((acc, item) => acc + item.size, 0)")
+                  echo "total=$TOTAL_SIZE" >> $GITHUB_OUTPUT
+
+            - name: Checkout base branch
+              run: |
+                  git fetch origin ${{ github.base_ref }}
+                  git checkout origin/${{ github.base_ref }}
+
+            - name: Install base dependencies
+              run: npm ci
+
+            - name: Build base library
+              run: npm run build
+
+            - name: Get base bundle size
+              id: base-size
+              run: |
+                  npm run size -- --json > size-base.json
+                  TOTAL_SIZE=$(node -p "JSON.parse(require('fs').readFileSync('size-base.json', 'utf8')).reduce((acc, item) => acc + item.size, 0)")
+                  echo "total=$TOTAL_SIZE" >> $GITHUB_OUTPUT
+
+            - name: Checkout PR again
+              run: |
+                  git checkout ${{ github.sha }}
+                  npm ci
+                  npm run build
+
+            - name: Compare sizes and generate report
+              id: comparison
+              run: |
+                  node -e "
+                  const fs = require('fs');
+                  const current = JSON.parse(fs.readFileSync('size-current.json', 'utf8'));
+                  const base = JSON.parse(fs.readFileSync('size-base.json', 'utf8'));
+
+                  const formatBytes = (bytes) => {
+                    if (bytes === 0) return '0 B';
+                    const k = 1024;
+                    const sizes = ['B', 'KB', 'MB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                  };
+
+                  const formatDiff = (current, base) => {
+                    const diff = current - base;
+                    const percent = base === 0 ? 0 : ((diff / base) * 100).toFixed(2);
+                    const sign = diff > 0 ? '+' : '';
+                    return \`\${sign}\${formatBytes(diff)} (\${sign}\${percent}%)\`;
+                  };
+
+                  const getEmoji = (current, base) => {
+                    if (current === base) return '⚪';
+                    if (current < base) return '🟢';
+                    const increase = ((current - base) / base) * 100;
+                    if (increase > 5) return '🔴';
+                    return '🟡';
+                  };
+
+                  let report = '## 📦 Bundle Size Report\n\n';
+                  report += '| Package | Current | Base | Change |\n';
+                  report += '|---------|---------|------|--------|\n';
+
+                  current.forEach((curr, idx) => {
+                    const baseItem = base[idx] || { size: 0 };
+                    const emoji = getEmoji(curr.size, baseItem.size);
+                    report += \`| \${emoji} \${curr.name} | \${formatBytes(curr.size)} | \${formatBytes(baseItem.size)} | \${formatDiff(curr.size, baseItem.size)} |\n\`;
+                  });
+
+                  const currentTotal = current.reduce((acc, item) => acc + item.size, 0);
+                  const baseTotal = base.reduce((acc, item) => acc + item.size, 0);
+                  const totalEmoji = getEmoji(currentTotal, baseTotal);
+
+                  report += \`| **\${totalEmoji} Total** | **\${formatBytes(currentTotal)}** | **\${formatBytes(baseTotal)}** | **\${formatDiff(currentTotal, baseTotal)}** |\n\n\`;
+
+                  if (currentTotal > baseTotal) {
+                    const increase = ((currentTotal - baseTotal) / baseTotal * 100).toFixed(2);
+                    if (increase > 5) {
+                      report += '⚠️ **Warning:** Bundle size increased by more than 5%\n\n';
+                    }
+                  } else if (currentTotal < baseTotal) {
+                    report += '✅ **Great job!** Bundle size decreased\n\n';
+                  }
+
+                  report += '<details>\n';
+                  report += '<summary>Legend</summary>\n\n';
+                  report += '- 🟢 Size decreased\n';
+                  report += '- 🟡 Size increased (< 5%)\n';
+                  report += '- 🔴 Size increased significantly (> 5%)\n';
+                  report += '- ⚪ No change\n';
+                  report += '</details>\n';
+
+                  fs.writeFileSync('bundle-report.md', report);
+                  "
+
+            - name: Comment PR
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+                      const report = fs.readFileSync('bundle-report.md', 'utf8');
+
+                      // Find existing comment
+                      const { data: comments } = await github.rest.issues.listComments({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.issue.number,
+                      });
+
+                      const botComment = comments.find(comment => 
+                        comment.user.type === 'Bot' && 
+                        comment.body.includes('Bundle Size Report')
+                      );
+
+                      if (botComment) {
+                        // Update existing comment
+                        await github.rest.issues.updateComment({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          comment_id: botComment.id,
+                          body: report
+                        });
+                      } else {
+                        // Create new comment
+                        await github.rest.issues.createComment({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          issue_number: context.issue.number,
+                          body: report
+                        });
+                      }
+
+            - name: Check size limits
+              run: npm run size
+
+            - name: Run detailed analysis
+              run: npm run size:analyze

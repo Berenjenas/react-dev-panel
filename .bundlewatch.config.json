@@ -1,0 +1,20 @@
+{
+	"files": [
+		{
+			"path": "dist/index.js",
+			"maxSize": "50kb"
+		},
+		{
+			"path": "dist/**/*.js",
+			"maxSize": "100kb"
+		},
+		{
+			"path": "dist/assets/*.css",
+			"maxSize": "20kb"
+		}
+	],
+	"ci": {
+		"trackBranches": ["main", "develop"],
+		"repoBranchBase": "main"
+	}
+}

@@ -1,133 +1,90 @@
-# 🎛️ Control Types
+# Control Types
 
-React Dev Panel provides a comprehensive set of control types to manage different kinds of data in your development interface. Each control type is designed to handle specific data types and use cases.
+React Dev Panel provides 12 control types for managing different data types in your development interface.
 
-## Overview
+## Common Properties
 
-All controls share common properties:
+All controls support:
 
--   `label` - Display label for the control
--   `value` - Current value
--   `onChange` - Callback function when value changes
--   `persist` - Optional boolean to enable automatic value persistence
+-   `label?: string` - Display label
+-   `description?: string` - Help text below control
+-   `disabled?: boolean` - Disable the control
+-   `persist?: boolean` - Auto-save to localStorage ([details](./PERSISTENCE.md))
 
-## Available Controls
+## Control Reference
 
 ### Input Controls
 
--   [**Text Control**](./controls/TEXT_CONTROL.md) - String input with optional validation
--   [**Number Control**](./controls/NUMBER_CONTROL.md) - Numeric input with min/max constraints
--   [**Color Control**](./controls/COLOR_CONTROL.md) - Color picker with hex output
--   [**Date Control**](./controls/DATE_CONTROL.md) - Date picker with range constraints
--   [**Range Control**](./controls/RANGE_CONTROL.md) - Slider input for numeric ranges
+-   [**Text**](./controls/TEXT_CONTROL.md) - String input
+-   [**Number**](./controls/NUMBER_CONTROL.md) - Numeric input with min/max
+-   [**Color**](./controls/COLOR_CONTROL.md) - Color picker (hex)
+-   [**Date**](./controls/DATE_CONTROL.md) - Date selector
+-   [**Range**](./controls/RANGE_CONTROL.md) - Slider with step control
 
 ### Selection Controls
 
--   [**Boolean Control**](./controls/BOOLEAN_CONTROL.md) - Toggle switch for true/false values
--   [**Select Control**](./controls/SELECT_CONTROL.md) - Dropdown with single selection
--   [**MultiSelect Control**](./controls/MULTISELECT_CONTROL.md) - Dropdown with multiple selection support
+-   [**Boolean**](./controls/BOOLEAN_CONTROL.md) - Checkbox toggle
+-   [**Select**](./controls/SELECT_CONTROL.md) - Dropdown (single)
+-   [**MultiSelect**](./controls/MULTISELECT_CONTROL.md) - Dropdown (multiple)
 
 ### Action Controls
 
--   [**Button Control**](./controls/BUTTON_CONTROL.md) - Single action button
--   [**Button Group Control**](./controls/BUTTON_GROUP_CONTROL.md) - Multiple related actions
+-   [**Button**](./controls/BUTTON_CONTROL.md) - Single action
+-   [**Button Group**](./controls/BUTTON_GROUP_CONTROL.md) - Multiple actions
 
 ### Layout Controls
 
--   [**Separator Control**](./controls/SEPARATOR_CONTROL.md) - Visual separators and labels
+-   [**Separator**](./controls/SEPARATOR_CONTROL.md) - Visual dividers
+-   **DragAndDrop** - File upload area
 
-## Event Handling & Persistence
-
-All input controls support two event handling strategies:
-
--   **onChange**: Real-time updates as user interacts
--   **onBlur**: Updates only when control loses focus
-
-### Automatic Persistence
-
-Add `persist: true` to any control to automatically save and restore its value:
+## Quick Reference
 
 ```tsx
-{
-  type: 'text',
-  value: userInput,
-  label: 'User Input',
-  persist: true, // Value automatically saved to localStorage
-  onChange: setValue,
-}
+// Text input
+{ type: "text", value: str, onChange: (v: string) => void }
+
+// Number with constraints
+{ type: "number", value: num, min: 0, max: 100, onChange: (v: number) => void }
+
+// Boolean toggle
+{ type: "boolean", value: bool, onChange: (v: boolean) => void }
+
+// Select dropdown
+{ type: "select", value: str, options: string[], onChange: (v: string) => void }
+
+// Color picker
+{ type: "color", value: "#hex", onChange: (v: string) => void }
+
+// Date selector
+{ type: "date", value: "YYYY-MM-DD", onChange: (v: string) => void }
+
+// Range slider
+{ type: "range", value: num, min: 0, max: 100, step: 1, onChange: (v: number) => void }
+
+// Button
+{ type: "button", label: "Click me", onClick: () => void }
 ```
 
-For more details, see [Event Handling](./EVENT_HANDLING.md) and [Data Persistence](./PERSISTENCE.md).
+## Event Handling
 
-## Quick Examples
-
-### Basic Text Input
+Input controls support two update strategies:
 
 ```tsx
-{
-  type: 'text',
-  value: 'Hello World',
-  label: 'Message',
-  persist: true, // Automatically saved and restored
-  onChange: setValue,
-}
+// Real-time updates (default)
+{ type: "text", value: search, event: "onChange", onChange: setSearch }
+
+// Update on blur (better for expensive operations)
+{ type: "text", value: apiKey, event: "onBlur", onChange: setApiKey }
 ```
 
-### Number with Constraints
+See [Event Handling](./EVENT_HANDLING.md) for details.
+
+## Persistence
+
+Add `persist: true` to auto-save values:
 
 ```tsx
-{
-  type: 'number',
-  value: 42,
-  label: 'Count',
-  min: 0,
-  max: 100,
-  persist: true, // Numeric value persisted
-  onChange: setValue,
-}
+{ type: "text", value: name, persist: true, onChange: setName }
 ```
 
-### Selection Dropdown
-
-```tsx
-{
-  type: 'select',
-  value: 'option1',
-  label: 'Choose Option',
-  options: ['option1', 'option2', 'option3'],
-  persist: true, // Selected option remembered
-  onChange: setValue,
-}
-```
-
-### Color Picker
-
-```tsx
-{
-  type: 'color',
-  value: '#ff6200',
-  label: 'Theme Color',
-  persist: true, // Color choice automatically saved
-  onChange: setValue,
-}
-```
-
-### Multiple Selection
-
-```tsx
-{
-  type: 'multiselect',
-  value: ['option1', 'option3'],
-  label: 'Choose Multiple',
-  options: [
-    { label: 'Option 1', value: 'option1' },
-    { label: 'Option 2', value: 'option2' },
-    { label: 'Option 3', value: 'option3' },
-  ],
-  onChange: setMultipleValues,
-}
-```
-
-## TypeScript Support
-
-All controls provide full TypeScript support with proper type inference for values and change handlers. The library exports comprehensive type definitions for all control configurations.
+See [Persistence](./PERSISTENCE.md) for details.

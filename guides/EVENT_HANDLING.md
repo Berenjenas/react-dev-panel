@@ -1,170 +1,115 @@
-# ⚡ Event Handling Options
+# Event Handling
 
-React Dev Panel supports two different event handling strategies for input controls, allowing you to choose the best approach for your specific use case.
+Input controls support two event strategies.
 
 ## Event Types
 
-### onChange Event
+### `onChange` (Default)
 
-The `onChange` event provides **real-time updates** as the user types or interacts with the control.
+Updates on every keystroke/interaction.
 
-**When to use:**
+**Use for:**
 
--   Live previews and immediate feedback
--   Simple state updates without side effects
--   Small forms with minimal performance impact
--   Real-time validation or formatting
-
-**Characteristics:**
-
--   Triggers on every keystroke or interaction
--   Provides immediate visual feedback
--   May cause more frequent re-renders
--   Best for responsive UI experiences
-
-**Example:**
+-   Live previews
+-   Simple state updates
+-   Real-time validation
 
 ```tsx
 {
-  type: 'text',
+  type: "text",
   value: searchTerm,
-  event: 'onChange', // Real-time updates
-  onChange: setSearchTerm,
+  event: "onChange", // Real-time (default)
+  onChange: setSearchTerm
 }
 ```
 
-### onBlur Event
+### `onBlur`
 
-The `onBlur` event updates the value only when the user **finishes interacting** with the control (loses focus).
+Updates only when control loses focus.
 
-**When to use:**
+**Use for:**
 
--   API calls or expensive operations
--   Form validation that triggers network requests
--   Complex state updates with side effects
--   Performance-sensitive applications
-
-**Characteristics:**
-
--   Triggers only when control loses focus
--   Reduces unnecessary API calls or computations
--   Better performance for expensive operations
--   Provides a more "traditional" form experience
-
-**Example:**
+-   API calls
+-   Expensive operations
+-   Complex validations
 
 ```tsx
 {
-  type: 'number',
-  value: price,
-  event: 'onBlur', // Update only when focus is lost
-  onChange: handlePriceChange, // This might trigger an API call
+  type: "text",
+  value: apiKey,
+  event: "onBlur", // Update on blur
+  onChange: validateAndSetApiKey
 }
 ```
 
-## Performance Considerations
+## Examples
 
-### Real-time Updates (onChange)
-
-```tsx
-// Good for simple state updates
-const [title, setTitle] = useState("");
-
-useDevPanel("Content", {
-	title: {
-		type: "text",
-		value: title,
-		event: "onChange", // ✅ Fast, simple update
-		onChange: setTitle,
-	},
-});
-```
-
-### Deferred Updates (onBlur)
+### Real-time Search
 
 ```tsx
-// Better for expensive operations
-const [apiEndpoint, setApiEndpoint] = useState("");
-
-const updateEndpoint = useCallback(async (url: string) => {
-	setApiEndpoint(url);
-	// Expensive operation: validate URL, test connection, etc.
-	await validateEndpoint(url);
-}, []);
-
-useDevPanel("API Settings", {
-	endpoint: {
-		type: "text",
-		value: apiEndpoint,
-		event: "onBlur", // ✅ Prevents excessive API calls
-		onChange: updateEndpoint,
-	},
-});
-```
-
-## Default Behavior
-
-If no `event` property is specified, controls default to:
-
--   **Text controls**: `onBlur` (to prevent excessive updates while typing)
--   **Number controls**: `onChange` (for immediate feedback)
--   **Boolean controls**: `onChange` (immediate toggle response)
--   **Select controls**: `onChange` (immediate selection feedback)
--   **MultiSelect controls**: `onChange` (immediate selection feedback)
--   **Range controls**: `onChange` (smooth slider interaction)
--   **Color controls**: `onChange` (live color preview)
--   **Date controls**: `onChange` (immediate date selection)
-
-## Best Practices
-
-### ✅ Do
-
--   Use `onChange` for immediate visual feedback
--   Use `onBlur` for expensive operations or API calls
--   Consider user experience when choosing event types
--   Test performance with your specific use case
-
-### ❌ Don't
-
--   Use `onChange` for API calls without debouncing
--   Use `onBlur` for controls that need immediate feedback
--   Mix event types inconsistently within related controls
--   Forget to handle loading states during async operations
-
-## Advanced Patterns
-
-### Debounced onChange
-
-For cases where you need real-time updates but want to limit frequency:
-
-```tsx
-import { useDebounceCallback } from "@berenjena/react-dev-panel";
-
-const debouncedUpdate = useDebounceCallback(handleExpensiveUpdate, 300);
+const [search, setSearch] = useState("");
 
 useDevPanel("Search", {
 	query: {
 		type: "text",
-		value: searchQuery,
-		event: "onChange",
-		onChange: debouncedUpdate, // Debounced expensive operation
+		value: search,
+		event: "onChange", // Immediate filtering
+		onChange: setSearch,
 	},
 });
 ```
 
-### Conditional Event Handling
-
-Choose event type based on context:
+### API Configuration
 
 ```tsx
-const eventType = isDevelopment ? "onChange" : "onBlur";
+const [url, setUrl] = useState("");
 
-useDevPanel("Settings", {
-	setting: {
+const validateUrl = async (value: string) => {
+	setUrl(value);
+	await testConnection(value); // Expensive
+};
+
+useDevPanel("API", {
+	endpoint: {
 		type: "text",
-		value: setting,
-		event: eventType, // Dynamic based on environment
-		onChange: handleSettingChange,
+		value: url,
+		event: "onBlur", // Only validate on blur
+		onChange: validateUrl,
 	},
 });
 ```
+
+## Debouncing (Alternative)
+
+For `onChange` with expensive operations, use debouncing:
+
+```tsx
+import { useDebounceCallback } from "@berenjena/react-dev-panel";
+
+const debouncedSearch = useDebounceCallback((value: string) => {
+	performExpensiveSearch(value);
+}, 300);
+
+useDevPanel("Search", {
+	query: {
+		type: "text",
+		value: search,
+		event: "onChange",
+		onChange: (value) => {
+			setSearch(value);
+			debouncedSearch(value);
+		},
+	},
+});
+```
+
+## Quick Decision Guide
+
+| Scenario             | Use                  |
+| -------------------- | -------------------- |
+| Live preview         | `onChange`           |
+| Simple state         | `onChange`           |
+| API calls            | `onBlur`             |
+| Validation (network) | `onBlur`             |
+| Heavy computation    | `onBlur` or debounce |
+| Form submission      | `onBlur`             |
