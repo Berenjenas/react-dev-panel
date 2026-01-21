@@ -4,5 +4,8 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
-	"cSpell.words": ["hoverable"]
+	"cSpell.words": [
+		"github",
+		"hoverable"
+	]
 }
