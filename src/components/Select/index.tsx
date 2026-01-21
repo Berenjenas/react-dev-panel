@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import type { Position } from "@/components/DevPanel/types";
@@ -21,18 +21,22 @@ export interface SelectProps {
 	disabled?: boolean;
 	multiple?: boolean;
 	placeholder?: string;
+	searchable?: boolean;
+	searchPlaceholder?: string;
 	onChange: (value: string | string[]) => void;
 }
 
 /**
  * Unified Select component that can handle both single and multiple selection
  */
-export function Select({ value, options, onChange, disabled = false, multiple = false, placeholder = "Select..." }: SelectProps): React.ReactNode {
+export function Select({ value, options, onChange, disabled = false, multiple = false, placeholder = "Select...", searchable = false, searchPlaceholder = "Search..." }: SelectProps): React.ReactNode {
 	const devPanelPosition = useDevPanelPosition();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
+	const searchInputRef = useRef<HTMLInputElement>(null);
 	const devPanelPositionRef = useRef<Position | null>(null);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
 		top: 0,
 		left: 0,
@@ -43,6 +47,21 @@ export function Select({ value, options, onChange, disabled = false, multiple = 
 	const currentValue = multiple ? (Array.isArray(value) ? value : []) : typeof value === "string" ? value : "";
 	const displayText = getDisplayText();
 	const isPlaceholder = multiple ? (currentValue as string[]).length === 0 : !currentValue;
+
+	// Filter options based on search query
+	const filteredOptions = useMemo(() => {
+		if (!searchable || !searchQuery) {
+			return options;
+		}
+
+		const query = searchQuery.toLowerCase();
+
+		return options.filter((option) => {
+			const label = typeof option === "string" ? option : option.label;
+
+			return label.toLowerCase().includes(query);
+		});
+	}, [options, searchable, searchQuery]);
 
 	/**
 	 * Updates dropdown position when it's open
@@ -161,9 +180,23 @@ export function Select({ value, options, onChange, disabled = false, multiple = 
 		if (!isOpen) {
 			setDropdownPosition(calculateDropdownPosition());
 			setIsOpen(true);
+			setSearchQuery("");
+
+			// Focus search input when opening if searchable
+			if (searchable) {
+				setTimeout(() => searchInputRef.current?.focus(), 0);
+			}
 		} else {
 			setIsOpen(false);
+			setSearchQuery("");
 		}
+	}
+
+	/**
+	 * Handles search input change
+	 */
+	function handleSearchInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+		setSearchQuery(e.target.value);
 	}
 
 	// Update position when dropdown opens or window resizes/scrolls
@@ -303,38 +336,58 @@ export function Select({ value, options, onChange, disabled = false, multiple = 
 							}}
 						>
 							<div className={styles.dropdown}>
-								{options.map((option) => {
-									const optionValue = typeof option === "string" ? option : option.value;
-									const optionLabel = typeof option === "string" ? option : option.label;
+								{searchable && (
+									<div className={styles.searchContainer}>
+										<input
+											ref={searchInputRef}
+											type="text"
+											className={styles.searchInput}
+											placeholder={searchPlaceholder}
+											value={searchQuery}
+											onChange={handleSearchInputChange}
+											onClick={(e) => e.stopPropagation()}
+										/>
+									</div>
+								)}
 
-									const isSelected = multiple ? (currentValue as string[]).includes(optionValue) : currentValue === optionValue;
+								<div className={styles.optionsList}>
+									{filteredOptions.length === 0 ? (
+										<div className={styles.noResults}>No results found</div>
+									) : (
+										filteredOptions.map((option) => {
+											const optionValue = typeof option === "string" ? option : option.value;
+											const optionLabel = typeof option === "string" ? option : option.label;
 
-									if (multiple) {
-										return (
-											<label key={optionValue} className={styles.option}>
-												<input
-													type="checkbox"
-													checked={isSelected}
-													onChange={() => handleOptionSelect(optionValue)}
-													className={styles.checkbox}
-												/>
+											const isSelected = multiple ? (currentValue as string[]).includes(optionValue) : currentValue === optionValue;
 
-												<span className={styles.label}>{optionLabel}</span>
-											</label>
-										);
-									} else {
-										return (
-											<button
-												key={optionValue}
-												type="button"
-												className={`${styles.option} ${isSelected ? styles.selected : ""}`}
-												onClick={() => handleOptionSelect(optionValue)}
-											>
-												{optionLabel}
-											</button>
-										);
-									}
-								})}
+											if (multiple) {
+												return (
+													<label key={optionValue} className={styles.option}>
+														<input
+															type="checkbox"
+															checked={isSelected}
+															onChange={() => handleOptionSelect(optionValue)}
+															className={styles.checkbox}
+														/>
+
+														<span className={styles.label}>{optionLabel}</span>
+													</label>
+												);
+											} else {
+												return (
+													<button
+														key={optionValue}
+														type="button"
+														className={`${styles.option} ${isSelected ? styles.selected : ""}`}
+														onClick={() => handleOptionSelect(optionValue)}
+													>
+														{optionLabel}
+													</button>
+												);
+											}
+										})
+									)}
+								</div>
 							</div>
 						</div>
 					),

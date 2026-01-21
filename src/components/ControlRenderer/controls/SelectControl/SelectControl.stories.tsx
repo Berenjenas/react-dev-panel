@@ -6,9 +6,49 @@ import { useDevPanel } from "@/hooks/useDevPanel";
 
 const names = ["", "Alice", "Bob", "Charlie", "David", "Eve"];
 
+const longListOfNames = [
+	"",
+	"Alice",
+	"Bob",
+	"Charlie",
+	"David",
+	"Eve",
+	"Frank",
+	"Grace",
+	"Henry",
+	"Isabella",
+	"Jack",
+	"Katherine",
+	"Liam",
+	"Mia",
+	"Noah",
+	"Olivia",
+	"Peter",
+	"Quinn",
+	"Rachel",
+	"Samuel",
+	"Tara",
+	"Ulysses",
+	"Victoria",
+	"William",
+	"Xena",
+	"Yolanda",
+	"Zachary",
+	"Amelia",
+	"Benjamin",
+	"Charlotte",
+	"Daniel",
+	"Eleanor",
+	"Felix",
+	"Georgia",
+	"Harrison",
+	"Iris",
+];
+
 function SelectControlDemo(): React.ReactNode {
 	const [name, setName] = useState(names[1]);
 	const [persistent, setPersistent] = useState(names[1]);
+	const [searchable, setSearchable] = useState(names[1]);
 
 	useDevPanel(
 		"Select Control",
@@ -35,6 +75,21 @@ function SelectControlDemo(): React.ReactNode {
 				description: "This control's state persists across sessions",
 				onChange: setPersistent,
 				persist: true,
+			},
+
+			searchable: {
+				type: "separator",
+				style: "label",
+				label: "Searchable",
+			},
+
+			searchableControl: {
+				type: "select",
+				options: longListOfNames,
+				value: searchable,
+				label: "Searchable Control",
+				searchable: true,
+				onChange: setSearchable,
 			},
 		},
 		{ panelTitle: "Select Control Panel" },
