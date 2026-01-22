@@ -4,6 +4,13 @@ on:
     push:
         branches:
             - main
+    workflow_dispatch:
+        inputs:
+            test_discord:
+                description: "Test Discord notification without creating a release"
+                required: false
+                default: false
+                type: boolean
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -36,6 +43,7 @@ jobs:
               run: npm run build
 
             - name: Create Release Pull Request or Publish to npm
+              if: github.event_name == 'push'
               id: changesets
               uses: changesets/action@v1
               with:
@@ -47,45 +55,63 @@ jobs:
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: Send Discord notification
-              if: steps.changesets.outputs.published == 'true'
+              if: |
+                  (github.event_name == 'push' && steps.changesets.outputs.published == 'true') ||
+                  (github.event_name == 'workflow_dispatch' && inputs.test_discord == true)
               run: |
-                  PUBLISHED_PACKAGES='${{ steps.changesets.outputs.publishedPackages }}'
-                  PACKAGE_NAME=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].name // "react-dev-panel"')
-                  PACKAGE_VERSION=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].version // "unknown"')
+                  if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+                    # Test mode with sample data
+                    PACKAGE_NAME="@berenjena/react-dev-panel"
+                    PACKAGE_VERSION="2.4.1"
+                    CHANGELOG="Fix: Discord webhook integration and notification system"
+                  else
+                    # Production mode - extract from release
+                    PUBLISHED_PACKAGES='${{ steps.changesets.outputs.publishedPackages }}'
+                    PACKAGE_NAME=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].name // "react-dev-panel"')
+                    PACKAGE_VERSION=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].version // "unknown"')
+                    CHANGELOG=$(sed -n '/^## /,/^## /p' CHANGELOG.md | head -n -1 | tail -n +2 | head -c 500)
+                    if [ -z "$CHANGELOG" ]; then
+                      CHANGELOG="Check the release notes for details"
+                    fi
+                  fi
+
                   RELEASE_URL="${{ github.server_url }}/${{ github.repository }}/releases/tag/$PACKAGE_NAME@$PACKAGE_VERSION"
                   NPM_URL="https://www.npmjs.com/package/$PACKAGE_NAME/v/$PACKAGE_VERSION"
 
-                  # Extract changelog from CHANGELOG.md (first 500 chars of latest entry)
-                  CHANGELOG=$(sed -n '/^## /,/^## /p' CHANGELOG.md | head -n -1 | tail -n +2 | head -c 500 | sed 's/"$//' | sed "s/'$//")
-                  if [ -z "$CHANGELOG" ]; then
-                    CHANGELOG="Check the release notes for details"
-                  fi
+                  # Build payload safely using jq
+                  PAYLOAD=$(jq -n \
+                    --arg title "🚀 New release published!" \
+                    --arg description "**$PACKAGE_NAME** version **$PACKAGE_VERSION** has been released" \
+                    --arg changelog "$CHANGELOG" \
+                    --arg npm_url "$NPM_URL" \
+                    --arg release_url "$RELEASE_URL" \
+                    '{
+                      embeds: [{
+                        title: $title,
+                        description: $description,
+                        color: 3394560,
+                        fields: [
+                          {
+                            name: "📝 Changelog",
+                            value: $changelog,
+                            inline: false
+                          },
+                          {
+                            name: "📦 NPM Package",
+                            value: "[View on npm](\($npm_url))",
+                            inline: true
+                          },
+                          {
+                            name: "📌 GitHub Release",
+                            value: "[View release](\($release_url))",
+                            inline: true
+                          }
+                        ],
+                        url: $release_url,
+                        timestamp: now | todate
+                      }]
+                    }')
 
                   curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
                     -H 'Content-Type: application/json' \
-                    -d "{
-                      \"embeds\": [{
-                        \"title\": \"🚀 New release published!\",
-                        \"description\": \"**$PACKAGE_NAME** version **$PACKAGE_VERSION** has been released\",
-                        \"color\": 3394560,
-                        \"fields\": [
-                          {
-                            \"name\": \"📝 Changelog\",
-                            \"value\": \"$CHANGELOG\",
-                            \"inline\": false
-                          },
-                          {
-                            \"name\": \"📦 NPM Package\",
-                            \"value\": \"[View on npm]($NPM_URL)\",
-                            \"inline\": true
-                          },
-                          {
-                            \"name\": \"📌 GitHub Release\",
-                            \"value\": \"[View release]($RELEASE_URL)\",
-                            \"inline\": true
-                          }
-                        ],
-                        \"url\": \"$RELEASE_URL\",
-                        \"timestamp\": \"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"
-                      }]
-                    }"
+                    -d "$PAYLOAD"
