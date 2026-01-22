@@ -1,5 +1,70 @@
 # @berenjena/react-dev-panel
 
+## 2.4.0
+
+### Minor Changes
+
+-   d416329: Add bundle size tracking and refactor documentation
+
+    **Bundle Size Tracking:**
+
+    -   Add size-limit for bundle size monitoring
+    -   Add bundlewatch for CI/CD integration
+    -   Create custom bundle analyzer script with detailed reports
+    -   Add bundle size check workflow for pull requests
+    -   Add bundle size tracking documentation
+    -   Update package.json with size-related scripts
+    -   Add bundle size limits to prevent uncontrolled growth
+
+    **Documentation Improvements:**
+
+    -   Refactor main README (50% reduction, 350 → 176 lines)
+    -   Simplify CONTROLS guide (37% reduction)
+    -   Condense PERSISTENCE guide (83% reduction, 545 → 90 lines)
+    -   Streamline EVENT_HANDLING guide (44% reduction)
+    -   Improve STYLING guide (67% reduction)
+    -   Optimize ADVANCED_USAGE guide (53% reduction)
+    -   Refactor control-specific guides (Boolean, Text, Number)
+    -   Remove redundant examples and verbose explanations
+    -   Improve scannability with better formatting
+    -   Add quick reference sections
+
+-   fe6a016: Add searchable logic to select
+-   500db37: ## LocalStorage Control - 13th Control Type
+
+    Add a comprehensive localStorage management control with full CRUD operations.
+
+    ### Features
+
+    -   **View All Items**: Display all localStorage entries in collapsible cards with sorted keys
+    -   **Add New Entries**: Create new key-value pairs with validation
+    -   **Edit Inline**: Modify existing values directly with confirmation
+    -   **Delete Entries**: Remove items with confirmation dialog
+    -   **Smart JSON Formatting**: Auto-prettify JSON values with indentation
+    -   **Value Preview**: Truncated previews (100 chars) with expand/collapse toggle
+    -   **Multi-Tab Sync**: Listen to storage events from other tabs and windows
+    -   **Manual Refresh**: On-demand localStorage reload
+
+    ### New Components & Utilities
+
+    -   `LocalStorageControl` component with full UI/UX
+    -   `copyToClipboard()` utility for clipboard operations
+    -   `prettifyJson()` utility for JSON formatting
+    -   `getStringPreview()` utility for string truncation
+
+    ### Type Safety & Testing
+
+    -   Full TypeScript types for LocalStorageControl
+    -   6 comprehensive unit tests for all utilities
+    -   Complete Storybook demo with sample data
+
+    ### Documentation
+
+    -   Detailed guide for LocalStorage control usage
+    -   Updated README and CONTROLS.md
+    -   API documentation with examples
+    -   Use cases and best practices
+
 ## 2.3.0
 
 ### Minor Changes
