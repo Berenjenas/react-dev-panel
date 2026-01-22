@@ -45,3 +45,47 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - name: Send Discord notification
+              if: steps.changesets.outputs.published == 'true'
+              run: |
+                  PUBLISHED_PACKAGES='${{ steps.changesets.outputs.publishedPackages }}'
+                  PACKAGE_NAME=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].name // "react-dev-panel"')
+                  PACKAGE_VERSION=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].version // "unknown"')
+                  RELEASE_URL="${{ github.server_url }}/${{ github.repository }}/releases/tag/$PACKAGE_NAME@$PACKAGE_VERSION"
+                  NPM_URL="https://www.npmjs.com/package/$PACKAGE_NAME/v/$PACKAGE_VERSION"
+
+                  # Extract changelog from CHANGELOG.md (first 500 chars of latest entry)
+                  CHANGELOG=$(sed -n '/^## /,/^## /p' CHANGELOG.md | head -n -1 | tail -n +2 | head -c 500 | sed 's/"$//' | sed "s/'$//")
+                  if [ -z "$CHANGELOG" ]; then
+                    CHANGELOG="Check the release notes for details"
+                  fi
+
+                  curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
+                    -H 'Content-Type: application/json' \
+                    -d "{
+                      \"embeds\": [{
+                        \"title\": \"🚀 New release published!\",
+                        \"description\": \"**$PACKAGE_NAME** version **$PACKAGE_VERSION** has been released\",
+                        \"color\": 3394560,
+                        \"fields\": [
+                          {
+                            \"name\": \"📝 Changelog\",
+                            \"value\": \"$CHANGELOG\",
+                            \"inline\": false
+                          },
+                          {
+                            \"name\": \"📦 NPM Package\",
+                            \"value\": \"[View on npm]($NPM_URL)\",
+                            \"inline\": true
+                          },
+                          {
+                            \"name\": \"📌 GitHub Release\",
+                            \"value\": \"[View release]($RELEASE_URL)\",
+                            \"inline\": true
+                          }
+                        ],
+                        \"url\": \"$RELEASE_URL\",
+                        \"timestamp\": \"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"
+                      }]
+                    }"
