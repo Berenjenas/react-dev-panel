@@ -18,4 +18,5 @@ export const controls = Object.freeze({
 	text: lazy(() => import("./TextControl").then((m) => ({ default: m.TextControl }))),
 	buttonGroup: lazy(() => import("./ButtonGroupControl").then((m) => ({ default: m.ButtonGroupControl }))),
 	dragAndDrop: lazy(() => import("./DragAndDropControl").then((m) => ({ default: m.DragAndDropControl }))),
+	localStorage: lazy(() => import("./LocalStorageControl").then((m) => ({ default: m.LocalStorageControl }))),
 });
