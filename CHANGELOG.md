@@ -1,5 +1,11 @@
 # @berenjena/react-dev-panel
 
+## 2.4.1
+
+### Patch Changes
+
+-   1f6a9f5: Add Discord notifications to release workflow. When a new version is published to npm, a notification message is automatically sent to a configured Discord webhook with release details including package name, version, changelog excerpt, and direct links to the GitHub release and npm package.
+
 ## 2.4.0
 
 ### Minor Changes
