@@ -10,7 +10,7 @@ A lightweight, type-safe development panel for React that lets you control compo
 ## Features
 
 -   **One Hook**: Single `useDevPanel` hook - no providers, no setup
--   **12 Control Types**: Text, Number, Boolean, Select, Color, Range, Date, Button, and more
+-   **13 Control Types**: Text, Number, Boolean, Select, Color, Range, Date, Button, LocalStorage, and more
 -   **Auto-Persistence**: Optional localStorage sync for control values
 -   **Type-Safe**: Full TypeScript support with IntelliSense
 -   **Themeable**: 21 built-in themes + CSS custom properties
@@ -47,7 +47,7 @@ function App() {
 
 ## Control Types
 
-All 12 control types available:
+All 13 control types available:
 
 ```tsx
 {
@@ -62,6 +62,7 @@ All 12 control types available:
   button: { type: "button", onClick: () => void }
   buttonGroup: { type: "buttonGroup", buttons: Array<{label: string, onClick: () => void}> }
   dragAndDrop: { type: "dragAndDrop", onChange: (files: FileList) => void }
+  localStorage: { type: "localStorage", onRefresh?: () => void }
   separator: { type: "separator", variant?: "line" | "label" | "space" }
 }
 ```

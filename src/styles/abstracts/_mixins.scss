@@ -139,3 +139,12 @@
 	color: inherit;
 	cursor: pointer;
 }
+
+// Code/monospace display styles mixin
+@mixin code-display {
+	font-family: "Courier New", monospace;
+	font-size: var(--dev-panel-font-size-xs);
+	color: var(--dev-panel-text-color);
+	line-height: 1.5;
+	word-break: break-all;
+}

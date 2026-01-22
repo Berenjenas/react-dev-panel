@@ -32,10 +32,14 @@ All controls support:
 -   [**Button**](./controls/BUTTON_CONTROL.md) - Single action
 -   [**Button Group**](./controls/BUTTON_GROUP_CONTROL.md) - Multiple actions
 
+### File & Storage Controls
+
+-   **DragAndDrop** - File upload area
+-   [**LocalStorage**](./controls/LOCALSTORAGE_CONTROL.md) - Browser storage manager
+
 ### Layout Controls
 
 -   [**Separator**](./controls/SEPARATOR_CONTROL.md) - Visual dividers
--   **DragAndDrop** - File upload area
 
 ## Quick Reference
 
