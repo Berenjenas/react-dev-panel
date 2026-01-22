@@ -29,7 +29,16 @@ export interface SelectProps {
 /**
  * Unified Select component that can handle both single and multiple selection
  */
-export function Select({ value, options, onChange, disabled = false, multiple = false, placeholder = "Select...", searchable = false, searchPlaceholder = "Search..." }: SelectProps): React.ReactNode {
+export function Select({
+	value,
+	options,
+	onChange,
+	disabled = false,
+	multiple = false,
+	placeholder = "Select...",
+	searchable = false,
+	searchPlaceholder = "Search...",
+}: SelectProps): React.ReactNode {
 	const devPanelPosition = useDevPanelPosition();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
@@ -358,7 +367,9 @@ export function Select({ value, options, onChange, disabled = false, multiple = 
 											const optionValue = typeof option === "string" ? option : option.value;
 											const optionLabel = typeof option === "string" ? option : option.label;
 
-											const isSelected = multiple ? (currentValue as string[]).includes(optionValue) : currentValue === optionValue;
+											const isSelected = multiple
+												? (currentValue as string[]).includes(optionValue)
+												: currentValue === optionValue;
 
 											if (multiple) {
 												return (
