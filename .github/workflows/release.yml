@@ -75,7 +75,7 @@ jobs:
                     fi
                   fi
 
-                  RELEASE_URL="${{ github.server_url }}/${{ github.repository }}/releases/tag/$PACKAGE_NAME@$PACKAGE_VERSION"
+                  RELEASE_URL="${{ github.server_url }}/${{ github.repository }}/releases/tag/v$PACKAGE_VERSION"
                   NPM_URL="https://www.npmjs.com/package/$PACKAGE_NAME/v/$PACKAGE_VERSION"
 
                   # Build payload safely using jq
