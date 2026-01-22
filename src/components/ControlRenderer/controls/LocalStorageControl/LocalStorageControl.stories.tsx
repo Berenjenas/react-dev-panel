@@ -32,7 +32,7 @@ function LocalStorageControlDemo(): React.ReactNode {
 		{
 			localStorage: {
 				type: "localStorage",
-				description: "Gestiona los registros del localStorage. Puedes ver, editar y eliminar valores.",
+				description: "Manage localStorage entries. You can view, edit, and delete values.",
 				onRefresh: () => setRefreshCount((prev) => prev + 1),
 			},
 		},
