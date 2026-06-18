@@ -3,6 +3,8 @@ import { createRoot, type Root } from "react-dom/client";
 
 import { DevPanelPortal } from "@/components/DevPanelPortal";
 
+import { registerDevPanelConsoleApi, unregisterDevPanelConsoleApi } from "./consoleApi";
+
 const CONTAINER_ID = "dev-panel-portal-container";
 
 let root: Root | null = null;
@@ -44,6 +46,9 @@ export function mountDevPanelPortal(): void {
 
 	root = createRoot(container);
 	root.render(createElement(DevPanelPortal));
+
+	// Expose the console API (window.devPanel) alongside the panel lifecycle.
+	registerDevPanelConsoleApi();
 }
 
 /**
@@ -57,4 +62,6 @@ export function unmountDevPanelPortal(): void {
 
 	container?.remove();
 	container = null;
+
+	unregisterDevPanelConsoleApi();
 }

@@ -178,6 +178,29 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, PersistedUISta
 const devPanelUIService = new DevPanelUIService();
 
 /**
+ * Imperatively shows the dev panel. Usable outside React (e.g. the console API).
+ * The panel still only appears on screen if at least one section is registered.
+ */
+export function showDevPanel(): void {
+	devPanelUIService.setVisible(true);
+}
+
+/**
+ * Imperatively hides the dev panel. Usable outside React (e.g. the console API).
+ */
+export function hideDevPanel(): void {
+	devPanelUIService.setVisible(false);
+}
+
+/**
+ * Imperatively toggles the dev panel visibility — mirrors the keyboard hotkey.
+ * Usable outside React (e.g. the console API).
+ */
+export function toggleDevPanel(): void {
+	devPanelUIService.setVisible(!devPanelUIService.getSnapshot().isVisible);
+}
+
+/**
  * React hook that provides access to the complete dev panel UI state and actions.
  * Uses useSyncExternalStore for optimal performance and React 18 compatibility.
  * This hook will not re-render when sections state changes.
