@@ -13,6 +13,10 @@ import { Section } from "../Section";
 
 import type { DevPanelHotkeyConfig, DevPanelProps, Position } from "./types";
 
+// Global tokens (`:root` custom properties). Anchored here — a component always
+// in the panel's render path — so the single emitted copy loads whether the
+// consumer imports the barrel or deep-imports a subpath.
+import "@/styles/index.scss";
 import styles from "./DevPanel.module.scss";
 
 const defaultHotKeyConfig: DevPanelHotkeyConfig = {

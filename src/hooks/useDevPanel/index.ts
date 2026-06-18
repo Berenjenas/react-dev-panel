@@ -1,21 +1,24 @@
-import { createElement, useEffect, useRef } from "react";
-import { createRoot } from "react-dom/client";
+import { useEffect, useRef } from "react";
 
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
 import type { DevPanelProps } from "@/components/DevPanel/types";
-import { DevPanelPortal } from "@/components/DevPanelPortal";
 import { DevPanelManager } from "@/managers/DevPanelManager";
 import { controlPersistenceService } from "@/store/ControlPersistenceService";
 import { useDevPanelSectionActions, useDevPanelSections } from "@/store/SectionsStore";
 import { hasControlsChanged } from "@/utils/hasControlChanged/hasControlChanged";
+import { isValidPersistedValue } from "@/utils/isValidPersistedValue/isValidPersistedValue";
 
-type WindowWithDevPanel = Window & { __devPanelAutoMounted?: boolean };
+import { mountDevPanelPortal } from "./mountDevPanelPortal";
 
 /**
  * Hook to register controls in the dev panel with auto-mounting
  * @param sectionName - Section name (e.g: 'Global', 'HomePage')
  * @param controls - Controls configuration object
- * @param devPanelProps - Optional DevPanel configuration (title, hotkey, theme)
+ * @param devPanelProps - Optional DevPanel configuration (title, hotkey, theme, enabled)
+ *
+ * @remarks
+ * Pass `devPanelProps.enabled = false` to make this call a no-op (e.g.
+ * `enabled: import.meta.env.DEV` to disable the panel in production).
  *
  * @example
  * ```typescript
@@ -44,11 +47,15 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 	const managerRef = useRef<DevPanelManager | null>(null);
 	const persistentControlsProcessedRef = useRef<Set<string>>(new Set());
 
+	const enabled = devPanelProps?.enabled ?? true;
+
 	if (!managerRef.current) {
 		managerRef.current = DevPanelManager.getInstance();
 	}
 
 	useEffect(() => {
+		if (!enabled) return;
+
 		Object.entries(controls).forEach(([controlKey, control]) => {
 			const persistKey = `${sectionName}-${controlKey}`;
 
@@ -56,13 +63,22 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 				const persistedValue = controlPersistenceService.getPersistedValue(sectionName, controlKey);
 
 				if (persistedValue !== undefined && "onChange" in control && typeof control.onChange === "function") {
-					(control.onChange as (value: unknown) => void)(persistedValue);
+					if (isValidPersistedValue(control, persistedValue)) {
+						(control.onChange as (value: unknown) => void)(persistedValue);
+					} else {
+						console.warn(
+							`[DevPanel] Ignoring persisted value for "${sectionName}.${controlKey}": ` +
+								`type does not match control "${control.type}". Dropping stored value.`,
+						);
+
+						controlPersistenceService.removePersistedValue(sectionName, controlKey);
+					}
 				}
 
 				persistentControlsProcessedRef.current.add(persistKey);
 			}
 		});
-	}, [sectionName, controls]);
+	}, [enabled, sectionName, controls]);
 
 	const enhancedControls = useRef<ControlsGroup>({});
 
@@ -78,7 +94,12 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 					onChange: (value: unknown): void => {
 						controlPersistenceService.setPersistedValue(sectionName, controlKey, value);
 
-						(originalOnChange as (value: unknown) => void)(value);
+						// Isolate consumer errors so a buggy handler can't tear down the panel.
+						try {
+							(originalOnChange as (value: unknown) => void)(value);
+						} catch (error) {
+							console.error(`[DevPanel] Error in onChange for "${sectionName}.${controlKey}":`, error);
+						}
 					},
 				};
 			} else {
@@ -93,6 +114,18 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 		const manager = managerRef.current!;
 		const sectionExists = sections[sectionName] !== undefined;
 
+		// Disabled call: ensure the section is not present (handles a runtime
+		// flip from enabled -> disabled) and contribute nothing to the panel.
+		if (!enabled) {
+			if (sectionExists) {
+				unregisterSection(sectionName);
+				manager.removeSection(sectionName);
+				previousControlsRef.current = undefined;
+			}
+
+			return;
+		}
+
 		if (hasControlsChanged(enhancedControls.current, previousControlsRef.current) || !sectionExists) {
 			registerSection(sectionName, enhancedControls.current);
 			previousControlsRef.current = enhancedControls.current;
@@ -100,7 +133,7 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 		} else if (devPanelProps) {
 			manager.updateProps(devPanelProps);
 		}
-	}, [sectionName, controls, devPanelProps, sections, registerSection]);
+	}, [enabled, sectionName, controls, devPanelProps, sections, registerSection, unregisterSection]);
 
 	useEffect(() => {
 		const processedControls = persistentControlsProcessedRef.current;
@@ -115,20 +148,10 @@ export function useDevPanel(sectionName: string, controls: ControlsGroup, devPan
 		};
 	}, [sectionName, unregisterSection]);
 
-	// Auto-mount DevPanelPortal on first hook call
+	// Auto-mount DevPanelPortal on first enabled hook call (idempotent, SSR-safe).
 	useEffect(() => {
-		if ((window as WindowWithDevPanel).__devPanelAutoMounted) return;
+		if (!enabled) return;
 
-		(window as WindowWithDevPanel).__devPanelAutoMounted = true;
-
-		const container = document.createElement("div");
-
-		container.id = "dev-panel-portal-container";
-		container.style.display = "none";
-		document.body.appendChild(container);
-
-		const root = createRoot(container);
-
-		root.render(createElement(DevPanelPortal));
-	}, []);
+		mountDevPanelPortal();
+	}, [enabled]);
 }

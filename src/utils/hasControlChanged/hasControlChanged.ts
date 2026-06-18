@@ -1,4 +1,5 @@
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
+import { deepEqual } from "@/utils/deepEqual/deepEqual";
 
 /**
  * Compares if the controls have changed (shallow comparison)
@@ -61,7 +62,7 @@ export function hasControlsChanged(current: ControlsGroup, previous?: ControlsGr
 		}
 
 		if (currentControl.type === "select" && previousControl.type === "select") {
-			if (JSON.stringify(currentControl.options) !== JSON.stringify(previousControl.options)) {
+			if (!deepEqual(currentControl.options, previousControl.options)) {
 				return true;
 			}
 		}

@@ -172,6 +172,6 @@ const control: LocalStorageControl = {
 
 **Not recommended for:**
 
--   Production environments (dev panel should be disabled)
+-   Production environments — disable the panel there with `enabled` and/or strip it from the bundle (see the [Production & SSR guide](../PRODUCTION.md))
 -   Storing sensitive data (use secure storage instead)
 -   Real-time data that changes frequently

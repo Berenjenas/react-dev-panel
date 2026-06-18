@@ -5,9 +5,14 @@
  * @template TState - The type of the state object
  * @template TPersistedState - The type of the persisted state object (usually a subset of TState)
  */
+import { deepEqual } from "@/utils/deepEqual/deepEqual";
+
 export abstract class BaseStoreService<TState, TPersistedState = TState> {
 	/** Set of listeners subscribed to state changes */
 	protected readonly listeners = new Set<() => void>();
+
+	/** Whether a persistence failure has already been logged (avoids log spam). */
+	private persistenceWarned = false;
 
 	/** The localStorage key for persisting state */
 	protected readonly storageKey: string;
@@ -69,7 +74,7 @@ export abstract class BaseStoreService<TState, TPersistedState = TState> {
 	 * @protected
 	 */
 	protected saveState(): void {
-		if (!this.shouldPersist) {
+		if (!this.shouldPersist || typeof localStorage === "undefined") {
 			return;
 		}
 
@@ -77,8 +82,17 @@ export abstract class BaseStoreService<TState, TPersistedState = TState> {
 			const persistedState = this.toPersistableState(this.state);
 
 			localStorage.setItem(this.storageKey, JSON.stringify(persistedState));
-		} catch {
-			console.warn(`Failed to save ${this.getServiceName()} state to localStorage`);
+		} catch (error) {
+			// Warn once per service to avoid spamming on every keystroke when
+			// storage is full (QuotaExceededError) or unavailable (private mode).
+			if (!this.persistenceWarned) {
+				const reason =
+					error instanceof DOMException && error.name === "QuotaExceededError" ? "localStorage quota exceeded" : "localStorage unavailable";
+
+				console.warn(`[DevPanel] Failed to save ${this.getServiceName()} state (${reason}).`);
+
+				this.persistenceWarned = true;
+			}
 		}
 	}
 
@@ -89,7 +103,7 @@ export abstract class BaseStoreService<TState, TPersistedState = TState> {
 	 * @protected
 	 */
 	protected loadState(): void {
-		if (!this.shouldPersist) {
+		if (!this.shouldPersist || typeof localStorage === "undefined") {
 			return;
 		}
 
@@ -125,7 +139,7 @@ export abstract class BaseStoreService<TState, TPersistedState = TState> {
 	protected setState(updater: (state: TState) => TState): void {
 		const updatedState = updater(this.state);
 
-		if (JSON.stringify(updatedState) === JSON.stringify(this.state)) {
+		if (deepEqual(updatedState, this.state)) {
 			return;
 		}
 

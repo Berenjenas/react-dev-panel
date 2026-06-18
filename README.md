@@ -115,7 +115,30 @@ Choose when controls trigger updates:
 }
 ```
 
-📖 **[Styling guide](./guides/STYLING.md)** | **[Event handling](./guides/EVENT_HANDLING.md)** | **[Advanced usage](./guides/ADVANCED_USAGE.md)**
+### Disabling in Production
+
+Use the `enabled` flag to turn the panel off at runtime. When `false`, the call is a
+no-op — the section is not registered and the panel does not mount. It defaults to `true`.
+
+```tsx
+useDevPanel("Settings", controls, {
+	enabled: import.meta.env.DEV, // Vite
+	// enabled: process.env.NODE_ENV !== "production", // Webpack / Next / CRA
+});
+```
+
+> ⚠️ **`enabled` does not remove the panel from your bundle.** It stops the panel from
+> _running_, but the library code is still imported and shipped to users. To strip the
+> code out of production builds entirely (e.g. a Vite plugin that stubs the package), see
+> the **[Production & SSR guide](./guides/PRODUCTION.md)**.
+
+### SSR / Next.js
+
+The package is import-safe on the server (it never touches `document`/`localStorage` at
+import time) and ships the `"use client"` directive, so it works under the Next.js App
+Router. The panel mounts and renders on the client only.
+
+📖 **[Styling guide](./guides/STYLING.md)** | **[Event handling](./guides/EVENT_HANDLING.md)** | **[Advanced usage](./guides/ADVANCED_USAGE.md)** | **[Production & SSR](./guides/PRODUCTION.md)**
 
 ## Documentation
 
@@ -126,6 +149,7 @@ Choose when controls trigger updates:
 -   [Styling & Theming](./guides/STYLING.md) - Themes and CSS customization
 -   [Event Handling](./guides/EVENT_HANDLING.md) - onChange vs onBlur strategies
 -   [Advanced Usage](./guides/ADVANCED_USAGE.md) - Complex patterns and optimization
+-   [Production & SSR](./guides/PRODUCTION.md) - Disabling in production, bundle stripping, Next.js
 -   [Bundle Size](./guides/BUNDLE_SIZE.md) - Size tracking and optimization
 -   [Development](./guides/DEVELOPMENT.md) - Contributing and setup
 
@@ -150,6 +174,7 @@ Choose when controls trigger updates:
 {
   panelTitle?: string;           // Custom panel header
   theme?: string;                // Built-in theme name
+  enabled?: boolean;             // Activate this call (default true; false = no-op)
   hotKeyConfig?: {               // Custom toggle hotkey
     key: string;
     ctrlKey?: boolean;
@@ -159,6 +184,9 @@ Choose when controls trigger updates:
   }
 }
 ```
+
+> `enabled` gates runtime behaviour only — it does not remove the panel from your bundle.
+> See the **[Production & SSR guide](./guides/PRODUCTION.md)** for build-time stripping.
 
 ## Contributing
 
