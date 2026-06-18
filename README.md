@@ -86,6 +86,20 @@ useDevPanel("Settings", controls, {
 });
 ```
 
+### Open from the console
+
+Once the panel is in use, a `devPanel` helper is available on `window` so you can drive it
+straight from the browser console — handy when the hotkey clashes with another shortcut:
+
+```js
+devPanel.open(); // show the panel
+devPanel.close(); // hide it
+devPanel.toggle(); // flip visibility (same as the hotkey)
+```
+
+It's registered automatically when the first (enabled) `useDevPanel` call mounts, so it isn't
+present in builds where the panel is disabled.
+
 ### Panel Theme
 
 ```tsx
