@@ -16,17 +16,46 @@ Dropdown interface for selecting multiple options with checkbox-based selection.
 
 ## Properties
 
-| Property   | Type                         | Default     | Description               |
-| ---------- | ---------------------------- | ----------- | ------------------------- |
-| `type`     | `'multiselect'`              | —           | Control type              |
-| `value`    | `string[]`                   | —           | Selected values           |
-| `options`  | `string[] \| SelectOption[]` | —           | Available options         |
-| `onChange` | `(value: string[]) => void`  | —           | Change handler            |
-| `label`    | `string`                     | `undefined` | Display label             |
-| `disabled` | `boolean`                    | `false`     | Disabled state            |
-| `persist`  | `boolean`                    | `false`     | Auto-save to localStorage |
+| Property            | Type                         | Default       | Description                            |
+| ------------------- | ---------------------------- | ------------- | -------------------------------------- |
+| `type`              | `'multiselect'`              | —             | Control type                           |
+| `value`             | `string[]`                   | —             | Selected values                        |
+| `options`           | `string[] \| SelectOption[]` | —             | Available options                      |
+| `onChange`          | `(value: string[]) => void`  | —             | Change handler                         |
+| `searchable`        | `boolean`                    | `false`       | Show a search box that filters options |
+| `searchPlaceholder` | `string`                     | `'Search...'` | Placeholder for the search box         |
+| `label`             | `string`                     | `undefined`   | Display label                          |
+| `disabled`          | `boolean`                    | `false`       | Disabled state                         |
+| `persist`           | `boolean`                    | `false`       | Auto-save to localStorage              |
 
 ## Examples
+
+### Searchable (long lists)
+
+Set `searchable: true` to add a filter box above the options — useful when the list is long.
+The search matches option labels (case-insensitive); multiple selection works as usual.
+
+```tsx
+const [countries, setCountries] = useState<string[]>(["ar"]);
+
+useDevPanel("Filters", {
+	countries: {
+		type: "multiselect",
+		value: countries,
+		label: "Countries",
+		searchable: true,
+		searchPlaceholder: "Search countries...",
+		options: [
+			{ label: "Argentina", value: "ar" },
+			{ label: "Brazil", value: "br" },
+			{ label: "Chile", value: "cl" },
+			{ label: "Uruguay", value: "uy" },
+			// ...many more
+		],
+		onChange: setCountries,
+	},
+});
+```
 
 ### Feature Flags
 

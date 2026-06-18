@@ -42,11 +42,13 @@
 ### Issues
 
 <!-- Reference the GitHub issue this PR resolves or relates to -->
+
 -   Related: #ISSUE_NUMBER
 
 ### Release
 
 <!-- Check if applicable -->
+
 -   [ ] Includes a **Changeset** (`npm run changeset`) for consumer-facing changes
 
 ---
