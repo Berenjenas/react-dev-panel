@@ -108,3 +108,11 @@ Avoid persisting:
 
 -   localStorage: ~5-10MB per domain
 -   Only JSON-serializable values supported
+-   Writes that fail (quota exceeded, private mode, non-serializable value) are reported once via `console.warn` instead of throwing
+
+**Corrupt or mismatched stored values:**
+
+On restore, a persisted value is type-checked against its control before being applied. If
+it doesn't match (e.g. the control type changed between releases, or the stored data was
+tampered with), the value is ignored and dropped instead of being fed back into your
+state. A `console.warn` notes which control was skipped.

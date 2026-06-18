@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { ControlErrorBoundary } from "@/components/ControlErrorBoundary";
 import { className } from "@/utils/className";
 
 import type { Control, ControlsNames } from "./controls/types";
@@ -30,9 +31,11 @@ export function ControlRenderer<Name extends ControlsNames>({ name, control }: C
 
 		if (ControlComponent) {
 			return (
-				<Suspense fallback={<div className={styles.loading}>Loading control...</div>}>
-					<ControlComponent control={control} />
-				</Suspense>
+				<ControlErrorBoundary name={name} fallback={<div className={styles.error}>Failed to render control</div>}>
+					<Suspense fallback={<div className={styles.loading}>Loading control...</div>}>
+						<ControlComponent control={control} />
+					</Suspense>
+				</ControlErrorBoundary>
 			);
 		} else {
 			return <div>Unknown control type</div>;

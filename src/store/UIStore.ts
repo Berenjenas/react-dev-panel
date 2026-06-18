@@ -95,6 +95,12 @@ class DevPanelUIService extends BaseStoreService<DevPanelUIState, PersistedUISta
 	 * @private
 	 */
 	private applyTheme(theme: string): void {
+		// Guard against non-browser environments (SSR): this runs from the
+		// constructor at module-import time, before any render.
+		if (typeof document === "undefined") {
+			return;
+		}
+
 		const root = document.documentElement;
 
 		if (theme === "auto" || theme === "") {

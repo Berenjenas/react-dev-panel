@@ -76,6 +76,10 @@ export default defineConfig({
 				}),
 			),
 			output: {
+				// The whole library is client-only (portals, DOM, hotkeys). Emit the
+				// "use client" directive on every chunk so Next.js App Router (RSC)
+				// consumers can import it without "document is not defined" errors.
+				banner: '"use client";',
 				entryFileNames: "[name].js",
 				assetFileNames: "assets/[name][extname]",
 				globals: {

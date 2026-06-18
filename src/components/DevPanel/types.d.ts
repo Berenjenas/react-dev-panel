@@ -1,4 +1,5 @@
 import type { ControlsGroup } from "@/components/ControlRenderer/controls/types";
+import type { HotkeyConfig } from "@/hooks/useHotkeys/types";
 
 export type DevPanelHotkeyConfig = Pick<HotkeyConfig, "key" | "shiftKey" | "altKey" | "ctrlKey" | "metaKey">;
 export type BuiltInTheme =
@@ -48,6 +49,22 @@ export interface DevPanelProps {
 	 * If not provided, defaults to "auto"
 	 */
 	theme?: BuiltInTheme;
+	/**
+	 * Whether this `useDevPanel` call is active.
+	 *
+	 * When `false`, the call becomes a no-op: its section is not registered
+	 * (and is removed if it had been registered), persisted values are not
+	 * restored, and the panel is not auto-mounted by this call. The panel still
+	 * renders as long as at least one other call is enabled.
+	 *
+	 * Defaults to `true`. Typical use is to strip the panel from production at
+	 * runtime, e.g. `enabled: import.meta.env.DEV` or
+	 * `enabled: process.env.NODE_ENV !== "production"`.
+	 *
+	 * Note: this gates runtime behaviour, not bundling — the panel code is still
+	 * included in the consumer's bundle.
+	 */
+	enabled?: boolean;
 }
 
 export interface DevPanelSection {
