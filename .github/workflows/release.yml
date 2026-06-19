@@ -23,6 +23,7 @@ jobs:
         permissions:
             contents: write # to create release (changesets/action)
             pull-requests: write # to create pull request (changesets/action)
+            id-token: write # to authenticate to npm via OIDC (trusted publishing)
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v4
@@ -30,8 +31,13 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "20"
+                  node-version: "22"
+                  registry-url: "https://registry.npmjs.org"
                   cache: "npm"
+
+            - name: Update npm
+              # Trusted publishing (OIDC) requires npm >= 11.5.1
+              run: npm install -g npm@latest
 
             - name: Install Dependencies
               run: npm ci
@@ -52,7 +58,6 @@ jobs:
                   commit: "chore: version packages"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: Send Discord notification
               if: |
