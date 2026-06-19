@@ -51,6 +51,7 @@ function MultiSelectControlDemo(): React.ReactNode {
 	const [selectedFruits, setSelectedFruits] = useState<string[]>(["Apple", "Cherry"]);
 	const [selectedColors, setSelectedColors] = useState<string[]>(["red", "blue"]);
 	const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>(["react"]);
+	const [searchableFruits, setSearchableFruits] = useState<string[]>(["Apple"]);
 	const [disabledSelection, setDisabledSelection] = useState<string[]>(["disabled1"]);
 	const [persistentSelection, setPersistentSelection] = useState<string[]>(["react"]);
 
@@ -90,6 +91,17 @@ function MultiSelectControlDemo(): React.ReactNode {
 				onChange: (value) => setSelectedFrameworks(value),
 			},
 
+			searchable: {
+				type: "multiselect",
+				options: fruits,
+				value: searchableFruits,
+				label: "Searchable Fruits",
+				description: "Type in the search box to filter the options",
+				searchable: true,
+				searchPlaceholder: "Search fruits...",
+				onChange: (value) => setSearchableFruits(value),
+			},
+
 			disabled: {
 				type: "multiselect",
 				options: ["disabled1", "disabled2", "disabled3"],
@@ -125,6 +137,7 @@ function MultiSelectControlDemo(): React.ReactNode {
 				selectedFruits,
 				selectedColors,
 				selectedFrameworks,
+				searchableFruits,
 				disabledSelection,
 			}}
 		/>

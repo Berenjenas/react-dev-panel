@@ -12,6 +12,8 @@ import type { MultiSelectControlProps } from "./types";
  * @param props.control.options - Array of available options (strings or objects with label/value)
  * @param props.control.onChange - Callback function triggered when selection changes
  * @param props.control.disabled - Optional flag to disable the control
+ * @param props.control.searchable - Optional flag to show a search input that filters the options
+ * @param props.control.searchPlaceholder - Optional placeholder for the search input
  * @returns JSX element representing the multi-select control
  *
  * @example
@@ -36,6 +38,8 @@ export function MultiSelectControl({ control }: MultiSelectControlProps): React.
 			options={control.options}
 			disabled={control.disabled}
 			placeholder="Select options..."
+			searchable={control.searchable}
+			searchPlaceholder={control.searchPlaceholder}
 			onChange={(value) => control.onChange(value as string[])}
 		/>
 	);

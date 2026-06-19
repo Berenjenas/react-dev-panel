@@ -4,6 +4,8 @@ export interface MultiSelectControl extends BaseControl {
 	type: "multiselect";
 	value: string[];
 	options: string[] | { label: string; value: string }[];
+	searchable?: boolean;
+	searchPlaceholder?: string;
 	onChange: (value: string[]) => void;
 }
 
