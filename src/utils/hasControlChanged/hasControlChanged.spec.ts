@@ -599,6 +599,89 @@ describe("hasControlsChanged", () => {
 		});
 	});
 
+	describe("multiselect control specific properties", () => {
+		it("should return false when value arrays are equal but reference differs", () => {
+			// Given - simulates a consumer rebuilding the value array on every render
+			const current: ControlsGroup = {
+				flags: {
+					type: "multiselect",
+					value: ["a", "b"],
+					options: ["a", "b", "c"],
+					onChange: vi.fn(),
+				},
+			};
+
+			const previous: ControlsGroup = {
+				flags: {
+					type: "multiselect",
+					value: ["a", "b"],
+					options: ["a", "b", "c"],
+					onChange: vi.fn(),
+				},
+			};
+
+			// When
+			const result = hasControlsChanged(current, previous);
+
+			// Then
+			expect(result).toBe(false);
+		});
+
+		it("should return true when value array contents differ", () => {
+			// Given
+			const current: ControlsGroup = {
+				flags: {
+					type: "multiselect",
+					value: ["a", "b", "c"],
+					options: ["a", "b", "c"],
+					onChange: vi.fn(),
+				},
+			};
+
+			const previous: ControlsGroup = {
+				flags: {
+					type: "multiselect",
+					value: ["a", "b"],
+					options: ["a", "b", "c"],
+					onChange: vi.fn(),
+				},
+			};
+
+			// When
+			const result = hasControlsChanged(current, previous);
+
+			// Then
+			expect(result).toBe(true);
+		});
+
+		it("should return true when options differ", () => {
+			// Given
+			const current: ControlsGroup = {
+				flags: {
+					type: "multiselect",
+					value: ["a"],
+					options: ["a", "b", "c"],
+					onChange: vi.fn(),
+				},
+			};
+
+			const previous: ControlsGroup = {
+				flags: {
+					type: "multiselect",
+					value: ["a"],
+					options: ["a", "b"],
+					onChange: vi.fn(),
+				},
+			};
+
+			// When
+			const result = hasControlsChanged(current, previous);
+
+			// Then
+			expect(result).toBe(true);
+		});
+	});
+
 	describe("text control specific properties", () => {
 		it("should return true when placeholder changes", () => {
 			// Given
