@@ -27,9 +27,11 @@ export function hasControlsChanged(current: ControlsGroup, previous?: ControlsGr
 			return true;
 		}
 
-		// Compare value only if both controls have it
+		// Compare value only if both controls have it. Use a structural compare so
+		// controls with array/object values (e.g. multiselect) are not reported as
+		// changed on every render just because the consumer rebuilds the reference.
 		if ("value" in currentControl && "value" in previousControl) {
-			if (currentControl.value !== previousControl.value) {
+			if (!deepEqual(currentControl.value, previousControl.value)) {
 				return true;
 			}
 		}
@@ -62,6 +64,12 @@ export function hasControlsChanged(current: ControlsGroup, previous?: ControlsGr
 		}
 
 		if (currentControl.type === "select" && previousControl.type === "select") {
+			if (!deepEqual(currentControl.options, previousControl.options)) {
+				return true;
+			}
+		}
+
+		if (currentControl.type === "multiselect" && previousControl.type === "multiselect") {
 			if (!deepEqual(currentControl.options, previousControl.options)) {
 				return true;
 			}
